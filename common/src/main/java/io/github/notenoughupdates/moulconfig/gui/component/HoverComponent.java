@@ -1,6 +1,6 @@
 package io.github.notenoughupdates.moulconfig.gui.component;
 
-import io.github.notenoughupdates.moulconfig.common.text.StructuredText;
+import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.GuiComponent;
 import io.github.notenoughupdates.moulconfig.gui.GuiImmediateContext;
 import io.github.notenoughupdates.moulconfig.gui.KeyboardEvent;
@@ -12,15 +12,15 @@ import java.util.function.Supplier;
 
 public class HoverComponent extends GuiComponent {
     private final GuiComponent child;
-    private final Supplier<List<StructuredText>> hoverLines;
+    private final Supplier<List<Component>> hoverLines;
 
-    public HoverComponent(GuiComponent child, Supplier<List<StructuredText>> hoverLines) {
+    public HoverComponent(GuiComponent child, Supplier<List<Component>> hoverLines) {
         this.child = child;
         this.hoverLines = hoverLines;
     }
 
     public GuiComponent getChild() { return child; }
-    public Supplier<List<StructuredText>> getHoverLines() { return hoverLines; }
+    public Supplier<List<Component>> getHoverLines() { return hoverLines; }
 
     @Override
     public int getWidth() {

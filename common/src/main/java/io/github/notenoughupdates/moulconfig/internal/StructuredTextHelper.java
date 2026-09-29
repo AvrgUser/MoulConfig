@@ -1,18 +1,18 @@
 package io.github.notenoughupdates.moulconfig.internal;
 
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
-import io.github.notenoughupdates.moulconfig.common.text.StructuredText;
+import net.minecraft.network.chat.Component;
 import lombok.var;
 
-public class StructuredTextHelper {
-    public static StructuredText mapStringOrStructuredText(Object object) {
+public class ComponentHelper {
+    public static Component mapStringOrComponent(Object object) {
         if (object instanceof String) {
-            return StructuredText.of((String) object);
+            return Component.literal((String) object);
         }
-        if (object instanceof StructuredText) {
-            return (StructuredText) object;
+        if (object instanceof Component) {
+            return (Component) object;
         }
-        var structured = IMinecraft.INSTANCE.createStructuredTextInternal(object);
+        var structured = IMinecraft.INSTANCE.createComponentInternal(object);
         if (structured != null) {
             return structured;
         }

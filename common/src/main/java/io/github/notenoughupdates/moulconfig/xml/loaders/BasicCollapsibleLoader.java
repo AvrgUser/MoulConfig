@@ -1,7 +1,7 @@
 package io.github.notenoughupdates.moulconfig.xml.loaders;
 
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
-import io.github.notenoughupdates.moulconfig.common.text.StructuredText;
+import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.component.CollapsibleComponent;
 import io.github.notenoughupdates.moulconfig.gui.component.TextComponent;
 import io.github.notenoughupdates.moulconfig.observer.GetSetter;
@@ -24,7 +24,7 @@ public class BasicCollapsibleLoader implements XMLGuiLoader.Basic<CollapsibleCom
         GetSetter<String> title = context.getPropertyFromAttribute(element, new QName("title"), String.class);
         TextComponent textComponent = new TextComponent(
             IMinecraft.INSTANCE.getDefaultFontRenderer(),
-            () -> StructuredText.of(title.get()),
+            () -> Component.literal(title.get()),
             IMinecraft.INSTANCE.getDefaultFontRenderer().getStringWidth(title.get()),
             TextComponent.TextAlignment.LEFT,
             false,

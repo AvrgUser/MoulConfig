@@ -2,7 +2,7 @@ package io.github.notenoughupdates.moulconfig.test;
 
 import io.github.notenoughupdates.moulconfig.common.IItemStack;
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
-import io.github.notenoughupdates.moulconfig.common.MyResourceLocation;
+import net.minecraft.resources.Identifier;
 import io.github.notenoughupdates.moulconfig.gui.CloseEventListener;
 import io.github.notenoughupdates.moulconfig.managed.ManagedConfig;
 import io.github.notenoughupdates.moulconfig.observer.ObservableList;
@@ -41,7 +41,7 @@ public class FabricMain implements ModInitializer {
                     XMLUniverse xmlUniverse = XMLUniverse.getDefaultUniverse();
                     var scene = xmlUniverse.load(
                         new ObjectBound(),
-                        IMinecraft.INSTANCE.loadResourceLocation(MyResourceLocation.parse("moulconfig:test.xml"))
+                        IMinecraft.INSTANCE.loadResourceLocation(Identifier.parse("moulconfig:test.xml"))
                     );
                     IMinecraft.getInstance()
                             .openWrappedScreen(scene);

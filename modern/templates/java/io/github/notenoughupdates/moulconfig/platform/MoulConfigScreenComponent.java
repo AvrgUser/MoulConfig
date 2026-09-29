@@ -77,27 +77,15 @@ public class MoulConfigScreenComponent extends Screen {
         ctx.getRenderContext().renderExtraLayers();
     }
 
-    #if MC < 12109
-    @Override
-    public boolean charTyped(char chr, int modifiers) {
-        return guiContext.getRoot().keyboardEvent(new KeyboardEvent.CharTyped(chr), createContext());
-    }
-    #else
     @Override
     public boolean charTyped(CharacterEvent input){
         return guiContext.getRoot().keyboardEvent(new KeyboardEvent.CharTyped((char) input.codepoint()), createContext());
     }
-    #endif
 
-    #if MC < 12109
-    @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-    #else
     @Override
     public boolean keyPressed(KeyEvent input) {
         int keyCode = input.key();
         int scanCode = input.scancode();
-    #endif
         if (guiContext.root.keyboardEvent(new KeyboardEvent.KeyPressed(keyCode, scanCode, true), createContext()))
             return true;
         if (keyCode == InputConstants.KEY_ESCAPE) {
@@ -111,15 +99,9 @@ public class MoulConfigScreenComponent extends Screen {
         return false;
     }
 
-    #if MC < 12109
-    @Override
-    public boolean keyReleased(int keyCode, int scanCode, int modifiers) {
-    #else
-    @Override
     public boolean keyReleased(KeyEvent input) {
         int keyCode = input.key();
         int scanCode = input.scancode();
-    #endif
         return guiContext.root.keyboardEvent(
             new KeyboardEvent.KeyPressed(keyCode, scanCode, false),
             createContext()

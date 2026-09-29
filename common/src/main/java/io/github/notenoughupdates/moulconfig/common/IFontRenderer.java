@@ -1,6 +1,6 @@
 package io.github.notenoughupdates.moulconfig.common;
 
-import io.github.notenoughupdates.moulconfig.common.text.StructuredText;
+import net.minecraft.network.chat.Component;
 import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
@@ -10,19 +10,19 @@ public interface IFontRenderer {
     int getHeight();
 
     default int getStringWidth(String string) {
-        return getStringWidth(StructuredText.of(string));
+        return getStringWidth(Component.literal(string));
     }
 
-    int getStringWidth(StructuredText structuredText);
+    int getStringWidth(Component Component);
 
     default int getCharWidth(char c) {
         return getStringWidth(Character.toString(c));
     }
 
-    List<StructuredText> splitText(StructuredText structuredText, int width);
+    List<Component> splitText(Component Component, int width);
 
-    default List<StructuredText> splitLines(StructuredText structuredText) {
-        return splitText(structuredText, Integer.MAX_VALUE);
+    default List<Component> splitLines(Component Component) {
+        return splitText(Component, Integer.MAX_VALUE);
     }
 
     default String trimStringToWidth(String string, int width) {

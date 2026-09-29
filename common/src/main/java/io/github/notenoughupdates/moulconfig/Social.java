@@ -22,8 +22,8 @@ package io.github.notenoughupdates.moulconfig;
 
 import io.github.notenoughupdates.moulconfig.common.ClickType;
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
-import io.github.notenoughupdates.moulconfig.common.MyResourceLocation;
-import io.github.notenoughupdates.moulconfig.common.text.StructuredText;
+import net.minecraft.resources.Identifier;
+import net.minecraft.network.chat.Component;
 
 import java.awt.*;
 import java.net.URI;
@@ -34,7 +34,7 @@ import java.util.List;
 
 public abstract class Social {
 
-    public static Social forLink(StructuredText name, MyResourceLocation icon, String link) {
+    public static Social forLink(Component name, Identifier icon, String link) {
         try {
             return new URLSocial(name, new URI(link), icon);
         } catch (URISyntaxException e) {
@@ -44,16 +44,16 @@ public abstract class Social {
 
     public abstract void onClick();
 
-    public abstract List<StructuredText> getTooltip();
+    public abstract List<Component> getTooltip();
 
-    public abstract MyResourceLocation getIcon();
+    public abstract Identifier getIcon();
 
     private static class URLSocial extends Social {
-        private final StructuredText name;
+        private final Component name;
         private final URI url;
-        private final MyResourceLocation icon;
+        private final Identifier icon;
 
-        private URLSocial(StructuredText name, URI url, MyResourceLocation icon) {
+        private URLSocial(Component name, URI url, Identifier icon) {
             this.name = name;
             this.url = url;
             this.icon = icon;
@@ -64,17 +64,17 @@ public abstract class Social {
             try {
                 Desktop.getDesktop().browse(url);
             } catch (Exception e) {
-                IMinecraft.INSTANCE.sendClickableChatMessage(StructuredText.of("Click here to open ").append(name), url.toString(), ClickType.OPEN_LINK);
+                IMinecraft.INSTANCE.sendClickableChatMessage(Component.literal("Click here to open ").append(name), url.toString(), ClickType.OPEN_LINK);
             }
         }
 
         @Override
-        public List<StructuredText> getTooltip() {
+        public List<Component> getTooltip() {
             return Collections.singletonList(name);
         }
 
         @Override
-        public MyResourceLocation getIcon() {
+        public Identifier getIcon() {
             return icon;
         }
     }

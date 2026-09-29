@@ -7,7 +7,7 @@ import com.mojang.blaze3d.textures.FilterMode;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import io.github.notenoughupdates.moulconfig.common.*;
-import io.github.notenoughupdates.moulconfig.common.text.StructuredText;
+import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.internal.FilterAssertionCache;
 import io.github.notenoughupdates.moulconfig.internal.Rect;
 import io.github.notenoughupdates.moulconfig.internal.Warnings;
@@ -190,7 +190,7 @@ public class MoulConfigRenderContext implements RenderContext {
     }
 
     @Override
-    public void drawString(IFontRenderer fontRenderer, StructuredText text, int x, int y, int color, boolean shadow) {
+    public void drawString(IFontRenderer fontRenderer, Component text, int x, int y, int color, boolean shadow) {
         drawContext.#if MC < 260100 drawString #else text #endif(
             MoulConfigPlatform.unwrap(fontRenderer),
             MoulConfigPlatform.unwrap(text),
@@ -226,7 +226,7 @@ public class MoulConfigRenderContext implements RenderContext {
     }
 
     @Override
-    public void drawTexturedTintedRect(MyResourceLocation texture, float x, float y, float width, float height, float u1, float v1, float u2, float v2, int color, TextureFilter filter) {
+    public void drawTexturedTintedRect(Identifier texture, float x, float y, float width, float height, float u1, float v1, float u2, float v2, int color, TextureFilter filter) {
         FilterAssertionCache.assertTextureFilter(texture, filter);
         var identifier = MoulConfigPlatform.unwrap(texture);
         #if MC < 12111
@@ -317,7 +317,7 @@ public class MoulConfigRenderContext implements RenderContext {
     }
 
     @Override
-    public void renderItemStack(IItemStack itemStack, int x, int y, @Nullable StructuredText overlayText) {
+    public void renderItemStack(IItemStack itemStack, int x, int y, @Nullable Component overlayText) {
         var item = MoulConfigPlatform.unwrap(itemStack);
         drawContext.#if MC < 260100 renderItem #else item #endif(item, x, y);
         if (overlayText != null)
@@ -330,7 +330,7 @@ public class MoulConfigRenderContext implements RenderContext {
     }
 
     @Override
-    public void drawTooltipNow(int x, int y, List<StructuredText> tooltipLines) {
+    public void drawTooltipNow(int x, int y, List<Component> tooltipLines) {
         #if MC217
         var lines = tooltipLines.stream()
             .map(MoulConfigPlatform::unwrap)

@@ -22,7 +22,7 @@ package io.github.notenoughupdates.moulconfig.gui.editors;
 import io.github.notenoughupdates.moulconfig.GuiTextures;
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
 import io.github.notenoughupdates.moulconfig.common.MoulConfigPair;
-import io.github.notenoughupdates.moulconfig.common.text.StructuredText;
+import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.GuiComponent;
 import io.github.notenoughupdates.moulconfig.gui.GuiImmediateContext;
 import io.github.notenoughupdates.moulconfig.gui.MouseEvent;
@@ -38,7 +38,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class GuiOptionEditorDraggableList extends ComponentEditor {
-    private Map<Object, StructuredText> exampleText = new HashMap<>();
+    private Map<Object, Component> exampleText = new HashMap<>();
     private boolean enableDeleting;
     private List<Object> activeText;
     private final boolean requireNonEmpty;
@@ -52,7 +52,7 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
 
     private Enum<?>[] enumConstants;
     private String exampleTextConcat;
-    // TODO: rework this entire thing to accept StructuredTexts and/or classes implementing a custom interfaces and/or a custom text mapper
+    // TODO: rework this entire thing to accept Components and/or classes implementing a custom interfaces and/or a custom text mapper
 
     public GuiOptionEditorDraggableList(
         ProcessedOption option,
@@ -80,11 +80,11 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
             Class<? extends Enum<?>> enumType = (Class<? extends Enum<?>>) elementType;
             enumConstants = enumType.getEnumConstants();
             for (int i = 0; i < enumConstants.length; i++) { // TODO: all of this caching is useless, tbh.
-                this.exampleText.put(enumConstants[i], StructuredText.of(enumConstants[i].toString()));
+                this.exampleText.put(enumConstants[i], Component.literal(enumConstants[i].toString()));
             }
         } else {
             for (int i = 0; i < exampleText.length; i++) {
-                this.exampleText.put(i, StructuredText.of(exampleText[i]));
+                this.exampleText.put(i, Component.literal(exampleText[i]));
             }
         }
     }
@@ -93,10 +93,10 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
         option.explicitNotifyChange();
     }
 
-    private StructuredText getExampleText(Object forObject) {
-        StructuredText str = exampleText.get(forObject);
+    private Component getExampleText(Object forObject) {
+        Component str = exampleText.get(forObject);
         if (str == null) {
-            str = StructuredText.of("<unknown " + forObject + ">");
+            str = Component.literal("<unknown " + forObject + ">");
             Warnings.warnOnce("Could not find draggable list object for " + forObject + " on option " + option.getDebugDeclarationLocation(), forObject, option);
         }
         return str;
@@ -116,7 +116,7 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
             delegate = wrapComponent(
                 new FixedComponent(
                     new RowComponent(
-                        new ButtonComponent(new CenterComponent(new TextComponent(StructuredText.of(" Add "))), 2, () -> {
+                        new ButtonComponent(new CenterComponent(new TextComponent(Component.literal(" Add "))), 2, () -> {
                             var pos = IMinecraft.INSTANCE.getMousePosition();
                             if (activeText.size() == exampleText.size())
                                 return;
@@ -162,7 +162,7 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
                         int height = 5;
                         var fr = IMinecraft.INSTANCE.getDefaultFontRenderer();
                         for (Object object : activeText) {
-                            StructuredText str = getExampleText(object);
+                            Component str = getExampleText(object);
                             height += (fr.getHeight() + 1) * fr.splitLines(str).size();
                         }
                         return height;
@@ -177,7 +177,7 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
                                 int i = 0;
                                 int yOff = 0;
                                 for (Object indexObject : activeText) {
-                                    StructuredText str = getExampleText(indexObject);
+                                    Component str = getExampleText(indexObject);
                                     var multilines = fr.splitLines(str);
                                     int ySize = multilines.size() * (fr.getHeight() + 1);
                                     var trans = context.translated(0, yOff, context.getWidth(), ySize);
@@ -210,7 +210,7 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
                         int i = 0;
                         int yOff = 0;
                         for (Object indexObject : activeText) {
-                            StructuredText str = getExampleText(indexObject);
+                            Component str = getExampleText(indexObject);
 
                             var multilines = fr.splitLines(str);
 
@@ -225,7 +225,7 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
                                 }
                                 renderContext.drawString(
                                     fr,
-                                    StructuredText.of("≡"),
+                                    Component.literal("≡"),
                                     5,
                                     4 + yOff + ySize / 2 - 4,
                                     0xffffff,
@@ -284,7 +284,7 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
                 var firstLine = fr.splitLines(text).get(0);
                 renderContext.drawString(
                     fr,
-                    StructuredText.of("≡"),
+                    Component.literal("≡"),
                     5,
                     1,
                     0xffffff,
@@ -308,7 +308,7 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
         int i = 0;
         int yOff = renderY;
         for (Object indexObject : activeText) {
-            StructuredText str = getExampleText(indexObject);
+            Component str = getExampleText(indexObject);
 
             var multilines = fr.splitLines(str);
 
@@ -440,9 +440,9 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
                 renderContext.translate(0, -scrollOffset);
                 int dropdownY = -1;
                 for (Object indexObject : remaining) {
-                    StructuredText str = getExampleText(indexObject);
+                    Component str = getExampleText(indexObject);
                     if (str.getText().isEmpty()) {
-                        str = StructuredText.of("<NONE>");
+                        str = Component.literal("<NONE>");
                     }
                     renderContext.drawStringScaledMaxWidth(fr.splitLines(str).get(0),
                         fr, 3, 3 + dropdownY, false, dropdownWidth - 6, 0xffa0a0a0
@@ -469,7 +469,7 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
     @Override
     public boolean fulfillsSearch(String word) {
         if (exampleTextConcat == null) {
-            exampleTextConcat = exampleText.values().stream().map(StructuredText::getText).collect(Collectors.joining(" "))
+            exampleTextConcat = exampleText.values().stream().map(Component::getText).collect(Collectors.joining(" "))
                 .toLowerCase(Locale.ROOT);
         }
         return super.fulfillsSearch(word) || exampleTextConcat.contains(word);

@@ -4,7 +4,7 @@ import io.github.notenoughupdates.moulconfig.DescriptionRendereringBehaviour;
 import io.github.notenoughupdates.moulconfig.TitleRenderingBehaviour;
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
 import io.github.notenoughupdates.moulconfig.common.RenderContext;
-import io.github.notenoughupdates.moulconfig.common.text.StructuredText;
+import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.*;
 import io.github.notenoughupdates.moulconfig.gui.component.CenterComponent;
 import io.github.notenoughupdates.moulconfig.gui.component.PanelComponent;
@@ -199,7 +199,7 @@ public abstract class ComponentEditor extends GuiOptionEditor {
             var fr = minecraft.getDefaultFontRenderer();
             int yOffset = option.getConfig().getTitleRenderingBehaviour(option) != TitleRenderingBehaviour.LEFT ? fr.getHeight() + 13 : 5;
             float scale = 1;
-            List<StructuredText> lines;
+            List<Component> lines;
             int descriptionHeight = context.getHeight() - yOffset;
             while (true) {
                 lines = fr.splitText(option.getDescription(), (int) (width * 2 / 3 / scale - 10));

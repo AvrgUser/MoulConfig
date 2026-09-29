@@ -1,6 +1,6 @@
 package io.github.notenoughupdates.moulconfig.common;
 
-import io.github.notenoughupdates.moulconfig.common.text.StructuredText;
+import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.GuiComponent;
 import io.github.notenoughupdates.moulconfig.gui.GuiContext;
 import io.github.notenoughupdates.moulconfig.gui.GuiElement;
@@ -21,14 +21,14 @@ import java.util.ServiceLoader;
 
 @NullMarked
 public interface IMinecraft {
-    InputStream loadResourceLocation(MyResourceLocation resourceLocation);
+    InputStream loadResourceLocation(Identifier resourceLocation);
 
     MCLogger getLogger(String label);
 
     /**
      * @return if the {@code resourceLocation} is one that is only temporarily used as a generated target by {@link #generateDynamicTexture}.
      */
-    boolean isGeneratedSentinel(MyResourceLocation resourceLocation);
+    boolean isGeneratedSentinel(Identifier resourceLocation);
 
     /**
      * Dynamically load a buffered image into a minecraft bindable texture. The returned resource location must be destroyed.
@@ -80,24 +80,24 @@ public interface IMinecraft {
 
     void addExtraBuiltinConfigProcessors(MoulConfigProcessor<?> processor);
 
-    void sendClickableChatMessage(StructuredText message, String action, @Nullable ClickType clickType);
+    void sendClickableChatMessage(Component message, String action, @Nullable ClickType clickType);
 
-    default void sendChatMessage(StructuredText message) {
+    default void sendChatMessage(Component message) {
         sendClickableChatMessage(message, "", null);
     }
 
-    StructuredText getKeyName(int keyCode);
+    Component getKeyName(int keyCode);
 
-    StructuredText.Mutable createLiteral(String text);
+    Component.Mutable createLiteral(String text);
 
-    StructuredText.Mutable createTranslatable(String key, StructuredText... args);
+    Component.Mutable createTranslatable(String key, Component... args);
 
     /**
      * Create a structured text from an untyped platform object. Must be a platform type exactly, not a string or a structured text.
      */
     @ApiStatus.Internal
     @Nullable
-    StructuredText createStructuredTextInternal(Object object);
+    Component createComponentInternal(Object object);
 
     @ApiStatus.Experimental
     void registerPlatformTypeMorphisms(XMLUniverse universe);

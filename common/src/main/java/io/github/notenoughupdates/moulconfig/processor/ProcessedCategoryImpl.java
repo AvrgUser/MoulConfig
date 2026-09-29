@@ -1,6 +1,6 @@
 package io.github.notenoughupdates.moulconfig.processor;
 
-import io.github.notenoughupdates.moulconfig.common.text.StructuredText;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
 
@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.Map;
 
 public class ProcessedCategoryImpl implements ProcessedCategory {
-    public final StructuredText name;
-    public final StructuredText desc;
+    public final Component name;
+    public final Component desc;
     public final Field reflectField;
     public final List<ProcessedOption> options = new ArrayList<>();
     public final Map<Integer, ProcessedOption> accordionAnchors = new HashMap<>();
@@ -20,12 +20,12 @@ public class ProcessedCategoryImpl implements ProcessedCategory {
     public @Nullable String parent;
 
     @Override
-    public StructuredText getDisplayName() {
+    public Component getDisplayName() {
         return name;
     }
 
     @Override
-    public StructuredText getDescription() {
+    public Component getDescription() {
         return desc;
     }
 
@@ -54,11 +54,11 @@ public class ProcessedCategoryImpl implements ProcessedCategory {
         return accordionAnchors;
     }
 
-    public ProcessedCategoryImpl(Field field, StructuredText name, StructuredText desc) {
+    public ProcessedCategoryImpl(Field field, Component name, Component desc) {
         this(field, name, desc, null);
     }
 
-    public ProcessedCategoryImpl(Field field, StructuredText name, StructuredText desc, @Nullable String parent) {
+    public ProcessedCategoryImpl(Field field, Component name, Component desc, @Nullable String parent) {
         this.reflectField = field;
         this.name = name;
         this.parent = parent;

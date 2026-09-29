@@ -22,7 +22,7 @@ package io.github.notenoughupdates.moulconfig.gui.editors;
 
 import io.github.notenoughupdates.moulconfig.common.IFontRenderer;
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
-import io.github.notenoughupdates.moulconfig.common.text.StructuredText;
+import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.GuiComponent;
 import io.github.notenoughupdates.moulconfig.gui.GuiImmediateContext;
 import io.github.notenoughupdates.moulconfig.gui.MouseEvent;
@@ -36,7 +36,7 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class GuiOptionEditorDropdown extends ComponentEditor {
-    private List<StructuredText> values;
+    private List<Component> values;
     private boolean useOrdinal;
     private Enum<?>[] constants;
     private String valuesForSearch;
@@ -44,7 +44,7 @@ public class GuiOptionEditorDropdown extends ComponentEditor {
     public GuiOptionEditorDropdown(ProcessedOption option, String[] values) {
         this(option, values, false);
     }
- // TODO: rework this entire thing to accept StructuredTexts and/or classes implementing a custom interfaces and/or a custom text mapper
+ // TODO: rework this entire thing to accept Components and/or classes implementing a custom interfaces and/or a custom text mapper
     public GuiOptionEditorDropdown(
         ProcessedOption option,
         String[] values,
@@ -56,10 +56,10 @@ public class GuiOptionEditorDropdown extends ComponentEditor {
             constants = (Enum<?>[]) (clazz).getEnumConstants();
             this.values = new ArrayList<>();
             for (Enum<?> constant : constants) {
-                this.values.add(StructuredText.of(constant.toString()));
+                this.values.add(Component.literal(constant.toString()));
             }
         } else {
-            this.values = Arrays.stream(values).map(StructuredText::of).collect(Collectors.toList());
+            this.values = Arrays.stream(values).map(Component::of).collect(Collectors.toList());
             assert values.length > 0;
         }
         this.useOrdinal = clazz == int.class || clazz == Integer.class;
@@ -109,7 +109,7 @@ public class GuiOptionEditorDropdown extends ComponentEditor {
         @Override
         public void render(@NotNull GuiImmediateContext context) {
             int selected = getSelectedIndex();
-            StructuredText selectedString = StructuredText.of(" - Select - ");
+            Component selectedString = Component.literal(" - Select - ");
             if (selected >= 0 && selected < values.size()) {
                 selectedString = values.get(selected);
             }
@@ -133,9 +133,9 @@ public class GuiOptionEditorDropdown extends ComponentEditor {
             context.getRenderContext().drawColoredRect(left + 1, top + 14 - 1, left + dropdownWidth - 1, top + 14, outlineColour); //Bar
             int dropdownY = 13;
             IFontRenderer fr = IMinecraft.INSTANCE.getDefaultFontRenderer();
-            for (StructuredText option : values) {
+            for (Component option : values) {
                 if (option.getText().isEmpty()) {
-                    option = StructuredText.of("<NONE>");
+                    option = Component.literal("<NONE>");
                 }
                 context.getRenderContext().drawStringScaledMaxWidth(
                     option,
@@ -196,7 +196,7 @@ public class GuiOptionEditorDropdown extends ComponentEditor {
             int dropdownWidth = context.getWidth();
             int selected = getSelectedIndex();
             if (selected >= values.size()) selected = values.size();
-            StructuredText selectedString = StructuredText.of(" - Select - ");
+            Component selectedString = Component.literal(" - Select - ");
             if (selected >= 0 && selected < values.size()) {
                 selectedString = values.get(selected);
             }
@@ -227,14 +227,14 @@ public class GuiOptionEditorDropdown extends ComponentEditor {
         } else if (constants != null) {
             return ((Enum) selectedObject).ordinal();
         } else {
-            return (values).stream().map(StructuredText::getText).collect(Collectors.toList()).indexOf(selectedObject);
+            return (values).stream().map(Component::getText).collect(Collectors.toList()).indexOf(selectedObject);
         }
     }
 
     @Override
     public boolean fulfillsSearch(String word) {
         if (valuesForSearch == null) {
-            valuesForSearch = values.stream().map(StructuredText::getText).collect(Collectors.joining(" ")).toLowerCase(Locale.ROOT);
+            valuesForSearch = values.stream().map(Component::getText).collect(Collectors.joining(" ")).toLowerCase(Locale.ROOT);
         }
         return super.fulfillsSearch(word) || valuesForSearch.contains(word);
     }

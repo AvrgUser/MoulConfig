@@ -1,6 +1,6 @@
 package io.github.notenoughupdates.moulconfig.common;
 
-import io.github.notenoughupdates.moulconfig.common.text.StructuredText;
+import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.internal.NinePatchRenderer;
 import juuxel.libninepatch.NinePatch;
 import org.jetbrains.annotations.ApiStatus;
@@ -69,7 +69,7 @@ public interface RenderContext {
         }
     }
 
-    default void drawStringScaledMaxWidth(StructuredText text, IFontRenderer fontRenderer, int x, int y, boolean shadow, int width, int color) {
+    default void drawStringScaledMaxWidth(Component text, IFontRenderer fontRenderer, int x, int y, boolean shadow, int width, int color) {
         pushMatrix();
         translate(x, y);
         float scale = Math.min(1F, Math.max(0.1F, width / (float) fontRenderer.getStringWidth(text)));
@@ -79,7 +79,7 @@ public interface RenderContext {
     }
 
     default void drawStringCenteredScaledMaxWidth(
-        StructuredText text,
+        Component text,
         IFontRenderer fr,
         float x, float y,
         boolean shadow,
@@ -154,24 +154,24 @@ public interface RenderContext {
         }
     }
 
-    void drawString(IFontRenderer fontRenderer, StructuredText text, int x, int y, int color, boolean shadow);
+    void drawString(IFontRenderer fontRenderer, Component text, int x, int y, int color, boolean shadow);
 
     void drawColoredRect(float left, float top, float right, float bottom, int color);
 
     void invertedRect(float left, float top, float right, float bottom, int additiveColor); // TODO: worth a consideration (is this a stable API)???
 
-    default void drawTexturedRect(MyResourceLocation texture, float x, float y, float width, float height) {
+    default void drawTexturedRect(Identifier texture, float x, float y, float width, float height) {
         drawComplexTexture(texture, x, y, width, height, drawTextureBuilder -> {
         });
     }
 
-    void drawTexturedTintedRect(MyResourceLocation texture,
+    void drawTexturedTintedRect(Identifier texture,
                                 float x, float y, float width, float height,
                                 float u1, float v1, float u2, float v2,
                                 int color, TextureFilter filter);
 
     class DrawTextureBuilder {
-        MyResourceLocation texture;
+        Identifier texture;
         float x;
         float y;
         float width;
@@ -180,7 +180,7 @@ public interface RenderContext {
         int color = -1;
         TextureFilter filter = TextureFilter.NEAREST;
 
-        public DrawTextureBuilder(MyResourceLocation texture, float x, float y, float width, float height) {
+        public DrawTextureBuilder(Identifier texture, float x, float y, float width, float height) {
             this.texture = texture;
             this.x = x;
             this.y = y;
@@ -212,13 +212,13 @@ public interface RenderContext {
     }
 
 
-    default void drawComplexTexture(MyResourceLocation texture, float x, float y, float width, float height, Consumer<DrawTextureBuilder> block) {
+    default void drawComplexTexture(Identifier texture, float x, float y, float width, float height, Consumer<DrawTextureBuilder> block) {
         DrawTextureBuilder drawBuilder = new DrawTextureBuilder(texture, x, y, width, height);
         block.accept(drawBuilder);
         drawBuilder.applyTo(this);
     }
 
-    default void drawNinePatch(NinePatch<MyResourceLocation> patch, float x, float y, int width, int height) {
+    default void drawNinePatch(NinePatch<Identifier> patch, float x, float y, int width, int height) {
         pushMatrix();
         translate(x, y);
         patch.draw(NinePatchRenderer.INSTANCE, this, width, height);
@@ -253,11 +253,11 @@ public interface RenderContext {
     @Deprecated
     void clearScissor();  // TODO: this sort of escapes out of the current context.
 
-    void renderItemStack(IItemStack itemStack, int x, int y, @Nullable StructuredText overlayText);
+    void renderItemStack(IItemStack itemStack, int x, int y, @Nullable Component overlayText);
 
-    void drawTooltipNow(int x, int y, List<StructuredText> tooltipLines);
+    void drawTooltipNow(int x, int y, List<Component> tooltipLines);
 
-    default void scheduleDrawTooltip(int x, int y, List<StructuredText> tooltipLines) {
+    default void scheduleDrawTooltip(int x, int y, List<Component> tooltipLines) {
         // TODO: should this do some form of conflict resolution?
         drawOnTop(Layer.TOOLTIP, ScissorBehaviour.ESCAPE, it -> it.drawTooltipNow(x, y, tooltipLines));
     }

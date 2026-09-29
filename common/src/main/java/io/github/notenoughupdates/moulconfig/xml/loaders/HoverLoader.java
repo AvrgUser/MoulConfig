@@ -1,8 +1,8 @@
 package io.github.notenoughupdates.moulconfig.xml.loaders;
 
-import io.github.notenoughupdates.moulconfig.common.text.StructuredText;
+import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.component.HoverComponent;
-import io.github.notenoughupdates.moulconfig.internal.StructuredTextHelper;
+import io.github.notenoughupdates.moulconfig.internal.ComponentHelper;
 import io.github.notenoughupdates.moulconfig.observer.GetSetter;
 import io.github.notenoughupdates.moulconfig.xml.ChildCount;
 import io.github.notenoughupdates.moulconfig.xml.XMLContext;
@@ -22,9 +22,9 @@ public class HoverLoader implements XMLGuiLoader.Basic<HoverComponent> {
     public HoverComponent createInstance(XMLContext<?> context, Element element) {
         GetSetter<List> list = context.getPropertyFromAttribute(element, new QName("lines"), List.class);
         return new HoverComponent(context.getChildFragment(element), () -> {
-            List<StructuredText> result = new ArrayList<>();
+            List<Component> result = new ArrayList<>();
             for (Object item : list.get()) {
-                result.add(StructuredTextHelper.mapStringOrStructuredText(item));
+                result.add(ComponentHelper.mapStringOrComponent(item));
             }
             return result;
         });

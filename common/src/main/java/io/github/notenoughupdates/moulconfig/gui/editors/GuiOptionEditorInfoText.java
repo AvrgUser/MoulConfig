@@ -20,7 +20,7 @@
 
 package io.github.notenoughupdates.moulconfig.gui.editors;
 
-import io.github.notenoughupdates.moulconfig.common.text.StructuredText;
+import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.GuiComponent;
 import io.github.notenoughupdates.moulconfig.gui.component.TextComponent;
 import io.github.notenoughupdates.moulconfig.processor.ProcessedOption;
@@ -29,10 +29,10 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Locale;
 
 public class GuiOptionEditorInfoText extends ComponentEditor {
-    private StructuredText infoTitle;
+    private Component infoTitle;
     GuiComponent component;
 
-    public GuiOptionEditorInfoText(ProcessedOption option, StructuredText infoTitle) {
+    public GuiOptionEditorInfoText(ProcessedOption option, Component infoTitle) {
         super(option);
 
         this.infoTitle = infoTitle;

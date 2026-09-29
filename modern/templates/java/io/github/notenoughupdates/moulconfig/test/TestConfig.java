@@ -2,12 +2,12 @@ package io.github.notenoughupdates.moulconfig.test;
 
 import io.github.notenoughupdates.moulconfig.Config;
 import io.github.notenoughupdates.moulconfig.annotations.Category;
-import io.github.notenoughupdates.moulconfig.common.text.StructuredText;
+import net.minecraft.network.chat.Component;
 
 public class TestConfig extends Config {
     @Override
-    public StructuredText getTitle() {
-        return StructuredText.of("1.20 Test").green();
+    public Component getTitle() {
+        return Component.literal("1.20 Test").green();
     }
 
     @Override

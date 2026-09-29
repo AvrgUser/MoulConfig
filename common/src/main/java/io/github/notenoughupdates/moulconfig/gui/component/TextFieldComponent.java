@@ -3,7 +3,7 @@ package io.github.notenoughupdates.moulconfig.gui.component;
 import io.github.notenoughupdates.moulconfig.common.IFontRenderer;
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
 import io.github.notenoughupdates.moulconfig.common.KeyboardConstants;
-import io.github.notenoughupdates.moulconfig.common.text.StructuredText;
+import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.GuiComponent;
 import io.github.notenoughupdates.moulconfig.gui.GuiImmediateContext;
 import io.github.notenoughupdates.moulconfig.gui.KeyboardEvent;
@@ -72,7 +72,7 @@ public class TextFieldComponent extends GuiComponent {
     @Override
     public int getWidth() {
         if (isFocused() && shouldExpandToFit) {
-            return Math.max(preferredWidth, font.getStringWidth(StructuredText.of(text.get())) + 10);
+            return Math.max(preferredWidth, font.getStringWidth(Component.literal(text.get())) + 10);
         }
         return preferredWidth;
     }
@@ -114,7 +114,7 @@ public class TextFieldComponent extends GuiComponent {
         if (text.get().isEmpty() && !isFocused()) {
             context.getRenderContext().drawString(
                 font,
-                StructuredText.of(suggestion),
+                Component.literal(suggestion),
                 TEXT_PADDING_X,
                 context.getHeight() / 2 - font.getHeight() / 2,
                 SUGGESTION_COLOR,
@@ -167,7 +167,7 @@ public class TextFieldComponent extends GuiComponent {
         int textColor = editable.get() ? ENABLED_COLOR : DISABLED_COLOR;
         context.getRenderContext().drawString(
             font,
-            StructuredText.of(visibleText),
+            Component.literal(visibleText),
             TEXT_PADDING_X,
             context.getHeight() / 2 - font.getHeight() / 2,
             textColor,

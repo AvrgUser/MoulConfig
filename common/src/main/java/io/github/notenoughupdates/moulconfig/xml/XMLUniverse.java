@@ -1,8 +1,8 @@
 package io.github.notenoughupdates.moulconfig.xml;
 
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
-import io.github.notenoughupdates.moulconfig.common.MyResourceLocation;
-import io.github.notenoughupdates.moulconfig.common.text.StructuredText;
+import net.minecraft.resources.Identifier;
+import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.GuiComponent;
 import io.github.notenoughupdates.moulconfig.gui.HorizontalAlign;
 import io.github.notenoughupdates.moulconfig.gui.VerticalAlign;
@@ -82,12 +82,12 @@ public class XMLUniverse {
         xmlUniverse.registerTypeMorphism(new UnboxPrimitives());
         IMinecraft.getInstance().registerPlatformTypeMorphisms(xmlUniverse);
         xmlUniverse.registerMapper(List.class, str -> Arrays.asList(str.split(";")));
-        xmlUniverse.registerMapper(MyResourceLocation.class, MyResourceLocation::parse);
+        xmlUniverse.registerMapper(Identifier.class, Identifier::parse);
         xmlUniverse.registerMapper(PanelComponent.BackgroundRenderer.class, PanelComponent.DefaultBackgroundRenderer::valueOf);
         xmlUniverse.registerMapper(HorizontalAlign.class, HorizontalAlign::valueOf);
         xmlUniverse.registerMapper(VerticalAlign.class, VerticalAlign::valueOf);
         xmlUniverse.registerMapper(TextComponent.TextAlignment.class, TextComponent.TextAlignment::valueOf);
-        xmlUniverse.registerMapper(StructuredText.class, StructuredText::of);
+        xmlUniverse.registerMapper(Component.class, Component::of);
         xmlUniverse.registerMapper(Color.class, str -> str.startsWith("#") ? new Color((int) Long.parseLong(str.substring(1), 16), str.length() == 9) : new Color(Integer.parseInt(str), true));
         return xmlUniverse;
     }
@@ -220,7 +220,7 @@ public class XMLUniverse {
     }
 
     @NotNull
-    public GuiComponent load(@NotNull Object bind, @NotNull MyResourceLocation location) {
+    public GuiComponent load(@NotNull Object bind, @NotNull Identifier location) {
         return load(bind, IMinecraft.INSTANCE.loadResourceLocation(location));
     }
 

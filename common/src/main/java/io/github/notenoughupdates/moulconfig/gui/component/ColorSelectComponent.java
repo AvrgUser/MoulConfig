@@ -25,7 +25,7 @@ import io.github.notenoughupdates.moulconfig.GuiTextures;
 import io.github.notenoughupdates.moulconfig.common.DynamicTextureReference;
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
 import io.github.notenoughupdates.moulconfig.common.TextureFilter;
-import io.github.notenoughupdates.moulconfig.common.text.StructuredText;
+import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.GuiComponent;
 import io.github.notenoughupdates.moulconfig.gui.GuiImmediateContext;
 import io.github.notenoughupdates.moulconfig.gui.KeyboardEvent;
@@ -306,7 +306,7 @@ public class ColorSelectComponent extends GuiComponent {
 
         DrawContextExt.drawStringCenteredScalingDownWithMaxWidth(
             renderContext,
-            StructuredText.of(Math.round(hsv[2] * 100) + "").grey(),
+            Component.literal(Math.round(hsv[2] * 100) + "").grey(),
             5 + 64 + 5 + 5 - (Math.round(hsv[2] * 100) == 100 ? 1 : 0),
             5 + 64 + 5 + 5,
             13,
@@ -317,7 +317,7 @@ public class ColorSelectComponent extends GuiComponent {
         if (opacitySlider) {
             DrawContextExt.drawStringCenteredScalingDownWithMaxWidth(
                 renderContext,
-                StructuredText.of(Math.round(c.getAlpha() / 255f * 100) + "").grey(),
+                Component.literal(Math.round(c.getAlpha() / 255f * 100) + "").grey(),
                 5 + 64 + 5 + valueOffset + 5,
                 5 + 64 + 5 + 5,
                 13,
@@ -328,7 +328,7 @@ public class ColorSelectComponent extends GuiComponent {
         if (chromaSpeed > 0) {
             DrawContextExt.drawStringCenteredScalingDownWithMaxWidth(
                 renderContext,
-                StructuredText.of((int) ChromaColour.getSecondsForSpeed(chromaSpeed) + "s").grey(),
+                Component.literal((int) ChromaColour.getSecondsForSpeed(chromaSpeed) + "s").grey(),
                 5 + 64 + 5 + valueOffset + opacityOffset + 6,
                 5 + 64 + 5 + 5,
                 13,

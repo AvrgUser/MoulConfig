@@ -3,10 +3,10 @@ package io.github.notenoughupdates.moulconfig.gui.component;
 import io.github.notenoughupdates.moulconfig.common.IFontRenderer;
 import io.github.notenoughupdates.moulconfig.common.IItemStack;
 import io.github.notenoughupdates.moulconfig.common.Layer;
-import io.github.notenoughupdates.moulconfig.common.MyResourceLocation;
+import net.minecraft.resources.Identifier;
 import io.github.notenoughupdates.moulconfig.common.RenderContext;
 import io.github.notenoughupdates.moulconfig.common.TextureFilter;
-import io.github.notenoughupdates.moulconfig.common.text.StructuredText;
+import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.GuiImmediateContext;
 import io.github.notenoughupdates.moulconfig.observer.GetSetter;
 import org.junit.jupiter.api.Assertions;
@@ -45,11 +45,11 @@ public class SliderComponentTest {
         @Override public void scale(float x, float y) {}
         @Override public void drawOnTop(Layer layer, ScissorBehaviour escapeScissors, Consumer<RenderContext> later) {}
         @Override public void drawColouredQuads(int colour, float... coordinates) {}
-        @Override public void drawString(IFontRenderer fontRenderer, StructuredText text, int x, int y, int color, boolean shadow) {}
+        @Override public void drawString(IFontRenderer fontRenderer, Component text, int x, int y, int color, boolean shadow) {}
         @Override public void drawColoredRect(float left, float top, float right, float bottom, int color) {}
         @Override public void invertedRect(float left, float top, float right, float bottom, int additiveColor) {}
         @Override public void drawTexturedTintedRect(
-            MyResourceLocation texture,
+            Identifier texture,
             float x,
             float y,
             float width,
@@ -68,8 +68,8 @@ public class SliderComponentTest {
         @Override public void popScissor() {}
         @Override public void assertNoScissors() {}
         @Override public void clearScissor() {}
-        @Override public void renderItemStack(IItemStack itemStack, int x, int y, StructuredText overlayText) {}
-        @Override public void drawTooltipNow(int x, int y, List<StructuredText> tooltipLines) {}
+        @Override public void renderItemStack(IItemStack itemStack, int x, int y, Component overlayText) {}
+        @Override public void drawTooltipNow(int x, int y, List<Component> tooltipLines) {}
         @Override public void renderExtraLayers() {}
     }
 }

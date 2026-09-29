@@ -23,7 +23,7 @@ package io.github.notenoughupdates.moulconfig.processor;
 
 import io.github.notenoughupdates.moulconfig.Config;
 import io.github.notenoughupdates.moulconfig.annotations.ConfigOption;
-import io.github.notenoughupdates.moulconfig.common.text.StructuredText;
+import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.GuiOptionEditor;
 import io.github.notenoughupdates.moulconfig.gui.editors.GuiOptionEditorAccordion;
 import io.github.notenoughupdates.moulconfig.internal.Warnings;
@@ -73,7 +73,7 @@ public class MoulConfigProcessor<T extends Config> implements ConfigStructureRea
 
     @Override
     public void beginCategory(Object baseObject, Field field, String name, String description) {
-        currentCategory = new ProcessedCategoryImpl(field, StructuredText.of(name), StructuredText.of(description));
+        currentCategory = new ProcessedCategoryImpl(field, Component.literal(name), Component.literal(description));
         categories.put(currentCategory.getIdentifier(), currentCategory);
     }
 
@@ -146,7 +146,7 @@ public class MoulConfigProcessor<T extends Config> implements ConfigStructureRea
 
     protected ProcessedOptionImpl createProcessedOption(Object baseObject, Field field, ConfigOption option) {
         ProcessedOptionImpl processedOption = new ProcessedOptionImpl(
-            StructuredText.of(option.name()), StructuredText.of(option.desc()), String.join(".", categoryPath) + "." + field.getName(),
+            Component.literal(option.name()), Component.literal(option.desc()), String.join(".", categoryPath) + "." + field.getName(),
             field,
             currentCategory, baseObject,
             configBaseObject

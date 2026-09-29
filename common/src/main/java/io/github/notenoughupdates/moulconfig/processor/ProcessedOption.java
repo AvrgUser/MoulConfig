@@ -23,7 +23,7 @@ package io.github.notenoughupdates.moulconfig.processor;
 
 import io.github.notenoughupdates.moulconfig.Config;
 import io.github.notenoughupdates.moulconfig.annotations.SearchTag;
-import io.github.notenoughupdates.moulconfig.common.text.StructuredText;
+import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.GuiOptionEditor;
 import io.github.notenoughupdates.moulconfig.gui.editors.GuiOptionEditorAccordion;
 import io.github.notenoughupdates.moulconfig.observer.GetSetter;
@@ -42,9 +42,9 @@ public interface ProcessedOption extends HasDebugLocation {
 
     ProcessedCategory getCategory();
 
-    StructuredText getName();
+    Component getName();
 
-    StructuredText getDescription();
+    Component getDescription();
 
     String getPath();
 

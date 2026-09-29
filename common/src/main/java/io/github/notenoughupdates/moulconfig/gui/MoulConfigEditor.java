@@ -27,7 +27,7 @@ import io.github.notenoughupdates.moulconfig.common.IFontRenderer;
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
 import io.github.notenoughupdates.moulconfig.common.Layer;
 import io.github.notenoughupdates.moulconfig.common.RenderContext;
-import io.github.notenoughupdates.moulconfig.common.text.StructuredText;
+import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.component.MetaComponent;
 import io.github.notenoughupdates.moulconfig.gui.editors.GuiOptionEditorAccordion;
 import io.github.notenoughupdates.moulconfig.internal.ContextAware;
@@ -312,7 +312,7 @@ public class MoulConfigEditor<T extends Config> extends GuiElement implements Cl
         categoryScroll.tick();
         handleKeyboardPresses();
 
-        List<StructuredText> tooltipToDisplay = null;
+        List<Component> tooltipToDisplay = null;
 
         long currentTime = System.currentTimeMillis();
         long delta = currentTime - openedMillis;
@@ -482,7 +482,7 @@ public class MoulConfigEditor<T extends Config> extends GuiElement implements Cl
         /// </editor-fold>
 
         context.drawStringCenteredScaledMaxWidth(
-            StructuredText.of("Categories"),
+            Component.literal("Categories"),
             ifr,
             x + 4 + ((float) leftPanelWidth / 2),
             y + 44,
@@ -559,18 +559,18 @@ public class MoulConfigEditor<T extends Config> extends GuiElement implements Cl
                 var titleScale = 2;
                 context.pushMatrix();
                 context.translate(titlePositionX, titlePositionY);
-                context.drawStringCenteredScaledMaxWidth(StructuredText.of("Seems like your search is found in a subcategory.").grey(), ifr,
+                context.drawStringCenteredScaledMaxWidth(Component.literal("Seems like your search is found in a subcategory.").grey(), ifr,
                     0,
                     titleScale * ifr.getHeight(),
                     true, innerSize, -1
                 );
-                context.drawStringCenteredScaledMaxWidth(StructuredText.of("Check out the subcategories on the left.").grey(), ifr,
+                context.drawStringCenteredScaledMaxWidth(Component.literal("Check out the subcategories on the left.").grey(), ifr,
                     0,
                     (titleScale + 1) * ifr.getHeight(),
                     true, innerSize, -1
                 );
                 context.scale(titleScale, titleScale);
-                context.drawStringCenteredScaledMaxWidth(StructuredText.of("No options found.").grey(), ifr,
+                context.drawStringCenteredScaledMaxWidth(Component.literal("No options found.").grey(), ifr,
                     0,
                     0,
                     true, innerSize / titleScale, -1

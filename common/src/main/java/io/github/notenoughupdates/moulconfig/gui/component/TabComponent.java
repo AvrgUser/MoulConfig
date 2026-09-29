@@ -1,7 +1,7 @@
 package io.github.notenoughupdates.moulconfig.gui.component;
 
 import io.github.notenoughupdates.moulconfig.GuiTextures;
-import io.github.notenoughupdates.moulconfig.common.MyResourceLocation;
+import net.minecraft.resources.Identifier;
 import io.github.notenoughupdates.moulconfig.common.NinePatches;
 import io.github.notenoughupdates.moulconfig.gui.GuiComponent;
 import io.github.notenoughupdates.moulconfig.gui.GuiImmediateContext;
@@ -56,13 +56,13 @@ public class TabComponent extends GuiComponent {
 
     private final List<Tab> tabs;
     private final GetSetter<Integer> selectedTabIndex;
-    public final NinePatch<MyResourceLocation> panelStyle = NinePatches.createVanillaPanel();
-    public final NinePatch<MyResourceLocation> tabSelectedHeaderBackground = NinePatch.builder(GuiTextures.VANILLA_TAB_SELECTED)
+    public final NinePatch<Identifier> panelStyle = NinePatches.createVanillaPanel();
+    public final NinePatch<Identifier> tabSelectedHeaderBackground = NinePatch.builder(GuiTextures.VANILLA_TAB_SELECTED)
         .cornerSize(4)
         .cornerUv(4 / 16F)
         .mode(NinePatch.Mode.STRETCHING)
         .build();
-    public final NinePatch<MyResourceLocation> tabUnselectedHeaderBackground = NinePatch.builder(GuiTextures.VANILLA_TAB_UNSELECTED)
+    public final NinePatch<Identifier> tabUnselectedHeaderBackground = NinePatch.builder(GuiTextures.VANILLA_TAB_UNSELECTED)
         .cornerSize(4)
         .cornerUv(4 / 16F)
         .mode(NinePatch.Mode.STRETCHING)
@@ -131,7 +131,7 @@ public class TabComponent extends GuiComponent {
         for (int index = 0; index < tabs.size(); index++) {
             Tab tab = tabs.get(index);
             boolean selected = index == selectedTabIndex.get();
-            NinePatch<MyResourceLocation> background;
+            NinePatch<Identifier> background;
             if (selected) {
                 selectedTab = tab;
                 background = tabSelectedHeaderBackground;

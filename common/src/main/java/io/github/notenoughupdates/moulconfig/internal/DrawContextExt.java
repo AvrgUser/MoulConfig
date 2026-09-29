@@ -2,7 +2,7 @@ package io.github.notenoughupdates.moulconfig.internal;
 
 import io.github.notenoughupdates.moulconfig.common.IFontRenderer;
 import io.github.notenoughupdates.moulconfig.common.RenderContext;
-import io.github.notenoughupdates.moulconfig.common.text.StructuredText;
+import net.minecraft.network.chat.Component;
 
 public final class DrawContextExt {
     public static final DrawContextExt INSTANCE = new DrawContextExt();
@@ -12,7 +12,7 @@ public final class DrawContextExt {
 
     public static void drawStringCenteredScalingDownWithMaxWidth(
         RenderContext context,
-        StructuredText text,
+        Component text,
         int centerX,
         int centerY,
         int maxWidth,
@@ -23,7 +23,7 @@ public final class DrawContextExt {
 
     public static void drawStringCenteredScalingDownWithMaxWidth(
         RenderContext context,
-        StructuredText text,
+        Component text,
         int centerX,
         int centerY,
         int maxWidth,
@@ -35,7 +35,7 @@ public final class DrawContextExt {
 
     public static void drawStringCenteredScalingDownWithMaxWidth(
         RenderContext context,
-        StructuredText text,
+        Component text,
         int centerX,
         int centerY,
         int maxWidth,

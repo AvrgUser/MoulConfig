@@ -15,7 +15,7 @@ public abstract class DynamicTextureReference implements Closeable {
     /**
      * An opaque reference to this dynamic texture. Can be used with {@link RenderContext#drawTexturedRect}.
      */
-    public abstract MyResourceLocation getIdentifier();
+    public abstract Identifier getIdentifier();
 
     /**
      * Destroy this texture. Using {@link #getIdentifier()} after calling this will cause issues.

@@ -9,7 +9,7 @@ public final class NinePatches {
     private NinePatches() {
     }
 
-    public static NinePatch<MyResourceLocation> createButton() {
+    public static NinePatch<Identifier> createButton() {
         return NinePatch.builder(GuiTextures.BUTTON)
             .cornerSize(10)
             .cornerUv(10 / 32F, 10 / 96F)
@@ -17,7 +17,7 @@ public final class NinePatches {
             .build();
     }
 
-    public static NinePatch<MyResourceLocation> createWhiteButton() {
+    public static NinePatch<Identifier> createWhiteButton() {
         return NinePatch.builder(GuiTextures.BUTTON_WHITE)
             .cornerSize(14)
             .cornerUv(14 / 32F, 14 / 96F)
@@ -25,7 +25,7 @@ public final class NinePatches {
             .build();
     }
 
-    public static NinePatch<MyResourceLocation> createVanillaPanel() {
+    public static NinePatch<Identifier> createVanillaPanel() {
         return NinePatch.builder(GuiTextures.VANILLA_PANEL)
             .cornerSize(4)
             .cornerUv(4 / 16F)

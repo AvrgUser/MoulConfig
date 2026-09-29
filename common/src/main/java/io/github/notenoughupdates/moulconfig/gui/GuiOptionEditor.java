@@ -25,7 +25,7 @@ import io.github.notenoughupdates.moulconfig.TitleRenderingBehaviour;
 import io.github.notenoughupdates.moulconfig.annotations.SearchTag;
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
 import io.github.notenoughupdates.moulconfig.common.RenderContext;
-import io.github.notenoughupdates.moulconfig.common.text.StructuredText;
+import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.processor.HasDebugLocation;
 import io.github.notenoughupdates.moulconfig.processor.ProcessedOption;
 import lombok.var;
@@ -83,7 +83,7 @@ public abstract class GuiOptionEditor implements HasDebugLocation {
         }
 
         float scale = 1;
-        List<StructuredText> lines;
+        List<Component> lines;
         int descriptionHeight = option.getConfig().getDescriptionBehaviour(option) != DescriptionRendereringBehaviour.EXPAND_PANEL ? HEIGHT : getHeight();
         while (true) {
             lines = fr.splitText(option.getDescription(), (int) (width * 2 / 3 / scale - 10));

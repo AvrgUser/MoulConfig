@@ -1,7 +1,7 @@
 package io.github.notenoughupdates.moulconfig.platform;
 
 import io.github.notenoughupdates.moulconfig.common.IFontRenderer;
-import io.github.notenoughupdates.moulconfig.common.text.StructuredText;
+import net.minecraft.network.chat.Component;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
@@ -19,7 +19,7 @@ public record MoulConfigFontRenderer(@NotNull Font font) implements IFontRendere
     }
 
     @Override
-    public int getStringWidth(@NotNull StructuredText string) {
+    public int getStringWidth(@NotNull Component string) {
         return font.width(MoulConfigText.unwrap(string));
     }
 
@@ -29,8 +29,8 @@ public record MoulConfigFontRenderer(@NotNull Font font) implements IFontRendere
     }
 
     @Override
-    public @NotNull List<@NotNull StructuredText> splitText(@NotNull StructuredText text, int width) {
-        var list = new ArrayList<StructuredText>();
+    public @NotNull List<@NotNull Component> splitText(@NotNull Component text, int width) {
+        var list = new ArrayList<Component>();
         font.getSplitter().splitLines(MoulConfigText.unwrap(text), width, Style.EMPTY, (stringVisitable, isWrapped) -> {
             var appendable = Component.empty();
             list.add(MoulConfigText.wrap(appendable));

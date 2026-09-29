@@ -2,7 +2,7 @@ package io.github.notenoughupdates.moulconfig.platform;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import io.github.notenoughupdates.moulconfig.common.*;
-import io.github.notenoughupdates.moulconfig.common.text.StructuredText;
+import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.GuiContext;
 import io.github.notenoughupdates.moulconfig.internal.FilterAssertionCache;
 import io.github.notenoughupdates.moulconfig.internal.MCLogger;
@@ -24,11 +24,7 @@ import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-#if MC < 12111
-import net.minecraft.resources.ResourceLocation;
-#else
 import net.minecraft.resources.Identifier;
-#endif
 import net.minecraft.world.item.ItemStack;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -59,16 +55,12 @@ public class MoulConfigPlatform implements IMinecraft {
     }
 
     //<editor-fold desc="Wrap / Unwrap helpers">
-    public static #if MC < 12111 ResourceLocation #else Identifier #endif unwrap(MyResourceLocation resourceLocation) {
-        #if MC < 12111
-        return ResourceLocation.fromNamespaceAndPath(resourceLocation.getRoot(), resourceLocation.getPath());
-        #else
+    public static Identifier unwrap(Identifier resourceLocation) {
         return Identifier.fromNamespaceAndPath(resourceLocation.getRoot(), resourceLocation.getPath());
-        #endif
     }
 
-    public static MyResourceLocation wrap(#if MC < 12111 ResourceLocation #else Identifier #endif identifier) {
-        return new MyResourceLocation(identifier.getNamespace(), identifier.getPath());
+    public static Identifier wrap(Identifier identifier) {
+        return new Identifier(identifier.getNamespace(), identifier.getPath());
     }
 
     public static ItemStack unwrap(IItemStack itemStack) {
@@ -79,15 +71,15 @@ public class MoulConfigPlatform implements IMinecraft {
         return new MoulConfigItemStack(itemStack);
     }
 
-    public static Component unwrap(StructuredText structuredText) {
-        return MoulConfigText.unwrap(structuredText);
+    public static Component unwrap(Component Component) {
+        return MoulConfigText.unwrap(Component);
     }
 
-    public static StructuredText wrap(Component text) {
+    public static Component wrap(Component text) {
         return MoulConfigText.wrap(text);
     }
 
-    public static StructuredText.Mutable wrap(MutableComponent text) {
+    public static Component.Mutable wrap(MutableComponent text) {
         return MoulConfigText.wrap(text);
     }
 
@@ -102,7 +94,7 @@ public class MoulConfigPlatform implements IMinecraft {
 
     @SneakyThrows
     @Override
-    public InputStream loadResourceLocation(MyResourceLocation resourceLocation) {
+    public InputStream loadResourceLocation(Identifier resourceLocation) {
         return mc.getResourceManager()
             .getResourceOrThrow(unwrap(resourceLocation))
             .open();
@@ -130,7 +122,7 @@ public class MoulConfigPlatform implements IMinecraft {
     }
 
     @Override
-    public boolean isGeneratedSentinel(MyResourceLocation resourceLocation) {
+    public boolean isGeneratedSentinel(Identifier resourceLocation) {
         return Objects.equals("moulconfig", resourceLocation.getRoot())
             && resourceLocation.getPath().startsWith("dynamic/");
     }
@@ -159,7 +151,7 @@ public class MoulConfigPlatform implements IMinecraft {
         mc.getTextureManager().register(identifier, texture);
         return new DynamicTextureReference() {
             @Override
-            public @NotNull MyResourceLocation getIdentifier() {
+            public @NotNull Identifier getIdentifier() {
                 return wrap(identifier);
             }
 
@@ -249,7 +241,7 @@ public class MoulConfigPlatform implements IMinecraft {
     }
 
     @Override
-    public void sendClickableChatMessage(StructuredText message, String action, @Nullable ClickType type) {
+    public void sendClickableChatMessage(Component message, String action, @Nullable ClickType type) {
         var text = MoulConfigText.unwrap(message);
         if (type != null) {
             text = text.copy().withStyle(it -> it.withClickEvent(switch (type) {
@@ -267,22 +259,22 @@ public class MoulConfigPlatform implements IMinecraft {
     }
 
     @Override
-    public StructuredText getKeyName(int keyCode) {
+    public Component getKeyName(int keyCode) {
         return ModernKeybindHelper.getKeyName(keyCode);
     }
 
     @Override
-    public StructuredText.Mutable createLiteral(String text) {
+    public Component.Mutable createLiteral(String text) {
         return wrap(Component.literal(text));
     }
 
     @Override
-    public StructuredText.Mutable createTranslatable(String key, StructuredText... args) {
+    public Component.Mutable createTranslatable(String key, Component... args) {
         return wrap(Component.translatable(key, Stream.of(args).map(MoulConfigPlatform::unwrap).toArray()));
     }
 
     @Override
-    public @Nullable StructuredText createStructuredTextInternal(Object obj) {
+    public @Nullable Component createComponentInternal(Object obj) {
         if (obj instanceof Component text)
             return wrap(text);
         return null;
@@ -332,7 +324,7 @@ public class MoulConfigPlatform implements IMinecraft {
 
     @Override
     public void registerPlatformTypeMorphisms(XMLUniverse universe) {
-        universe.registerTypeMorphism(new BoxNativeMorphisms.StructuredTextMorphism());
+        universe.registerTypeMorphism(new BoxNativeMorphisms.ComponentMorphism());
     }
 
     @Override

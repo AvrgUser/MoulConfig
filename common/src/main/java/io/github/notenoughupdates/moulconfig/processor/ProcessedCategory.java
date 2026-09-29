@@ -21,7 +21,7 @@
 package io.github.notenoughupdates.moulconfig.processor;
 
 import io.github.notenoughupdates.moulconfig.Config;
-import io.github.notenoughupdates.moulconfig.common.text.StructuredText;
+import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.MoulConfigEditor;
 import io.github.notenoughupdates.moulconfig.internal.Warnings;
 import lombok.var;
@@ -33,9 +33,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface ProcessedCategory extends HasDebugLocation {
-    StructuredText getDisplayName();
+    Component getDisplayName();
 
-    StructuredText getDescription();
+    Component getDescription();
 
     String getIdentifier();
 

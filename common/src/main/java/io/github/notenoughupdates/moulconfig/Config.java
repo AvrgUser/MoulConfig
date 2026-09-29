@@ -20,7 +20,7 @@
 
 package io.github.notenoughupdates.moulconfig;
 
-import io.github.notenoughupdates.moulconfig.common.text.StructuredText;
+import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.HorizontalAlign;
 import io.github.notenoughupdates.moulconfig.processor.ProcessedCategory;
 import io.github.notenoughupdates.moulconfig.processor.ProcessedOption;
@@ -37,7 +37,7 @@ public abstract class Config {
         return HorizontalAlign.CENTER;
     }
 
-    public StructuredText formatCategoryName(ProcessedCategory category, boolean isSelected) {
+    public Component formatCategoryName(ProcessedCategory category, boolean isSelected) {
         if (isSelected) {
             return category.getDisplayName().copyShallow().underlined().aqua();
         } else if (category.getParentCategoryId() == null) {
@@ -51,8 +51,8 @@ public abstract class Config {
         return new ArrayList<>();
     }
 
-    public StructuredText getTitle() {
-        return StructuredText.of("Config GUI");
+    public Component getTitle() {
+        return Component.literal("Config GUI");
     }
 
     public void saveNow() {

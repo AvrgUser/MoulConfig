@@ -1,6 +1,6 @@
 package io.github.notenoughupdates.moulconfig.common;
 
-import io.github.notenoughupdates.moulconfig.common.text.StructuredText;
+import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.GuiContext;
 import io.github.notenoughupdates.moulconfig.internal.MCLogger;
 import io.github.notenoughupdates.moulconfig.processor.MoulConfigProcessor;
@@ -18,8 +18,8 @@ public class MockIMinecraft implements IMinecraft {
             @Override public void error(String text, Throwable throwable) {}
         };
     }
-    @Override public InputStream loadResourceLocation(MyResourceLocation resourceLocation) { throw new UnsupportedOperationException(); }
-    @Override public boolean isGeneratedSentinel(MyResourceLocation resourceLocation) { throw new UnsupportedOperationException(); }
+    @Override public InputStream loadResourceLocation(Identifier resourceLocation) { throw new UnsupportedOperationException(); }
+    @Override public boolean isGeneratedSentinel(Identifier resourceLocation) { throw new UnsupportedOperationException(); }
     @Override public DynamicTextureReference generateDynamicTexture(BufferedImage image) { throw new UnsupportedOperationException(); }
     @Override public MoulConfigPair<Double, Double> getMousePositionHF() { throw new UnsupportedOperationException(); }
     @Override public IFontRenderer getDefaultFontRenderer() { throw new UnsupportedOperationException(); }
@@ -31,11 +31,11 @@ public class MockIMinecraft implements IMinecraft {
     @Override public boolean isMouseButtonDown(int mouseButton) { throw new UnsupportedOperationException(); }
     @Override public boolean isKeyboardKeyDown(int keyCode) { throw new UnsupportedOperationException(); }
     @Override public void addExtraBuiltinConfigProcessors(MoulConfigProcessor<?> processor) { throw new UnsupportedOperationException(); }
-    @Override public void sendClickableChatMessage(StructuredText message, String action, ClickType clickType) { throw new UnsupportedOperationException(); }
-    @Override public StructuredText getKeyName(int keyCode) { throw new UnsupportedOperationException(); }
-    @Override public StructuredText.Mutable createLiteral(String text) { throw new UnsupportedOperationException(); }
-    @Override public StructuredText.Mutable createTranslatable(String key, StructuredText... args) { throw new UnsupportedOperationException(); }
-    @Override public StructuredText createStructuredTextInternal(Object object) { throw new UnsupportedOperationException(); }
+    @Override public void sendClickableChatMessage(Component message, String action, ClickType clickType) { throw new UnsupportedOperationException(); }
+    @Override public Component getKeyName(int keyCode) { throw new UnsupportedOperationException(); }
+    @Override public Component.Mutable createLiteral(String text) { throw new UnsupportedOperationException(); }
+    @Override public Component.Mutable createTranslatable(String key, Component... args) { throw new UnsupportedOperationException(); }
+    @Override public Component createComponentInternal(Object object) { throw new UnsupportedOperationException(); }
     @Override public void registerPlatformTypeMorphisms(XMLUniverse universe) { throw new UnsupportedOperationException(); }
     @Override public RenderContext provideTopLevelRenderContext() { throw new UnsupportedOperationException(); }
     @Override public void openWrappedScreen(GuiContext guiContext) { throw new UnsupportedOperationException(); }

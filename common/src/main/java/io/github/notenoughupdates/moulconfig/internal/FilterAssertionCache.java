@@ -1,7 +1,7 @@
 package io.github.notenoughupdates.moulconfig.internal;
 
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
-import io.github.notenoughupdates.moulconfig.common.MyResourceLocation;
+import net.minecraft.resources.Identifier;
 import io.github.notenoughupdates.moulconfig.common.TextureFilter;
 import lombok.Value;
 import lombok.val;
@@ -24,13 +24,13 @@ public class FilterAssertionCache {
         @NotNull TextureFilter filter;
     }
 
-    private static final Map<MyResourceLocation, TextureFilterAssertion> PERMANENT = new HashMap<>();
-    private static final Map<MyResourceLocation, TextureFilterAssertion> TEMPORARY = new HashMap<>();
+    private static final Map<Identifier, TextureFilterAssertion> PERMANENT = new HashMap<>();
+    private static final Map<Identifier, TextureFilterAssertion> TEMPORARY = new HashMap<>();
 
     /**
      * Delete the global filter state for a texture. Should only be used if the texture itself ceased existing, not to change the filter of a texture.
      */
-    public static void destroyGlobalFilter(MyResourceLocation resourceLocation) {
+    public static void destroyGlobalFilter(Identifier resourceLocation) {
         PERMANENT.remove(resourceLocation);
         TEMPORARY.remove(resourceLocation);
     }
@@ -38,7 +38,7 @@ public class FilterAssertionCache {
     /**
      * Assert that a texture uses a certain global filter state. If this is the first time the texture is seen, the state is remembered in this class. On subsequent calls this function warns if a different filter is passed.
      */
-    public static void assertTextureFilter(MyResourceLocation resourceLocation, TextureFilter filter) {
+    public static void assertTextureFilter(Identifier resourceLocation, TextureFilter filter) {
         val set = IMinecraft.INSTANCE.isGeneratedSentinel(resourceLocation)
             ? TEMPORARY
             : PERMANENT;

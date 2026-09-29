@@ -21,10 +21,10 @@
 /**/
 package io.github.notenoughupdates.moulconfig;
 
-import io.github.notenoughupdates.moulconfig.common.MyResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class GuiTextures {
-    public static MyResourceLocation
+    public static Identifier
         DELETE, RESET, BUTTON, BUTTON_WHITE,
         TOGGLE_OFF, TOGGLE_ONE, TOGGLE_TWO, TOGGLE_THREE, TOGGLE_ON, TOGGLE_BAR,
         SLIDER_OFF_CAP, SLIDER_OFF_NOTCH, SLIDER_OFF_SEGMENT,
@@ -34,17 +34,17 @@ public class GuiTextures {
         COLOUR_PICKER_INTERNAL, COLOUR_PICKER_INTERNAL_VALUE, COLOUR_PICKER_INTERNAL_OPACITY,
         SEARCH, VANILLA_PANEL, VANILLA_TAB_SELECTED, VANILLA_TAB_UNSELECTED;
 
-    private static MyResourceLocation root;
+    private static Identifier root;
 
     static {
-        setTextureRoot(new MyResourceLocation("moulconfig", ""));
+        setTextureRoot(new Identifier("moulconfig", ""));
     }
 
-    private static MyResourceLocation r(String name) {
-        return new MyResourceLocation(root.getRoot(), ("".equals(root.getPath()) ? name : root.getPath() + "/" + name));
+    private static Identifier r(String name) {
+        return new Identifier(root.getRoot(), ("".equals(root.getPath()) ? name : root.getPath() + "/" + name));
     }
 
-    public static void setTextureRoot(MyResourceLocation root) {
+    public static void setTextureRoot(Identifier root) {
         GuiTextures.root = root;
         DELETE = r("delete.png");
         RESET = r("reset.png");

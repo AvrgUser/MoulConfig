@@ -21,7 +21,7 @@
 package io.github.notenoughupdates.moulconfig.gui.component;
 
 import io.github.notenoughupdates.moulconfig.GuiTextures;
-import io.github.notenoughupdates.moulconfig.common.MyResourceLocation;
+import net.minecraft.resources.Identifier;
 import io.github.notenoughupdates.moulconfig.gui.GuiComponent;
 import io.github.notenoughupdates.moulconfig.gui.GuiImmediateContext;
 import io.github.notenoughupdates.moulconfig.gui.MouseEvent;
@@ -71,7 +71,7 @@ public class SwitchComponent extends GuiComponent {
         }
 
         float animationPercentage = LerpUtils.sigmoidZeroOne(animation.getValue() / 100F);
-        MyResourceLocation buttonLocation;
+        Identifier buttonLocation;
         if (animationPercentage < 1 / 5F) {
             buttonLocation = GuiTextures.TOGGLE_OFF;
         } else if (animationPercentage < 2 / 5F) {

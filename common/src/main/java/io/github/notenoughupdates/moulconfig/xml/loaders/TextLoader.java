@@ -1,10 +1,10 @@
 package io.github.notenoughupdates.moulconfig.xml.loaders;
 
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
-import io.github.notenoughupdates.moulconfig.common.text.StructuredText;
+import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.component.TextComponent;
 import io.github.notenoughupdates.moulconfig.internal.MapOfs;
-import io.github.notenoughupdates.moulconfig.internal.StructuredTextHelper;
+import io.github.notenoughupdates.moulconfig.internal.ComponentHelper;
 import io.github.notenoughupdates.moulconfig.xml.ChildCount;
 import io.github.notenoughupdates.moulconfig.xml.XMLContext;
 import io.github.notenoughupdates.moulconfig.xml.XMLGuiLoader;
@@ -20,7 +20,7 @@ import java.util.Map;
 public class TextLoader implements XMLGuiLoader.Basic<TextComponent> {
     @Override
     public @NotNull TextComponent createInstance(@NotNull XMLContext<?> context, @NotNull Element element) {
-        var string = context.getPropertyFromAttribute(element, new QName("text"), StructuredText.class);
+        var string = context.getPropertyFromAttribute(element, new QName("text"), Component.class);
         assert string != null;
         return new TextComponent(
             IMinecraft.INSTANCE.getDefaultFontRenderer(),
