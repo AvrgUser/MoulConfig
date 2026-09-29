@@ -1,6 +1,7 @@
 package io.github.notenoughupdates.moulconfig.test;
 
 import com.google.gson.annotations.Expose;
+import com.mojang.blaze3d.platform.InputConstants;
 import io.github.notenoughupdates.moulconfig.ChromaColour;
 import io.github.notenoughupdates.moulconfig.annotations.*;
 import io.github.notenoughupdates.moulconfig.observer.Property;
@@ -19,7 +20,7 @@ public class TestCategoryA {
 
     @ConfigOption(name = "Open Wide", desc = "Use a wider config menu")
     @ConfigEditorBoolean
-    public boolean isWide = false;
+    transient public boolean isWide = false;
 
     public boolean isWide() {
         return isWide;
@@ -121,8 +122,8 @@ public class TestCategoryA {
 
     @Expose
     @ConfigOption(name = "Keybind", desc = "The Number One")
-    @ConfigEditorKeybind(defaultKey = GLFW.GLFW_KEY_1)
-    public int slot1 = GLFW.GLFW_KEY_1;
+    @ConfigEditorKeybind(defaultKey = InputConstants.KEY_1, defaultCategory = InputConstants.Type.KEYSYM)
+    public String slot1 = InputConstants.Type.KEYSYM.getOrCreate(InputConstants.KEY_1).getName();
 
     @Expose
     @ConfigOption(name = "Test Runnable", desc = "Test a java.lang.Runnable")

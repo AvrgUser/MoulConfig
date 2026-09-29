@@ -20,6 +20,8 @@
 
 package io.github.notenoughupdates.moulconfig.annotations;
 
+import com.mojang.blaze3d.platform.InputConstants;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -31,5 +33,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface ConfigEditorKeybind {
-    int defaultKey();
+    // TODO: 26.3 make this 0?
+    int defaultKey() default -1;
+    InputConstants.Type defaultCategory() default InputConstants.Type.KEYSYM;
 }

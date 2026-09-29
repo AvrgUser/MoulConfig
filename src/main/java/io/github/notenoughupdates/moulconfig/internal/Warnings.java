@@ -32,7 +32,7 @@ import java.util.List;
 public class Warnings {
     public static boolean isDevEnv = IMinecraft.INSTANCE.isDevelopmentEnvironment();
     public static boolean shouldWarn = PropertyUtil.getBooleanWithFallback("moulconfig.warn", isDevEnv);
-    public static boolean shouldCrash = shouldWarn && PropertyUtil.getBooleanWithFallback("moulconfig.warn.crash", isDevEnv);
+    public static boolean shouldCrash = shouldWarn && PropertyUtil.getBooleanWithFallback("moulconfig.warn.crash", false);
     public static MCLogger logger = IMinecraft.INSTANCE.getLogger("MoulConfig");
     public static String basePackage = GuiTextures.class.getPackage().getName() + ".";
     public static String testPackage = basePackage + "test.";

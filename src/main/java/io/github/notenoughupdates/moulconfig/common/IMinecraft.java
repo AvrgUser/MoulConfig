@@ -9,7 +9,6 @@ import io.github.notenoughupdates.moulconfig.internal.InitUtil;
 import io.github.notenoughupdates.moulconfig.internal.MCLogger;
 import io.github.notenoughupdates.moulconfig.internal.Warnings;
 import io.github.notenoughupdates.moulconfig.processor.MoulConfigProcessor;
-import io.github.notenoughupdates.moulconfig.xml.XMLUniverse;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -97,9 +96,6 @@ public interface IMinecraft {
     @ApiStatus.Internal
     @Nullable
     Component createComponentInternal(Object object);
-
-    @ApiStatus.Experimental
-    void registerPlatformTypeMorphisms(XMLUniverse universe);
 
     /**
      * This is a method to provide a render context. Note that constructing this context directly will potentially give
