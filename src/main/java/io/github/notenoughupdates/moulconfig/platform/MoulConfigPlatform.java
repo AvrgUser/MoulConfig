@@ -2,7 +2,6 @@ package io.github.notenoughupdates.moulconfig.platform;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import io.github.notenoughupdates.moulconfig.common.*;
-import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.GuiContext;
 import io.github.notenoughupdates.moulconfig.internal.FilterAssertionCache;
 import io.github.notenoughupdates.moulconfig.internal.MCLogger;
@@ -14,11 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-#if MC < 260100
-import net.minecraft.client.gui.GuiGraphics;
-#else
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-#endif
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.network.chat.ClickEvent;
@@ -28,7 +23,6 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.pattern.TextRenderer;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NullMarked;
@@ -56,7 +50,10 @@ public class MoulConfigPlatform implements IMinecraft {
 
     //<editor-fold desc="Wrap / Unwrap helpers">
     public static Identifier unwrap(Identifier resourceLocation) {
-        return Identifier.fromNamespaceAndPath(resourceLocation.getRoot(), resourceLocation.getPath());
+        return Identifier.fromNamespaceAndPath(
+            resourceLocation.getRoot(),
+            resourceLocation.getPath()
+        );
     }
 
     public static Identifier wrap(Identifier identifier) {
@@ -71,8 +68,8 @@ public class MoulConfigPlatform implements IMinecraft {
         return new MoulConfigItemStack(itemStack);
     }
 
-    public static Component unwrap(Component Component) {
-        return MoulConfigText.unwrap(Component);
+    public static Component unwrap(Component component) {
+        return MoulConfigText.unwrap(component);
     }
 
     public static Component wrap(Component text) {
@@ -140,8 +137,18 @@ public class MoulConfigPlatform implements IMinecraft {
 
     @Override
     public DynamicTextureReference generateDynamicTexture(BufferedImage img) {
-        var identifier = Identifier.fromNamespaceAndPath("moulconfig", "dynamic/${java.util.concurrent.ThreadLocalRandom.current().nextLong()}");
-        var texture = new DynamicTexture(identifier.getPath(), img.getWidth(), img.getHeight(), true);
+        var identifier = Identifier.fromNamespaceAndPath(
+            "moulconfig",
+            "dynamic/" + java.util.concurrent.ThreadLocalRandom.current().nextLong()
+        );
+
+        var texture = new DynamicTexture(
+            identifier.getPath(),
+            img.getWidth(),
+            img.getHeight(),
+            true
+        );
+
         setTextureData(texture, img);
         texture.upload();
         mc.getTextureManager().register(identifier, texture);
@@ -204,7 +211,6 @@ public class MoulConfigPlatform implements IMinecraft {
         return (int) mc.getWindow().getGuiScale();
     }
 
-
     @Override
     public boolean isOnMacOs() {
         return net.minecraft.util.Util.getPlatform() == net.minecraft.util.Util.OS.OSX;
@@ -212,12 +218,18 @@ public class MoulConfigPlatform implements IMinecraft {
 
     @Override
     public boolean isMouseButtonDown(int mouseButton) {
-        return GLFW.glfwGetMouseButton(#if MC < 12109 mc.getWindow().getWindow() #else mc.getWindow().handle() #endif, mouseButton) == GLFW.GLFW_PRESS;
+        return GLFW.glfwGetMouseButton(
+            mc.getWindow().handle(),
+            mouseButton
+        ) == GLFW.GLFW_PRESS;
     }
 
     @Override
     public boolean isKeyboardKeyDown(int keyboardKey) {
-        return InputConstants.isKeyDown(#if MC < 12109 mc.getWindow().getWindow() #else mc.getWindow() #endif, keyboardKey);
+        return InputConstants.isKeyDown(
+            mc.getWindow(),
+            keyboardKey
+        );
     }
 
     @Override
@@ -226,21 +238,25 @@ public class MoulConfigPlatform implements IMinecraft {
     }
 
     @Override
-    public void sendClickableChatMessage(Component message, String action, @Nullable ClickType type) {
+    public void sendClickableChatMessage(
+        Component message,
+        String action,
+        @Nullable ClickType type
+    ) {
         var text = MoulConfigText.unwrap(message);
+
         if (type != null) {
             text = text.copy().withStyle(it -> it.withClickEvent(switch (type) {
-                case OPEN_LINK -> #if MC > 12104 new ClickEvent.OpenUrl(URI.create(action)) #else new ClickEvent(ClickEvent.Action.OPEN_URL, action) #endif;
-                case RUN_COMMAND -> #if MC > 12104 new ClickEvent.RunCommand(action) #else new ClickEvent(ClickEvent.Action.RUN_COMMAND, action) #endif;
+                case OPEN_LINK -> new ClickEvent.OpenUrl(URI.create(action));
+                case RUN_COMMAND -> new ClickEvent.RunCommand(action);
             }));
         }
-        #if MC < 260100
-        mc.gui.getChat().addMessage(text);
-        #elif MC < 260200
-        mc.gui.getChat().addClientSystemMessage(text);
-        #else
+
+        //? if >= 26.2 {
         mc.gui.hud.getChat().addClientSystemMessage(text);
-        #endif
+        //?} else {
+        /*mc.gui.getChat().addClientSystemMessage(text);
+        *///?}
     }
 
     @Override
@@ -260,23 +276,24 @@ public class MoulConfigPlatform implements IMinecraft {
 
     @Override
     public @Nullable Component createComponentInternal(Object obj) {
-        if (obj instanceof Component text)
+        if (obj instanceof Component text) {
             return wrap(text);
+        }
+
         return null;
     }
 
     @ApiStatus.Internal
-    public static #if MC < 260100 GuiGraphics #else GuiGraphicsExtractor #endif makeDrawContext() {
+    public static GuiGraphicsExtractor makeDrawContext() {
         var mc = Minecraft.getInstance();
-        return new #if MC < 260100 GuiGraphics #else GuiGraphicsExtractor #endif(
+
+        return new GuiGraphicsExtractor(
             mc,
-            #if MC < 260100
-            mc.gameRenderer.guiRenderState
-            #elif MC < 260200
-            mc.gameRenderer.getGameRenderState().guiRenderState
-            #else
+            //? if >= 26.2
             mc.gameRenderer.gameRenderState().guiRenderState
-            #endif
+            //?} else {
+            /*mc.gameRenderer.getGameRenderState().guiRenderState
+            *///?}
             ,
             (int) mc.mouseHandler.getScaledXPos(mc.getWindow()),
             (int) mc.mouseHandler.getScaledYPos(mc.getWindow())
@@ -289,11 +306,11 @@ public class MoulConfigPlatform implements IMinecraft {
     }
 
     public void openWrappedScreen(Screen screen) {
-        #if MC < 260200
-        mc.setScreen(screen);
-        #else
+        //?if >= 26.2 {
         mc.gui.setScreen(screen);
-        #endif
+        //? } else {
+        /*mc.setScreen(screen);
+        *///?}
     }
 
     @Override
@@ -303,7 +320,9 @@ public class MoulConfigPlatform implements IMinecraft {
 
     @Override
     public void registerPlatformTypeMorphisms(XMLUniverse universe) {
-        universe.registerTypeMorphism(new BoxNativeMorphisms.ComponentMorphism());
+        universe.registerTypeMorphism(
+            new BoxNativeMorphisms.ComponentMorphism()
+        );
     }
 
     @Override

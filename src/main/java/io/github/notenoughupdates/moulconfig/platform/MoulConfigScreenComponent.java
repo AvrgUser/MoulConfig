@@ -4,11 +4,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
 import io.github.notenoughupdates.moulconfig.gui.*;
 import lombok.Getter;
-#if MC < 260100
-import net.minecraft.client.gui.GuiGraphics;
-#else
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-#endif
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
@@ -38,7 +34,7 @@ public class MoulConfigScreenComponent extends Screen {
         return createContext(null);
     }
 
-    public GuiImmediateContext createContext(@Nullable #if MC < 260100 GuiGraphics #else GuiGraphicsExtractor #endif drawContext) {
+    public GuiImmediateContext createContext(GuiGraphicsExtractor drawContext) {
         assert minecraft != null;
         var im = IMinecraft.INSTANCE;
         var mousePos = im.getMousePositionHF();
@@ -68,8 +64,8 @@ public class MoulConfigScreenComponent extends Screen {
     }
 
     @Override
-    public void #if MC < 260100 render(GuiGraphics #else extractRenderState(GuiGraphicsExtractor #endif context, int mouseX, int mouseY, float deltaTicks) {
-        super.#if MC < 260100 render #else extractRenderState #endif(context, mouseX, mouseY, deltaTicks);
+    public void extractRenderState(GuiGraphicsExtractor context, int mouseX, int mouseY, float deltaTicks) {
+        super.extractRenderState(context, mouseX, mouseY, deltaTicks);
         var ctx = createContext(context);
         guiContext.getRoot().render(ctx);
         ctx.getRenderContext().renderExtraLayers();
@@ -132,7 +128,7 @@ public class MoulConfigScreenComponent extends Screen {
     @Override
     public boolean mouseClicked(MouseButtonEvent click) {
         return guiContext.root.mouseEvent(
-            new MouseEvent.Click(click.button(, true), createContext()
+            new MouseEvent.Click(click.button(), true), createContext()
         );
     }
 
