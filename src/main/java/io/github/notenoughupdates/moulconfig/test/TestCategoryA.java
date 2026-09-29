@@ -122,6 +122,7 @@ public class TestCategoryA {
 
     @Expose
     @ConfigOption(name = "Keybind", desc = "The Number One")
+    // TODO: Idk how I should do this, but this sucks
     @ConfigEditorKeybind(defaultKey = InputConstants.KEY_1, defaultCategory = InputConstants.Type.KEYSYM)
     public String slot1 = InputConstants.Type.KEYSYM.getOrCreate(InputConstants.KEY_1).getName();
 
