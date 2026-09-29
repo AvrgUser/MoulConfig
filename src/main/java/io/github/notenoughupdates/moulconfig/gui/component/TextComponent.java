@@ -21,6 +21,7 @@
 package io.github.notenoughupdates.moulconfig.gui.component;
 
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
+import io.github.notenoughupdates.moulconfig.common.MoulConfigFontRenderer;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.GuiComponent;
@@ -81,7 +82,7 @@ public class TextComponent extends GuiComponent {
             return lastSplit;
         lastString = text;
         lastWidth = width;
-        lastSplit = IMinecraft.INSTANCE.splitText(text, width);
+        lastSplit = MoulConfigFontRenderer.splitText(text, width);
         return lastSplit;
     }
 

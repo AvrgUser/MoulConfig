@@ -23,6 +23,7 @@ package io.github.notenoughupdates.moulconfig.gui.editors;
 import io.github.notenoughupdates.moulconfig.Config;
 import io.github.notenoughupdates.moulconfig.GuiTextures;
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
+import lombok.val;
 import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.GuiComponent;
 import io.github.notenoughupdates.moulconfig.gui.GuiImmediateContext;
@@ -127,8 +128,7 @@ public class GuiOptionEditorButton extends ComponentEditor {
 
         @Override
         public boolean mouseEvent(@NotNull MouseEvent mouseEvent, @NotNull GuiImmediateContext context) {
-            if (mouseEvent instanceof MouseEvent.Click) {
-                val click = (MouseEvent.Click) mouseEvent;
+            if (mouseEvent instanceof MouseEvent.Click click) {
                 if (click.getMouseState() && context.isHovered() && click.getMouseButton() == 0) {
                     onClick();
                     return true;
@@ -184,6 +184,6 @@ public class GuiOptionEditorButton extends ComponentEditor {
 
     @Override
     public boolean fulfillsSearch(String word) {
-        return super.fulfillsSearch(word) || buttonText.getText().toLowerCase(Locale.ROOT).contains(word);
+        return super.fulfillsSearch(word) || buttonText.getString().toLowerCase(Locale.ROOT).contains(word);
     }
 }

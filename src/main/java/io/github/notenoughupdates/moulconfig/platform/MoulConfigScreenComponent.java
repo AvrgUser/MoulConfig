@@ -126,7 +126,7 @@ public class MoulConfigScreenComponent extends Screen {
     }
 
     @Override
-    public boolean mouseClicked(MouseButtonEvent click) {
+    public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {
         return guiContext.root.mouseEvent(
             new MouseEvent.Click(click.button(), true), createContext()
         );

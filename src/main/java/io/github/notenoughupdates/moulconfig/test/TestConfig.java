@@ -3,11 +3,12 @@ package io.github.notenoughupdates.moulconfig.test;
 import io.github.notenoughupdates.moulconfig.Config;
 import io.github.notenoughupdates.moulconfig.annotations.Category;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextColor;
 
 public class TestConfig extends Config {
     @Override
     public Component getTitle() {
-        return Component.literal("1.20 Test").green();
+        return Component.literal("1.20 Test").withColor(TextColor.GREEN);
     }
 
     @Override

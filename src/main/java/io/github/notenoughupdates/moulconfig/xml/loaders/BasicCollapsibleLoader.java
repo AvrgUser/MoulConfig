@@ -25,7 +25,7 @@ public class BasicCollapsibleLoader implements XMLGuiLoader.Basic<CollapsibleCom
         TextComponent textComponent = new TextComponent(
             IMinecraft.INSTANCE.getDefaultFontRenderer(),
             () -> Component.literal(title.get()),
-            IMinecraft.INSTANCE.getDefaultFontRenderer().getStringWidth(title.get()),
+            IMinecraft.INSTANCE.getDefaultFontRenderer().width(title.get()),
             TextComponent.TextAlignment.LEFT,
             false,
             false

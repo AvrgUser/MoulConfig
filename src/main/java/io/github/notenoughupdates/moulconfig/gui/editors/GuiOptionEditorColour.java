@@ -29,6 +29,7 @@ import io.github.notenoughupdates.moulconfig.gui.component.ColorSelectComponent;
 import io.github.notenoughupdates.moulconfig.internal.ColourUtil;
 import io.github.notenoughupdates.moulconfig.processor.ProcessedOption;
 
+import lombok.val;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Type;
@@ -69,8 +70,7 @@ public class GuiOptionEditorColour extends ComponentEditor {
 
             @Override
             public boolean mouseEvent(@NotNull MouseEvent mouseEvent, @NotNull GuiImmediateContext context) {
-                if (mouseEvent instanceof MouseEvent.Click) {
-                    val click = ((MouseEvent.Click) mouseEvent);
+                if (mouseEvent instanceof MouseEvent.Click click) {
                     if (click.getMouseState() && click.getMouseButton() == 0 && context.isHovered()) {
                         ColorSelectComponent colorSelectComponent = new ColorSelectComponent(0, 0, get().toLegacyString(), newString -> set(newString), () -> {
                             closeOverlay();

@@ -1,6 +1,7 @@
 package io.github.notenoughupdates.moulconfig.internal;
 
 
+import lombok.val;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.*;
@@ -74,34 +75,36 @@ public class TypeUtils {
         Type instantiation,
         Class<?> context,
         Map<TypeVariable<?>, Type> universe) {
-        if (instantiation == null) return;
-        if (instantiation instanceof WildcardType) {
-            // This is technically incorrect.
-            fillTypeUniverse(((WildcardType) instantiation).getUpperBounds()[0], context, universe);
-            return;
-        }
-        if (instantiation instanceof ParameterizedType) {
-            val par = ((ParameterizedType) instantiation);
-            val con = par.getActualTypeArguments();
-            final TypeVariable<?>[] abs = context.getTypeParameters();
-            for (int i = 0; i < abs.length; i++) {
-                universe.put(abs[i], con[i]);
+        switch (instantiation) {
+            case null -> {
+                return;
             }
-            fillTypeUniverse(par.getRawType(), context, universe);
-            return;
-        }
-        if (instantiation instanceof GenericArrayType) {
-            throw new IllegalArgumentException("Encountered array type while walking the type hierarchy " + instantiation);
-        }
-        if (instantiation instanceof Class<?>) {
-            val cls = ((Class<?>) instantiation);
-            val gInters = cls.getGenericInterfaces();
-            val inters = cls.getInterfaces();
-            for (int i = gInters.length; i-- > 0; ) {
-                fillTypeUniverse(gInters[i], inters[i], universe);
+            case WildcardType wildcardType -> {
+                // This is technically incorrect.
+                fillTypeUniverse(wildcardType.getUpperBounds()[0], context, universe);
+                return;
             }
-            fillTypeUniverse(cls.getGenericSuperclass(), cls.getSuperclass(), universe);
-            return;
+            case ParameterizedType par -> {
+                val con = par.getActualTypeArguments();
+                final TypeVariable<?>[] abs = context.getTypeParameters();
+                for (int i = 0; i < abs.length; i++) {
+                    universe.put(abs[i], con[i]);
+                }
+                fillTypeUniverse(par.getRawType(), context, universe);
+                return;
+            }
+            case GenericArrayType _ -> throw new IllegalArgumentException("Encountered array type while walking the type hierarchy " + instantiation);
+            case Class<?> cls -> {
+                val gInters = cls.getGenericInterfaces();
+                val inters = cls.getInterfaces();
+                for (int i = gInters.length; i-- > 0; ) {
+                    fillTypeUniverse(gInters[i], inters[i], universe);
+                }
+                fillTypeUniverse(cls.getGenericSuperclass(), cls.getSuperclass(), universe);
+                return;
+            }
+            default -> {
+            }
         }
         throw new IllegalArgumentException("Encountered unknown type kind " + instantiation + " while walking a generic hierarchy");
     }

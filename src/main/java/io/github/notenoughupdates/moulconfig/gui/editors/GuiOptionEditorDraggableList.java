@@ -21,6 +21,7 @@ package io.github.notenoughupdates.moulconfig.gui.editors;
 
 import io.github.notenoughupdates.moulconfig.GuiTextures;
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
+import io.github.notenoughupdates.moulconfig.common.MoulConfigFontRenderer;
 import io.github.notenoughupdates.moulconfig.common.MoulConfigPair;
 import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.GuiComponent;
@@ -163,7 +164,7 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
                         var fr = IMinecraft.INSTANCE.getDefaultFontRenderer();
                         for (Object object : activeText) {
                             Component str = getExampleText(object);
-                            height += (fr.getHeight() + 1) * fr.splitLines(str).size();
+                            height += (fr.lineHeight + 1) * MoulConfigFontRenderer.splitLines(str).size();
                         }
                         return height;
                     }
@@ -178,8 +179,8 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
                                 int yOff = 0;
                                 for (Object indexObject : activeText) {
                                     Component str = getExampleText(indexObject);
-                                    var multilines = fr.splitLines(str);
-                                    int ySize = multilines.size() * (fr.getHeight() + 1);
+                                    var multilines = MoulConfigFontRenderer.splitLines(str);
+                                    int ySize = multilines.size() * (fr.lineHeight + 1);
                                     var trans = context.translated(0, yOff, context.getWidth(), ySize);
                                     if (trans.isHovered()) {
                                         dragStartIndex = i;
@@ -212,9 +213,9 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
                         for (Object indexObject : activeText) {
                             Component str = getExampleText(indexObject);
 
-                            var multilines = fr.splitLines(str);
+                            var multilines = MoulConfigFontRenderer.splitLines(str);
 
-                            int ySize = multilines.size() * (fr.getHeight() + 1);
+                            int ySize = multilines.size() * (fr.lineHeight + 1);
 
                             if (i++ != dragStartIndex) {
                                 for (int multilineIndex = 0; multilineIndex < multilines.size(); multilineIndex++) {
@@ -281,7 +282,7 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
                 var renderContext = context.getRenderContext();
                 var fr = IMinecraft.INSTANCE.getDefaultFontRenderer();
                 var text = getExampleText(indexObject);
-                var firstLine = fr.splitLines(text).get(0);
+                var firstLine = MoulConfigFontRenderer.splitLines(text).get(0);
                 renderContext.drawString(
                     fr,
                     Component.literal("≡"),
@@ -310,9 +311,9 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
         for (Object indexObject : activeText) {
             Component str = getExampleText(indexObject);
 
-            var multilines = fr.splitLines(str);
+            var multilines = MoulConfigFontRenderer.splitLines(str);
 
-            int ySize = multilines.size() * (fr.getHeight() + 1);
+            int ySize = multilines.size() * (fr.lineHeight + 1);
             if (yOff > mouseY && mouseY < yOff + ySize) {
                 var toSwap = activeText.get(i);
                 var moving = activeText.get(dragStartIndex);
@@ -441,10 +442,10 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
                 int dropdownY = -1;
                 for (Object indexObject : remaining) {
                     Component str = getExampleText(indexObject);
-                    if (str.getText().isEmpty()) {
+                    if (str.getString().isEmpty()) {
                         str = Component.literal("<NONE>");
                     }
-                    renderContext.drawStringScaledMaxWidth(fr.splitLines(str).get(0),
+                    renderContext.drawStringScaledMaxWidth(MoulConfigFontRenderer.splitLines(str).get(0),
                         fr, 3, 3 + dropdownY, false, dropdownWidth - 6, 0xffa0a0a0
                     );
                     dropdownY += DROPDOWN_ITEM_HEIGHT;
@@ -469,7 +470,7 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
     @Override
     public boolean fulfillsSearch(String word) {
         if (exampleTextConcat == null) {
-            exampleTextConcat = exampleText.values().stream().map(Component::getText).collect(Collectors.joining(" "))
+            exampleTextConcat = exampleText.values().stream().map(Component::getString).collect(Collectors.joining(" "))
                 .toLowerCase(Locale.ROOT);
         }
         return super.fulfillsSearch(word) || exampleTextConcat.contains(word);

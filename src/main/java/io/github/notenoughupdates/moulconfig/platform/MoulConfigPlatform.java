@@ -32,6 +32,7 @@ import org.lwjgl.glfw.GLFW;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.net.URI;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -79,7 +80,7 @@ public class MoulConfigPlatform implements IMinecraft {
 
     @Override
     public boolean isGeneratedSentinel(Identifier resourceLocation) {
-        return Objects.equals("moulconfig", resourceLocation.getRoot())
+        return Objects.equals("moulconfig", resourceLocation.getNamespace())
             && resourceLocation.getPath().startsWith("dynamic/");
     }
 
@@ -113,19 +114,19 @@ public class MoulConfigPlatform implements IMinecraft {
         mc.getTextureManager().register(identifier, texture);
         return new DynamicTextureReference() {
             @Override
-            public @NotNull Identifier getIdentifier() {
-                return wrap(identifier);
+            public Identifier getIdentifier() {
+                return identifier;
             }
 
             @Override
-            public void update(@NotNull BufferedImage bufferedImage) {
+            public void update(BufferedImage bufferedImage) {
                 setTextureData(texture, bufferedImage);
                 texture.upload();
             }
 
             @Override
             protected void doDestroy() {
-                FilterAssertionCache.destroyGlobalFilter(wrap(identifier));
+                FilterAssertionCache.destroyGlobalFilter(identifier);
                 mc.getTextureManager().release(identifier);
             }
         };
@@ -223,18 +224,18 @@ public class MoulConfigPlatform implements IMinecraft {
 
     @Override
     public MutableComponent createLiteral(String text) {
-        return wrap(Component.literal(text));
+        return Component.literal(text);
     }
 
     @Override
     public MutableComponent createTranslatable(String key, Component... args) {
-        return wrap(Component.translatable(key, Stream.of(args).map(MoulConfigPlatform::unwrap).toArray()));
+        return Component.translatable(key, Arrays.stream(args).toArray());
     }
 
     @Override
     public @Nullable Component createComponentInternal(Object obj) {
         if (obj instanceof Component text) {
-            return wrap(text);
+            return text;
         }
 
         return null;

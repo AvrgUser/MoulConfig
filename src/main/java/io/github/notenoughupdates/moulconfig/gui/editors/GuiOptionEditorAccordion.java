@@ -25,6 +25,7 @@ import io.github.notenoughupdates.moulconfig.gui.GuiImmediateContext;
 import io.github.notenoughupdates.moulconfig.gui.MouseEvent;
 import io.github.notenoughupdates.moulconfig.processor.ProcessedOption;
 
+import lombok.val;
 import org.jetbrains.annotations.NotNull;
 
 public class GuiOptionEditorAccordion extends ComponentEditor {
@@ -56,8 +57,7 @@ public class GuiOptionEditorAccordion extends ComponentEditor {
 
         @Override
         public boolean mouseEvent(@NotNull MouseEvent mouseEvent, @NotNull GuiImmediateContext context) {
-            if (mouseEvent instanceof MouseEvent.Click) {
-                val click = (MouseEvent.Click) mouseEvent;
+            if (mouseEvent instanceof MouseEvent.Click click) {
                 if (click.getMouseState() && context.isHovered() && click.getMouseButton() == 0) {
                     accordionToggled = !accordionToggled;
                     return true;

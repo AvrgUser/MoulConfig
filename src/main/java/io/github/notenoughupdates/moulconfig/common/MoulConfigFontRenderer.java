@@ -24,9 +24,7 @@ public class MoulConfigFontRenderer {
         return list;
     }
 
-    @NotNull
-    public String trimStringToWidth(@NotNull String string, int width, boolean reverse) {
-        var font = IMinecraft.INSTANCE.getDefaultFontRenderer();
-        return font.plainSubstrByWidth(string, width, reverse);
+    public static List<@NotNull Component> splitLines(@NotNull Component text) {
+        return splitText(text, Integer.MAX_VALUE);
     }
 }

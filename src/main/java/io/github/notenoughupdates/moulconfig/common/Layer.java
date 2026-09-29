@@ -1,17 +1,11 @@
 package io.github.notenoughupdates.moulconfig.common;
 
-import lombok.AllArgsConstructor;
-import lombok.Value;
 import org.jetbrains.annotations.NotNull;
 
-@Value
-@AllArgsConstructor
-public class Layer implements Comparable<Layer> {
-    /**
-     * The sort index of this layer. Higher numbers render on top. Note that this does not correspond to a z offset.
-     */
-    int sortIndex;
-
+/**
+ * @param sortIndex The sort index of this layer. Higher numbers render on top. Note that this does not correspond to a z offset.
+ */
+public record Layer(int sortIndex) implements Comparable<Layer> {
     public Layer next() {
         return new Layer(sortIndex + 1);
     }

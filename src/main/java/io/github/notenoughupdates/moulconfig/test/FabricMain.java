@@ -1,12 +1,10 @@
 package io.github.notenoughupdates.moulconfig.test;
 
-import io.github.notenoughupdates.moulconfig.common.IItemStack;
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
 import net.minecraft.resources.Identifier;
 import io.github.notenoughupdates.moulconfig.gui.CloseEventListener;
 import io.github.notenoughupdates.moulconfig.managed.ManagedConfig;
 import io.github.notenoughupdates.moulconfig.observer.ObservableList;
-import io.github.notenoughupdates.moulconfig.platform.MoulConfigPlatform;
 import io.github.notenoughupdates.moulconfig.xml.Bind;
 import io.github.notenoughupdates.moulconfig.xml.XMLUniverse;
 import net.fabricmc.api.ModInitializer;
@@ -84,7 +82,7 @@ public class FabricMain implements ModInitializer {
         }
 
         @Bind
-        public IItemStack itemStack = MoulConfigPlatform.wrap(new ItemStack(Blocks.SAND));
+        public ItemStack itemStack = new ItemStack(Blocks.SAND);
 
         @Bind
         public boolean value = false;

@@ -19,7 +19,7 @@ public interface BoxNativeMorphisms {
                 return Optional.of(Component.class);
             }
             if (typ == MutableComponent.class) {
-                return Optional.of(Component.Mutable.class);
+                return Optional.of(MutableComponent.class);
             }
             return Optional.empty();
         }

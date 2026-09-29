@@ -79,6 +79,7 @@ dependencies {
     implementation(libs.libninepatch)
     include(libs.libninepatch)
 
+    annotationProcessor(libs.lombok)
     compileOnly(libs.lombok)
 
     testImplementation(libs.junit)

@@ -330,7 +330,7 @@ public class ColorSelectComponent extends GuiComponent {
         if (chromaSpeed > 0) {
             DrawContextExt.drawStringCenteredScalingDownWithMaxWidth(
                 renderContext,
-                Component.literal((int) ChromaColour.getSecondsForSpeed(chromaSpeed) + "s").grey(),
+                Component.literal((int) ChromaColour.getSecondsForSpeed(chromaSpeed) + "s").withColor(TextColor.GRAY),
                 5 + 64 + 5 + valueOffset + opacityOffset + 6,
                 5 + 64 + 5 + 5,
                 13,

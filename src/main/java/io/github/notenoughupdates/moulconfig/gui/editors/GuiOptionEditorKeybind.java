@@ -47,9 +47,11 @@ public class GuiOptionEditorKeybind extends ComponentEditor {
 
                 renderContext.drawTexturedRect(GuiTextures.BUTTON, width / 6 - 24, height - 7 - 14, 48, 16);
 
-                final var key = InputConstants.getKey((String) option.get());
-                Component keyName = IMinecraft.INSTANCE.getKeyName(key);
-                Component text = editingKeycode ? Component.literal("> ").append(keyName).append(" <") : keyName;
+                val key = InputConstants.getKey((String) option.get());
+                String keyName = IMinecraft.INSTANCE.getKeyName(key);
+                Component text = editingKeycode ?
+                    Component.literal("> ").append(keyName).append(" <")
+                    : Component.literal(keyName);
                 renderContext.drawStringCenteredScaledMaxWidth(text,
                     IMinecraft.INSTANCE.getDefaultFontRenderer(),
                     width / 6, height - 7 - 6,

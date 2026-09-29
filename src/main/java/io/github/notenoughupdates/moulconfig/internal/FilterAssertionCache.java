@@ -1,6 +1,7 @@
 package io.github.notenoughupdates.moulconfig.internal;
 
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
+import lombok.val;
 import net.minecraft.resources.Identifier;
 import io.github.notenoughupdates.moulconfig.common.TextureFilter;
 import lombok.Value;

@@ -48,7 +48,7 @@ public final class DrawContextExt {
         float factor = Math.min(maxWidth / (float) width, 1F);
         context.translate((float) centerX, (float) centerY);
         context.scale(factor, factor);
-        context.drawString(fr, text, -width / 2, -fr.getHeight() / 2, color, shadow);
+        context.drawString(fr, text, -width / 2, -fr.lineHeight / 2, color, shadow);
         context.popMatrix();
     }
 }

@@ -222,7 +222,7 @@ public class MoulConfigRenderContext implements RenderContext {
 
     @Override
     public void drawTexturedTintedRect(
-        Identifier texture,
+        Identifier identifier,
         float x,
         float y,
         float width,
@@ -234,9 +234,7 @@ public class MoulConfigRenderContext implements RenderContext {
         int color,
         TextureFilter filter
     ) {
-        FilterAssertionCache.assertTextureFilter(texture, filter);
-
-        var identifier = MoulConfigPlatform.unwrap(texture);
+        FilterAssertionCache.assertTextureFilter(identifier, filter);
 
         FilterMode filterMode = switch (filter) {
             case LINEAR -> FilterMode.LINEAR;
@@ -392,7 +390,6 @@ public class MoulConfigRenderContext implements RenderContext {
         List<Component> tooltipLines
     ) {
         var lines = tooltipLines.stream()
-            .map(MoulConfigPlatform::unwrap)
             .map(Language.getInstance()::getVisualOrder)
             .map(ClientTooltipComponent::create)
             .toList();

@@ -47,6 +47,6 @@ public class GuiOptionEditorInfoText extends ComponentEditor {
 
     @Override
     public boolean fulfillsSearch(String word) {
-        return super.fulfillsSearch(word) || (infoTitle != null && infoTitle.getText().toLowerCase(Locale.ROOT).contains(word));
+        return super.fulfillsSearch(word) || (infoTitle != null && infoTitle.getString().toLowerCase(Locale.ROOT).contains(word));
     }
 }
