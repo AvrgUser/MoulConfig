@@ -1,0 +1,52 @@
+pluginManagement {
+    repositories {
+        mavenCentral()
+        mavenLocal()
+        gradlePluginPortal()
+        maven("https://maven.fabricmc.net") {
+            content {
+                includeGroupAndSubgroups("net.fabricmc")
+            }
+        }
+        maven("https://repo.spongepowered.org/maven/") {
+            content {
+                includeGroup("org.spongepowered")
+            }
+        }
+        maven("https://jitpack.io") {
+            content {
+                includeGroupAndSubgroups("com.github")
+            }
+        }
+        // Stonecutter
+        maven("https://maven.kikugie.dev/snapshots") {
+            content {
+                includeGroupAndSubgroups("dev.kikugie")
+            }
+        }
+    }
+    resolutionStrategy.eachPlugin {
+        requested.apply {
+            if ("$id".startsWith("com.github.")) {
+                val (_, _, user, name) = "$id".split(".", limit = 4)
+                useModule("com.github.$user:$name:$version")
+            }
+        }
+    }
+}
+
+plugins {
+    // We can't use libs refs in settings, so these are not stored in `libs.versions.toml`
+    id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
+    id("dev.kikugie.stonecutter") version "0.10-alpha.10"
+}
+
+rootProject.name = "MoulConfig"
+rootProject.buildFileName = "root.gradle.kts"
+
+stonecutter {
+    create(rootProject) {
+        versions("26.1", "26.2")
+        vcsVersion = "26.2"
+    }
+}
