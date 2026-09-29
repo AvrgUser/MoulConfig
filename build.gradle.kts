@@ -52,7 +52,6 @@ java {
     sourceCompatibility = JavaVersion.VERSION_25
     targetCompatibility = JavaVersion.VERSION_25
     withSourcesJar()
-    withJavadocJar()
 }
 
 tasks.named<JavaExec>("runClient") {
