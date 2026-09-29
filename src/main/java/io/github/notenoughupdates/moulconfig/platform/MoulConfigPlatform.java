@@ -140,12 +140,8 @@ public class MoulConfigPlatform implements IMinecraft {
 
     @Override
     public DynamicTextureReference generateDynamicTexture(BufferedImage img) {
-        #if MC < 12111
-        var identifier = ResourceLocation.fromNamespaceAndPath("moulconfig", "dynamic/${java.util.concurrent.ThreadLocalRandom.current().nextLong()}");
-        #else
         var identifier = Identifier.fromNamespaceAndPath("moulconfig", "dynamic/${java.util.concurrent.ThreadLocalRandom.current().nextLong()}");
-        #endif
-        var texture = new DynamicTexture(#if MC>12104 identifier.getPath(), #endif img.getWidth(), img.getHeight(), true);
+        var texture = new DynamicTexture(identifier.getPath(), img.getWidth(), img.getHeight(), true);
         setTextureData(texture, img);
         texture.upload();
         mc.getTextureManager().register(identifier, texture);
@@ -173,13 +169,8 @@ public class MoulConfigPlatform implements IMinecraft {
     public MoulConfigPair<Double, Double> getMousePositionHF() {
         var mouse = mc.mouseHandler;
         var window = mc.getWindow();
-        #if MC < 12111
-        var x = (mouse.xpos() * (double) window.getGuiScaledWidth() / window.getScreenWidth());
-        var y = (mouse.ypos() * (double) window.getGuiScaledHeight() / window.getScreenHeight());
-        #else
         double x = mouse.getScaledXPos(window);
         double y = mouse.getScaledYPos(window);
-        #endif
         return new MoulConfigPair<>(x, y);
     }
 
@@ -216,13 +207,7 @@ public class MoulConfigPlatform implements IMinecraft {
 
     @Override
     public boolean isOnMacOs() {
-        #if MC < 12109
-        return Minecraft.ON_OSX;
-        #elif MC < 12111
-        return net.minecraft.Util.getPlatform() == net.minecraft.Util.OS.OSX;
-        #else
         return net.minecraft.util.Util.getPlatform() == net.minecraft.util.Util.OS.OSX;
-        #endif
     }
 
     @Override
@@ -285,7 +270,6 @@ public class MoulConfigPlatform implements IMinecraft {
         var mc = Minecraft.getInstance();
         return new #if MC < 260100 GuiGraphics #else GuiGraphicsExtractor #endif(
             mc,
-            #if MC >= 12107
             #if MC < 260100
             mc.gameRenderer.guiRenderState
             #elif MC < 260200
@@ -293,14 +277,9 @@ public class MoulConfigPlatform implements IMinecraft {
             #else
             mc.gameRenderer.gameRenderState().guiRenderState
             #endif
-            #else
-            mc.renderBuffers().bufferSource()
-            #endif
-            #if MC >= 12111
             ,
             (int) mc.mouseHandler.getScaledXPos(mc.getWindow()),
             (int) mc.mouseHandler.getScaledYPos(mc.getWindow())
-            #endif
         );
     }
 

@@ -10,11 +10,9 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 #endif
 import net.minecraft.client.gui.screens.Screen;
-#if MC > 12107
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
-#endif
 import net.minecraft.network.chat.Component;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
@@ -132,16 +130,16 @@ public class MoulConfigScreenComponent extends Screen {
     }
 
     @Override
-    public boolean mouseClicked(#if MC < 12109 double mouseX, double mouseY, int button #else MouseButtonEvent click, boolean doubled #endif) {
+    public boolean mouseClicked(MouseButtonEvent click) {
         return guiContext.root.mouseEvent(
-            new MouseEvent.Click(#if MC < 12109 button #else click.button() #endif, true), createContext()
+            new MouseEvent.Click(click.button(, true), createContext()
         );
     }
 
     @Override
-    public boolean mouseReleased(#if MC < 12109 double mouseX, double mouseY, int button #else MouseButtonEvent click #endif) {
+    public boolean mouseReleased(MouseButtonEvent click) {
         return guiContext.root.mouseEvent(
-            new MouseEvent.Click(#if MC < 12109 button #else click.button() #endif, false), createContext()
+            new MouseEvent.Click(click.button(), false), createContext()
         );
     }
 
@@ -158,11 +156,7 @@ public class MoulConfigScreenComponent extends Screen {
 
     @Override
     public boolean mouseDragged(
-        #if MC < 12109
-        double mouseX, double mouseY, int button, double deltaX, double deltaY
-        #else
         MouseButtonEvent click, double offsetX, double offsetY
-        #endif
     ) {
         return true;
     }

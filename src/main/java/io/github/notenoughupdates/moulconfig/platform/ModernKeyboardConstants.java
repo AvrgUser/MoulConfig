@@ -25,12 +25,12 @@ public class ModernKeyboardConstants implements IKeyboardConstants {
 
     @Override
     public int getCmdLeft() {
-        return InputConstants.#if MC > 12107 KEY_LSUPER #else KEY_LWIN #endif;
+        return InputConstants. KEY_LSUPER;
     }
 
     @Override
     public int getCmdRight() {
-        return InputConstants.#if MC > 12107 KEY_RSUPER #else KEY_RWIN #endif;
+        return InputConstants.KEY_RSUPER;
     }
 
     @Override
