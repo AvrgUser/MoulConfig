@@ -22,13 +22,12 @@ package io.github.notenoughupdates.moulconfig;
 
 import io.github.notenoughupdates.moulconfig.common.ClickType;
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
-import net.minecraft.resources.Identifier;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 

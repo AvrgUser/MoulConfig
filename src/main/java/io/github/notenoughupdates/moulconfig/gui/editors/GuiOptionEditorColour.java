@@ -62,30 +62,30 @@ public class GuiOptionEditorColour extends ComponentEditor {
             @Override
             public void render(@NotNull GuiImmediateContext context) {
                 int argb = get().getEffectiveColour().getRGB();
-                context.getRenderContext().drawComplexTexture(
-                    GuiTextures.BUTTON_WHITE, 0f, 0f, context.getWidth(), context.getHeight(),
+                context.renderContext().drawComplexTexture(
+                    GuiTextures.BUTTON_WHITE, 0f, 0f, context.width(), context.height(),
                     it -> it.color(ColourUtil.makeOpaque(argb))
                 );
             }
 
             @Override
             public boolean mouseEvent(@NotNull MouseEvent mouseEvent, @NotNull GuiImmediateContext context) {
-                if (mouseEvent instanceof MouseEvent.Click click) {
-                    if (click.getMouseState() && click.getMouseButton() == 0 && context.isHovered()) {
+                if (mouseEvent instanceof MouseEvent.Click(int mouseButton, boolean mouseState)) {
+                    if (mouseState && mouseButton == 0 && context.isHovered()) {
                         ColorSelectComponent colorSelectComponent = new ColorSelectComponent(0, 0, get().toLegacyString(), newString -> set(newString), () -> {
                             closeOverlay();
                         });
                         //Clamp the Y so that the colour picker can't go off screen
-                        int scaledHeight = context.getRenderContext().getMinecraft().getScaledHeight();
+                        int scaledHeight = context.renderContext().getMinecraft().getScaledHeight();
                         int clampedY;
 
-                        if (context.getAbsoluteMouseY() + colorSelectComponent.getHeight() > scaledHeight) {
+                        if (context.absoluteMouseY() + colorSelectComponent.getHeight() > scaledHeight) {
                             clampedY = scaledHeight - colorSelectComponent.getHeight();
                         } else {
-                            clampedY = context.getAbsoluteMouseY();
+                            clampedY = context.absoluteMouseY();
                         }
 
-                        openOverlay(colorSelectComponent, context.getAbsoluteMouseX(), clampedY);
+                        openOverlay(colorSelectComponent, context.absoluteMouseX(), clampedY);
                         return true;
                     }
                 }

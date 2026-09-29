@@ -1,10 +1,10 @@
 package io.github.notenoughupdates.moulconfig.gui.component;
 
-import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.GuiComponent;
 import io.github.notenoughupdates.moulconfig.gui.GuiImmediateContext;
 import io.github.notenoughupdates.moulconfig.gui.KeyboardEvent;
 import io.github.notenoughupdates.moulconfig.gui.MouseEvent;
+import net.minecraft.network.chat.Component;
 
 import java.util.List;
 import java.util.function.BiFunction;
@@ -19,8 +19,13 @@ public class HoverComponent extends GuiComponent {
         this.hoverLines = hoverLines;
     }
 
-    public GuiComponent getChild() { return child; }
-    public Supplier<List<Component>> getHoverLines() { return hoverLines; }
+    public GuiComponent getChild() {
+        return child;
+    }
+
+    public Supplier<List<Component>> getHoverLines() {
+        return hoverLines;
+    }
 
     @Override
     public int getWidth() {
@@ -40,7 +45,7 @@ public class HoverComponent extends GuiComponent {
     @Override
     public void render(GuiImmediateContext context) {
         if (context.isHovered()) {
-            context.getRenderContext().scheduleDrawTooltip(context.getMouseX(), context.getMouseY(), hoverLines.get());
+            context.renderContext().scheduleDrawTooltip(context.mouseX(), context.mouseY(), hoverLines.get());
         }
         child.render(context);
     }

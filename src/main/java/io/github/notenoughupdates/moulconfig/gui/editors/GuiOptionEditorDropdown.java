@@ -21,12 +21,12 @@
 package io.github.notenoughupdates.moulconfig.gui.editors;
 
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
-import net.minecraft.client.gui.Font;
-import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.GuiComponent;
 import io.github.notenoughupdates.moulconfig.gui.GuiImmediateContext;
 import io.github.notenoughupdates.moulconfig.gui.MouseEvent;
 import io.github.notenoughupdates.moulconfig.processor.ProcessedOption;
+import net.minecraft.client.gui.Font;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -44,7 +44,8 @@ public class GuiOptionEditorDropdown extends ComponentEditor {
     public GuiOptionEditorDropdown(ProcessedOption option, String[] values) {
         this(option, values, false);
     }
- // TODO: rework this entire thing to accept Components and/or classes implementing a custom interfaces and/or a custom text mapper
+
+    // TODO: rework this entire thing to accept Components and/or classes implementing a custom interfaces and/or a custom text mapper
     public GuiOptionEditorDropdown(
         ProcessedOption option,
         String[] values,
@@ -64,6 +65,7 @@ public class GuiOptionEditorDropdown extends ComponentEditor {
         }
         this.useOrdinal = clazz == int.class || clazz == Integer.class;
     }
+
     int componentWidth = 0;
     private final GuiComponent dropdownOverlay = new GuiComponent() {
         @Override
@@ -78,13 +80,13 @@ public class GuiOptionEditorDropdown extends ComponentEditor {
 
         @Override
         public boolean mouseEvent(@NotNull MouseEvent mouseEvent, @NotNull GuiImmediateContext context) {
-            if (mouseEvent instanceof MouseEvent.Click click) {
-                if (click.getMouseState()) {
+            if (mouseEvent instanceof MouseEvent.Click(int mouseButton, boolean mouseState)) {
+                if (mouseState) {
                     closeOverlay();
                 }
-                if (click.getMouseState() && click.getMouseButton() == 0 && context.isHovered()) {
+                if (mouseState && mouseButton == 0 && context.isHovered()) {
                     int top = 0;
-                    int mouseY = context.getMouseY();
+                    int mouseY = context.mouseY();
                     int dropdownY = 13;
                     for (int ordinal = 0; ordinal < values.size(); ordinal++) {
                         if (mouseY >= top + 3 + dropdownY && mouseY <= top + 3 + dropdownY + 12) {
@@ -112,30 +114,30 @@ public class GuiOptionEditorDropdown extends ComponentEditor {
                 selectedString = values.get(selected);
             }
 
-            int dropdownHeight = context.getHeight();
-            int dropdownWidth = context.getWidth();
+            int dropdownHeight = context.height();
+            int dropdownWidth = context.width();
 
             int main = 0xff202026;
             int outlineColour = 0xffffffff;
 
-            context.getRenderContext().pushMatrix();
+            context.renderContext().pushMatrix();
             // TODO: do we even need that? (given the render order) context.getRenderContext().translate(0, 0, 100);
             int left = 0;
             int top = 0;
-            context.getRenderContext().drawColoredRect(left, top, left + 1, top + dropdownHeight, outlineColour); //Left
-            context.getRenderContext().drawColoredRect(left + 1, top, left + dropdownWidth, top + 1, outlineColour); //Top
-            context.getRenderContext().drawColoredRect(left + dropdownWidth - 1, top + 1, left + dropdownWidth, top + dropdownHeight, outlineColour); //Right
-            context.getRenderContext().drawColoredRect(left + 1, top + dropdownHeight - 1, left + dropdownWidth - 1, top + dropdownHeight, outlineColour); //Bottom
-            context.getRenderContext().drawColoredRect(left + 1, top + 1, left + dropdownWidth - 1, top + dropdownHeight - 1, main); //Middle
+            context.renderContext().drawColoredRect(left, top, left + 1, top + dropdownHeight, outlineColour); //Left
+            context.renderContext().drawColoredRect(left + 1, top, left + dropdownWidth, top + 1, outlineColour); //Top
+            context.renderContext().drawColoredRect(left + dropdownWidth - 1, top + 1, left + dropdownWidth, top + dropdownHeight, outlineColour); //Right
+            context.renderContext().drawColoredRect(left + 1, top + dropdownHeight - 1, left + dropdownWidth - 1, top + dropdownHeight, outlineColour); //Bottom
+            context.renderContext().drawColoredRect(left + 1, top + 1, left + dropdownWidth - 1, top + dropdownHeight - 1, main); //Middle
 
-            context.getRenderContext().drawColoredRect(left + 1, top + 14 - 1, left + dropdownWidth - 1, top + 14, outlineColour); //Bar
+            context.renderContext().drawColoredRect(left + 1, top + 14 - 1, left + dropdownWidth - 1, top + 14, outlineColour); //Bar
             int dropdownY = 13;
             Font fr = IMinecraft.INSTANCE.getDefaultFontRenderer();
             for (Component option : values) {
                 if (option.getString().isEmpty()) {
                     option = Component.literal("<NONE>");
                 }
-                context.getRenderContext().drawStringScaledMaxWidth(
+                context.renderContext().drawStringScaledMaxWidth(
                     option,
                     fr,
                     left + 3,
@@ -146,14 +148,14 @@ public class GuiOptionEditorDropdown extends ComponentEditor {
                 );
                 dropdownY += 12;
             }
-            context.getRenderContext().drawStringScaledMaxWidth(
+            context.renderContext().drawStringScaledMaxWidth(
                 selectedString, fr, left + 3, top + 3, false,
                 dropdownWidth - 16, 0xffa0a0a0
             );
-            context.getRenderContext().drawOpenCloseTriangle(
-                false, context.getWidth() - 10, 4, 6, 6, -1
+            context.renderContext().drawOpenCloseTriangle(
+                false, context.width() - 10, 4, 6, 6, -1
             );
-            context.getRenderContext().popMatrix();
+            context.renderContext().popMatrix();
         }
     };
     private final GuiComponent component = wrapComponent(new GuiComponent() {
@@ -169,20 +171,20 @@ public class GuiOptionEditorDropdown extends ComponentEditor {
 
         @Override
         public boolean mouseEvent(@NotNull MouseEvent mouseEvent, @NotNull GuiImmediateContext context) {
-            if (mouseEvent instanceof MouseEvent.Click && ((MouseEvent.Click) mouseEvent).getMouseState() && context.isHovered()) {
+            if (mouseEvent instanceof MouseEvent.Click && ((MouseEvent.Click) mouseEvent).mouseState() && context.isHovered()) {
                 if (!isOverlayOpen()) {
-                    componentWidth = context.getWidth();
+                    componentWidth = context.width();
                     //Clamp the Y so that the dropdown can't go off the screen
-                    int scaledHeight = context.getRenderContext().getMinecraft().getScaledHeight();
+                    int scaledHeight = context.renderContext().getMinecraft().getScaledHeight();
                     int clampedY;
 
-                    if (context.getRenderOffsetY() + dropdownOverlay.getHeight() > scaledHeight) {
+                    if (context.renderOffsetY() + dropdownOverlay.getHeight() > scaledHeight) {
                         clampedY = scaledHeight - dropdownOverlay.getHeight();
                     } else {
-                        clampedY = context.getRenderOffsetY();
+                        clampedY = context.renderOffsetY();
                     }
 
-                    openOverlay(dropdownOverlay, context.getRenderOffsetX(), clampedY);
+                    openOverlay(dropdownOverlay, context.renderOffsetX(), clampedY);
                 }
                 return true;
             }
@@ -191,7 +193,7 @@ public class GuiOptionEditorDropdown extends ComponentEditor {
 
         @Override
         public void render(@NotNull GuiImmediateContext context) {
-            int dropdownWidth = context.getWidth();
+            int dropdownWidth = context.width();
             int selected = getSelectedIndex();
             if (selected >= values.size()) selected = values.size();
             Component selectedString = Component.literal(" - Select - ");
@@ -199,15 +201,15 @@ public class GuiOptionEditorDropdown extends ComponentEditor {
                 selectedString = values.get(selected);
             }
 
-            context.getRenderContext().drawDarkRect(
-                0, 0, dropdownWidth, context.getHeight(), false
+            context.renderContext().drawDarkRect(
+                0, 0, dropdownWidth, context.height(), false
             );
-            context.getRenderContext().drawOpenCloseTriangle(
-                true, context.getWidth() - 10, 4, 6, 6, -1
+            context.renderContext().drawOpenCloseTriangle(
+                true, context.width() - 10, 4, 6, 6, -1
             );
-            context.getRenderContext().drawStringScaledMaxWidth(
+            context.renderContext().drawStringScaledMaxWidth(
                 selectedString, IMinecraft.INSTANCE.getDefaultFontRenderer(),
-                3, 3, false, context.getWidth() - 16, 0xffa0a0a0
+                3, 3, false, context.width() - 16, 0xffa0a0a0
             );
         }
     });

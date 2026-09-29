@@ -5,7 +5,9 @@ import lombok.val;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.*;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 public class TypeUtils {
     public static boolean areTypesEquals(Class<?> a, Class<?> b) {

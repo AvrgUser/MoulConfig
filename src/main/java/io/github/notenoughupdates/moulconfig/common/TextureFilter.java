@@ -8,5 +8,5 @@ public enum TextureFilter {
     /**
      * Do not interpolate between pixels (pixelated upscaling).
      */
-    NEAREST;
+    NEAREST
 }

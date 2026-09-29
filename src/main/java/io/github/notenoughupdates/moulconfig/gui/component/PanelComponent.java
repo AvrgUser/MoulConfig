@@ -50,19 +50,19 @@ public class PanelComponent extends GuiComponent {
         BUTTON {
             @Override
             public void render(RenderContext renderContext, int x, int y, int width, int height) {
-                renderContext.drawNinePatch(NinePatches.INSTANCE.createButton(), x, y, width, height);
+                renderContext.drawNinePatch(NinePatches.createButton(), x, y, width, height);
             }
         },
         BUTTON_WHITE {
             @Override
             public void render(RenderContext renderContext, int x, int y, int width, int height) {
-                renderContext.drawNinePatch(NinePatches.INSTANCE.createWhiteButton(), x, y, width, height);
+                renderContext.drawNinePatch(NinePatches.createWhiteButton(), x, y, width, height);
             }
         },
         VANILLA {
             @Override
             public void render(RenderContext renderContext, int x, int y, int width, int height) {
-                renderContext.drawNinePatch(NinePatches.INSTANCE.createVanillaPanel(), x, y, width, height);
+                renderContext.drawNinePatch(NinePatches.createVanillaPanel(), x, y, width, height);
             }
         },
         TRANSPARENT {
@@ -108,16 +108,16 @@ public class PanelComponent extends GuiComponent {
     }
 
     protected GuiImmediateContext getChildContext(GuiImmediateContext context) {
-        return context.translated(insets, insets, context.getWidth() - insets * 2, context.getHeight() - insets * 2 - 2);
+        return context.translated(insets, insets, context.width() - insets * 2, context.height() - insets * 2 - 2);
     }
 
     @Override
     public void render(GuiImmediateContext context) {
-        context.getRenderContext().pushMatrix();
-        backgroundRenderer.render(context.getRenderContext(), 0, 0, context.getWidth(), context.getHeight() - 2);
-        context.getRenderContext().translate(insets, insets);
+        context.renderContext().pushMatrix();
+        backgroundRenderer.render(context.renderContext(), 0, 0, context.width(), context.height() - 2);
+        context.renderContext().translate(insets, insets);
         element.render(getChildContext(context));
-        context.getRenderContext().popMatrix();
+        context.renderContext().popMatrix();
     }
 
     @Override

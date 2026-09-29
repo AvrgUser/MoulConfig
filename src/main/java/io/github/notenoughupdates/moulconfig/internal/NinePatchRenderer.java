@@ -1,8 +1,8 @@
 package io.github.notenoughupdates.moulconfig.internal;
 
-import net.minecraft.resources.Identifier;
 import io.github.notenoughupdates.moulconfig.common.RenderContext;
 import juuxel.libninepatch.ContextualTextureRenderer;
+import net.minecraft.resources.Identifier;
 
 public final class NinePatchRenderer implements ContextualTextureRenderer<Identifier, RenderContext> {
     public static final NinePatchRenderer INSTANCE = new NinePatchRenderer();

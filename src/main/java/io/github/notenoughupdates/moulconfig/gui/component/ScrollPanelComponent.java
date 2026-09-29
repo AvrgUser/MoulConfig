@@ -33,22 +33,22 @@ public class ScrollPanelComponent extends GuiComponent {
 
     @Override
     public void render(GuiImmediateContext context) {
-        context.getRenderContext().pushScissor(0, 0, context.getWidth(), context.getHeight());
-        context.getRenderContext().pushMatrix();
-        context.getRenderContext().translate(0, -scrollOffset);
-        child.render(context.translatedNonRendering(0, -scrollOffset, context.getWidth(), context.getHeight()));
-        context.getRenderContext().popMatrix();
-        context.getRenderContext().popScissor();
+        context.renderContext().pushScissor(0, 0, context.width(), context.height());
+        context.renderContext().pushMatrix();
+        context.renderContext().translate(0, -scrollOffset);
+        child.render(context.translatedNonRendering(0, -scrollOffset, context.width(), context.height()));
+        context.renderContext().popMatrix();
+        context.renderContext().popScissor();
     }
 
     @Override
     public boolean keyboardEvent(KeyboardEvent event, GuiImmediateContext context) {
-        return child.keyboardEvent(event, context.translatedNonRendering(0, -scrollOffset, context.getWidth(), context.getHeight()));
+        return child.keyboardEvent(event, context.translatedNonRendering(0, -scrollOffset, context.width(), context.height()));
     }
 
     @Override
     public boolean mouseEvent(MouseEvent mouseEvent, GuiImmediateContext context) {
-        if (child.mouseEvent(mouseEvent, context.translatedNonRendering(0, -scrollOffset, context.getWidth(), context.getHeight()))) {
+        if (child.mouseEvent(mouseEvent, context.translatedNonRendering(0, -scrollOffset, context.width(), context.height()))) {
             return true;
         }
         if (context.isHovered() && mouseEvent instanceof MouseEvent.Scroll) {

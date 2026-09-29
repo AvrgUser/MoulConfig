@@ -1,9 +1,9 @@
 package io.github.notenoughupdates.moulconfig.gui.component;
 
-import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.GuiComponent;
 import io.github.notenoughupdates.moulconfig.gui.GuiImmediateContext;
 import io.github.notenoughupdates.moulconfig.observer.GetSetter;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 
 public class ItemStackComponent extends GuiComponent {
@@ -29,6 +29,6 @@ public class ItemStackComponent extends GuiComponent {
 
     @Override
     public void render(GuiImmediateContext context) {
-        context.getRenderContext().renderItemStack(itemStack.get(), 1, 1, Component.empty());
+        context.renderContext().renderItemStack(itemStack.get(), 1, 1, Component.empty());
     }
 }

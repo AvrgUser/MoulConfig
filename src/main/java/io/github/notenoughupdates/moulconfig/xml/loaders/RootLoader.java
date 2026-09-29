@@ -12,8 +12,23 @@ import java.util.Collections;
 import java.util.Map;
 
 public class RootLoader implements XMLGuiLoader.Basic<GuiComponent> {
-    @Override public GuiComponent createInstance(XMLContext<?> context, Element element) { return context.getChildFragment(element); }
-    @Override public QName getName() { return XMLUniverse.qName("Root"); }
-    @Override public ChildCount getChildCount() { return ChildCount.ONE; }
-    @Override public Map<String, Boolean> getAttributeNames() { return Collections.emptyMap(); }
+    @Override
+    public GuiComponent createInstance(XMLContext<?> context, Element element) {
+        return context.getChildFragment(element);
+    }
+
+    @Override
+    public QName getName() {
+        return XMLUniverse.qName("Root");
+    }
+
+    @Override
+    public ChildCount getChildCount() {
+        return ChildCount.ONE;
+    }
+
+    @Override
+    public Map<String, Boolean> getAttributeNames() {
+        return Collections.emptyMap();
+    }
 }

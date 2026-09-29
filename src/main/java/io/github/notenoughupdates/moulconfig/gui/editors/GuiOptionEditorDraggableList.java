@@ -23,7 +23,6 @@ import io.github.notenoughupdates.moulconfig.GuiTextures;
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
 import io.github.notenoughupdates.moulconfig.common.MoulConfigFontRenderer;
 import io.github.notenoughupdates.moulconfig.common.MoulConfigPair;
-import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.GuiComponent;
 import io.github.notenoughupdates.moulconfig.gui.GuiImmediateContext;
 import io.github.notenoughupdates.moulconfig.gui.MouseEvent;
@@ -31,7 +30,7 @@ import io.github.notenoughupdates.moulconfig.gui.component.*;
 import io.github.notenoughupdates.moulconfig.internal.*;
 import io.github.notenoughupdates.moulconfig.observer.GetSetter;
 import io.github.notenoughupdates.moulconfig.processor.ProcessedOption;
-
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.ParameterizedType;
@@ -39,16 +38,16 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class GuiOptionEditorDraggableList extends ComponentEditor {
-    private Map<Object, Component> exampleText = new HashMap<>();
-    private boolean enableDeleting;
-    private List<Object> activeText;
+    private final Map<Object, Component> exampleText = new HashMap<>();
+    private final boolean enableDeleting;
+    private final List<Object> activeText;
     private final boolean requireNonEmpty;
     private int dragStartIndex = -1;
     private static final int DROPDOWN_WIDTH = 100;
     private static final int DROPDOWN_ITEM_HEIGHT = 12;
     private static final int DROPDOWN_SCREEN_MARGIN = 4;
 
-    private LerpingInteger2 trashAnimation = new LerpingInteger2(255, 3, 2);
+    private final LerpingInteger2 trashAnimation = new LerpingInteger2(255, 3, 2);
     private MoulConfigPair<Integer, Integer> lastListRenderPos = new MoulConfigPair<>(0, 0);
 
     private Enum<?>[] enumConstants;
@@ -121,7 +120,7 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
                             var pos = IMinecraft.INSTANCE.getMousePosition();
                             if (activeText.size() == exampleText.size())
                                 return;
-                            openDropDownOverlay(pos.getFirst(), pos.getSecond());
+                            openDropDownOverlay(pos.first(), pos.second());
                         }),
                         new SpacerComponent(GetSetter.constant(5), GetSetter.constant(0)),
                         new GuiComponent() {
@@ -143,7 +142,7 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
                                     trashAnimation.setTarget(255);
                                 }
                                 int nonRedTints = trashAnimation.getValue();
-                                context.getRenderContext().drawComplexTexture(
+                                context.renderContext().drawComplexTexture(
                                     GuiTextures.DELETE,
                                     0F, 0F, 11F, 14F,
                                     draw -> draw.color(ColourUtil.packARGB(255, 255, nonRedTints, nonRedTints))
@@ -171,23 +170,22 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
 
                     @Override
                     public boolean mouseEvent(@NotNull MouseEvent mouseEvent, @NotNull GuiImmediateContext context) {
-                        if (mouseEvent instanceof MouseEvent.Click) {
-                            var click = (MouseEvent.Click) mouseEvent;
+                        if (mouseEvent instanceof MouseEvent.Click click) {
                             var fr = IMinecraft.INSTANCE.getDefaultFontRenderer();
-                            if (click.getMouseState()) {
+                            if (click.mouseState()) {
                                 int i = 0;
                                 int yOff = 0;
                                 for (Object indexObject : activeText) {
                                     Component str = getExampleText(indexObject);
                                     var multilines = MoulConfigFontRenderer.splitLines(str);
                                     int ySize = multilines.size() * (fr.lineHeight + 1);
-                                    var trans = context.translated(0, yOff, context.getWidth(), ySize);
+                                    var trans = context.translated(0, yOff, context.width(), ySize);
                                     if (trans.isHovered()) {
                                         dragStartIndex = i;
-                                        var mouseY = trans.getMouseY() - 4;
-                                        openOverlay(makeDragComponent(indexObject, trans.getMouseX(), mouseY, context.getWidth()),
-                                            context.getAbsoluteMouseX() - trans.getMouseX(),
-                                            context.getAbsoluteMouseY() - mouseY);
+                                        var mouseY = trans.mouseY() - 4;
+                                        openOverlay(makeDragComponent(indexObject, trans.mouseX(), mouseY, context.width()),
+                                            context.absoluteMouseX() - trans.mouseX(),
+                                            context.absoluteMouseY() - mouseY);
                                         return true;
                                     }
                                     i++;
@@ -200,11 +198,11 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
 
                     @Override
                     public void render(@NotNull GuiImmediateContext context) {
-                        lastListRenderPos = new MoulConfigPair<>(context.getRenderOffsetX(), context.getRenderOffsetY());
-                        var renderContext = context.getRenderContext();
-                        var width = context.getWidth();
+                        lastListRenderPos = new MoulConfigPair<>(context.renderOffsetX(), context.renderOffsetY());
+                        var renderContext = context.renderContext();
+                        var width = context.width();
                         var fr = IMinecraft.INSTANCE.getDefaultFontRenderer();
-                        var height = context.getHeight();
+                        var height = context.height();
                         renderContext.drawColoredRect(0, 0, width, height, 0xffdddddd);
                         renderContext.drawColoredRect(1, 1, width - 1, height - 1, 0xff000000);
 
@@ -256,11 +254,10 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
 
             @Override
             public boolean mouseEvent(@NotNull MouseEvent mouseEvent, @NotNull GuiImmediateContext context) {
-                if (mouseEvent instanceof MouseEvent.Click) {
-                    var click = (MouseEvent.Click) mouseEvent;
-                    if (!click.getMouseState()) {
+                if (mouseEvent instanceof MouseEvent.Click click) {
+                    if (!click.mouseState()) {
                         closeOverlay();
-                        if (canDeleteRightNow() && trashCanBoundingBox.includesPoint(context.getAbsoluteMouseX(), context.getAbsoluteMouseY())) {
+                        if (canDeleteRightNow() && trashCanBoundingBox.includesPoint(context.absoluteMouseX(), context.absoluteMouseY())) {
                             activeText.remove(dragStartIndex);
                             saveChanges();
                         }
@@ -269,8 +266,8 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
                     }
                 }
                 if (mouseEvent instanceof MouseEvent.Move) {
-                    var mx = context.getAbsoluteMouseX() - mouseOffsetX;
-                    var my = context.getAbsoluteMouseY() - mouseOffsetY;
+                    var mx = context.absoluteMouseX() - mouseOffsetX;
+                    var my = context.absoluteMouseY() - mouseOffsetY;
                     openOverlay(getOverlayDelegate(), mx, my);
                     reorderElements(width, mx, my);
                 }
@@ -279,7 +276,7 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
 
             @Override
             public void render(@NotNull GuiImmediateContext context) {
-                var renderContext = context.getRenderContext();
+                var renderContext = context.renderContext();
                 var fr = IMinecraft.INSTANCE.getDefaultFontRenderer();
                 var text = getExampleText(indexObject);
                 var firstLine = MoulConfigFontRenderer.splitLines(text).get(0);
@@ -292,7 +289,7 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
                     true
                 );
                 renderContext.drawStringScaledMaxWidth(firstLine, fr,
-                    15, 1, true, context.getWidth() - 20, 0xffffffff
+                    15, 1, true, context.width() - 20, 0xffffffff
                 );
                 // TODO: make this transparent via texty things
             }
@@ -301,10 +298,10 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
 
     private void reorderElements(int width, int mouseX, int mouseY) {
         assert lastListRenderPos != null;
-        int renderX = lastListRenderPos.getFirst();
+        int renderX = lastListRenderPos.first();
         if (mouseX < renderX || mouseX > renderX + width)
             return;
-        int renderY = lastListRenderPos.getSecond();
+        int renderY = lastListRenderPos.second();
         var fr = IMinecraft.INSTANCE.getDefaultFontRenderer();
         int i = 0;
         int yOff = renderY;
@@ -376,7 +373,7 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
 
             @Override
             public boolean mouseEvent(@NotNull MouseEvent mouseEvent, @NotNull GuiImmediateContext context) {
-                int maxScrollOffset = Math.max(0, getDropDownContentHeight() - context.getHeight());
+                int maxScrollOffset = Math.max(0, getDropDownContentHeight() - context.height());
                 if (scrollOffset > maxScrollOffset) {
                     scrollOffset = maxScrollOffset;
                 }
@@ -387,19 +384,18 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
                     ));
                     return true;
                 }
-                if (mouseEvent instanceof MouseEvent.Click) {
-                    var click = (MouseEvent.Click) mouseEvent;
-                    if (click.getMouseState() && context.isHovered()) {
+                if (mouseEvent instanceof MouseEvent.Click click) {
+                    if (click.mouseState() && context.isHovered()) {
                         List<Object> remaining = getRemainingDropDownEntries();
                         int dropdownY = -1;
                         for (Object indexObject : remaining) {
-                            if (context.translated(0, dropdownY + 3 - scrollOffset, context.getWidth(), 10).isHovered()) {
+                            if (context.translated(0, dropdownY + 3 - scrollOffset, context.width(), 10).isHovered()) {
                                 activeText.add(indexObject);
                                 return true;
                             }
                             dropdownY += DROPDOWN_ITEM_HEIGHT;
                         }
-                    } else if (click.getMouseState()) {
+                    } else if (click.mouseState()) {
                         closeOverlay();
                     }
                 }
@@ -414,15 +410,15 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
                     return;
                 }
 
-                int maxScrollOffset = Math.max(0, getDropDownContentHeight() - context.getHeight());
+                int maxScrollOffset = Math.max(0, getDropDownContentHeight() - context.height());
                 if (scrollOffset > maxScrollOffset) {
                     scrollOffset = maxScrollOffset;
                 }
 
-                int dropdownHeight = context.getHeight();
-                int dropdownWidth = context.getWidth();
+                int dropdownHeight = context.height();
+                int dropdownWidth = context.width();
                 var fr = IMinecraft.INSTANCE.getDefaultFontRenderer();
-                var renderContext = context.getRenderContext();
+                var renderContext = context.renderContext();
                 int main = 0xff202026;
                 int outline = 0xff404046;
                 renderContext.drawColoredRect(0, 0, 1, dropdownHeight, outline);
@@ -432,10 +428,10 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
                 renderContext.drawColoredRect(1, 1, dropdownWidth - 1, dropdownHeight - 1, main);
 
                 renderContext.pushRawScissor(
-                    context.getRenderOffsetX() + 1,
-                    context.getRenderOffsetY() + 1,
-                    context.getRenderOffsetX() + dropdownWidth - 1,
-                    context.getRenderOffsetY() + dropdownHeight - 1
+                    context.renderOffsetX() + 1,
+                    context.renderOffsetY() + 1,
+                    context.renderOffsetX() + dropdownWidth - 1,
+                    context.renderOffsetY() + dropdownHeight - 1
                 );
                 renderContext.pushMatrix();
                 renderContext.translate(0, -scrollOffset);

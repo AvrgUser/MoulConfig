@@ -1,10 +1,9 @@
 package io.github.notenoughupdates.moulconfig.platform;
 
-import io.github.notenoughupdates.moulconfig.common.MoulConfigFontRenderer;
-import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.internal.TypeUtils;
 import io.github.notenoughupdates.moulconfig.observer.GetSetter;
 import io.github.notenoughupdates.moulconfig.xml.ParametricTypeMorphism;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 
 import java.lang.reflect.Type;

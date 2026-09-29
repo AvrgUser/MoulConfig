@@ -45,7 +45,7 @@ public class XSDGenerator {
         document.appendChild(root);
     }
 
-    public static void main(String[] args) {
+    static void main(String[] args) {
         XMLUniverse universe = XMLUniverse.getDefaultUniverse();
         XSDGenerator generator = new XSDGenerator(universe, XMLUniverse.MOULCONFIG_XML_NS);
         generator.writeAll();
@@ -127,11 +127,20 @@ public class XSDGenerator {
         Element extension = createChild(complexContent, XMLNS_XML_SCHEMA, "extension");
         String base;
         switch (type.getChildCount()) {
-            case NONE: base = "moulconfig:Widgetless"; break;
-            case ONE: base = "moulconfig:SingleWidget"; break;
-            case ANY: base = "moulconfig:MultiWidget"; break;
-            case TWO: base = "moulconfig:TwoWidget"; break;
-            default: throw new IllegalStateException("Unknown child count");
+            case NONE:
+                base = "moulconfig:Widgetless";
+                break;
+            case ONE:
+                base = "moulconfig:SingleWidget";
+                break;
+            case ANY:
+                base = "moulconfig:MultiWidget";
+                break;
+            case TWO:
+                base = "moulconfig:TwoWidget";
+                break;
+            default:
+                throw new IllegalStateException("Unknown child count");
         }
         extension.setAttribute("base", base);
         for (Map.Entry<String, Boolean> entry : type.getAttributeNames().entrySet()) {

@@ -25,8 +25,6 @@ import io.github.notenoughupdates.moulconfig.GuiTextures;
 import io.github.notenoughupdates.moulconfig.common.DynamicTextureReference;
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
 import io.github.notenoughupdates.moulconfig.common.TextureFilter;
-import lombok.val;
-import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.GuiComponent;
 import io.github.notenoughupdates.moulconfig.gui.GuiImmediateContext;
 import io.github.notenoughupdates.moulconfig.gui.KeyboardEvent;
@@ -34,7 +32,8 @@ import io.github.notenoughupdates.moulconfig.gui.MouseEvent;
 import io.github.notenoughupdates.moulconfig.internal.DrawContextExt;
 import io.github.notenoughupdates.moulconfig.internal.LerpUtils;
 import io.github.notenoughupdates.moulconfig.observer.GetSetter;
-
+import lombok.val;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextColor;
 import org.jetbrains.annotations.NotNull;
 
@@ -214,7 +213,7 @@ public class ColorSelectComponent extends GuiComponent {
         Color c = new Color(currentColour, true);
         float[] hsv = Color.RGBtoHSB(c.getRed(), c.getGreen(), c.getBlue(), null);
 
-        val renderContext = context.getRenderContext();
+        val renderContext = context.renderContext();
         renderContext.drawDarkRect(0, 0, xSize, ySize);
 
         float selradius = (float) Math.pow(wheelRadius, 1 / 1.5f) * 32;
@@ -356,7 +355,7 @@ public class ColorSelectComponent extends GuiComponent {
         int currentColour = ChromaColour.specialToSimpleRGB(colour);
         Color c = new Color(currentColour, true);
         float[] hsv = Color.RGBtoHSB(c.getRed(), c.getGreen(), c.getBlue(), null);
-        float percentage = LerpUtils.clampZeroOne(((context.getMouseYHF() - 5) / 64F));
+        float percentage = LerpUtils.clampZeroOne(((context.mouseYHF() - 5) / 64F));
         switch (focusedSubComponent) {
             case BRIGHTNESS: {
                 int rgb = Color.getHSBColor(wheelAngle / 360, wheelRadius, 1 - percentage).getRGB();
@@ -364,8 +363,8 @@ public class ColorSelectComponent extends GuiComponent {
                 break;
             }
             case HUE: {
-                float diffX = context.getMouseXHF() - 1 - 36;
-                float diffY = context.getMouseYHF() - 1 - 36;
+                float diffX = context.mouseXHF() - 1 - 36;
+                float diffY = context.mouseYHF() - 1 - 36;
                 float angle = (float) Math.toDegrees(Math.atan2(diffY, diffX));
                 float radius = (float) Math.sqrt(diffX * diffX + diffY * diffY) / 32;
                 this.wheelAngle = angle;
@@ -392,26 +391,25 @@ public class ColorSelectComponent extends GuiComponent {
 
     @Override
     public boolean mouseEvent(@NotNull MouseEvent mouseEvent, @NotNull GuiImmediateContext context) {
-        if (mouseEvent instanceof MouseEvent.Click) {
-            val click = (MouseEvent.Click) mouseEvent;
-            if (!context.isHovered() && click.getMouseState()) {
+        if (mouseEvent instanceof MouseEvent.Click click) {
+            if (!context.isHovered() && click.mouseState()) {
                 closeCallback.run(); // TODO: lift this out of the overlay, into the overlay handler
                 return true;
             }
-            if (context.isHovered() && click.getMouseState())
+            if (context.isHovered() && click.mouseState())
                 requestFocus();
-            if (focusedSubComponent != null && !click.getMouseState() && click.getMouseButton() == 0) {
+            if (focusedSubComponent != null && !click.mouseState() && click.mouseButton() == 0) {
                 focusedSubComponent = null;
                 return true;
             }
             int currentColour = ChromaColour.specialToSimpleRGB(colour);
             Color c = new Color(currentColour, true);
-            if (click.getMouseState()) {
+            if (click.mouseState()) {
                 int centerX = 1 + 72 / 2;
                 int centerY = 1 + 72 / 2;
 
-                int diffX = context.getMouseX() - centerX;
-                int diffY = context.getMouseY() - centerY;
+                int diffX = context.mouseX() - centerX;
+                int diffY = context.mouseY() - centerY;
                 float radSq = diffY * diffY + diffX * diffX;
                 if (radSq < 1296) {
                     focusedSubComponent = ClickedComponent.HUE;

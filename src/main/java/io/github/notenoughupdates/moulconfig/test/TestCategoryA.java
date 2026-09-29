@@ -2,18 +2,7 @@ package io.github.notenoughupdates.moulconfig.test;
 
 import com.google.gson.annotations.Expose;
 import io.github.notenoughupdates.moulconfig.ChromaColour;
-import io.github.notenoughupdates.moulconfig.annotations.Accordion;
-import io.github.notenoughupdates.moulconfig.annotations.ConfigEditorBoolean;
-import io.github.notenoughupdates.moulconfig.annotations.ConfigEditorButton;
-import io.github.notenoughupdates.moulconfig.annotations.ConfigEditorColour;
-import io.github.notenoughupdates.moulconfig.annotations.ConfigEditorDraggableList;
-import io.github.notenoughupdates.moulconfig.annotations.ConfigEditorDropdown;
-import io.github.notenoughupdates.moulconfig.annotations.ConfigEditorInfoText;
-import io.github.notenoughupdates.moulconfig.annotations.ConfigEditorKeybind;
-import io.github.notenoughupdates.moulconfig.annotations.ConfigEditorSlider;
-import io.github.notenoughupdates.moulconfig.annotations.ConfigEditorText;
-import io.github.notenoughupdates.moulconfig.annotations.ConfigOption;
-import io.github.notenoughupdates.moulconfig.annotations.ConfigOrder;
+import io.github.notenoughupdates.moulconfig.annotations.*;
 import io.github.notenoughupdates.moulconfig.observer.Property;
 import org.lwjgl.glfw.GLFW;
 
@@ -47,8 +36,15 @@ public class TestCategoryA {
     public enum Pronouns {
         HEHIM("He/Him"), SHEHER("She/Her"), ITITS("It/Its"), THEYTHEM("They/Them"), USE_NAME("Use Name");
         private final String label;
-        Pronouns(String label) { this.label = label; }
-        @Override public String toString() { return label; }
+
+        Pronouns(String label) {
+            this.label = label;
+        }
+
+        @Override
+        public String toString() {
+            return label;
+        }
     }
 
     @Accordion
@@ -73,8 +69,15 @@ public class TestCategoryA {
     public enum DropdownEnum {
         ONE("1"), TWO("2"), THREE("3"), FOUR("4");
         private final String label;
-        DropdownEnum(String label) { this.label = label; }
-        @Override public String toString() { return label; }
+
+        DropdownEnum(String label) {
+            this.label = label;
+        }
+
+        @Override
+        public String toString() {
+            return label;
+        }
     }
 
     @ConfigOption(name = "Slider", desc = "Between 1 and 5")
@@ -101,8 +104,15 @@ public class TestCategoryA {
     public enum EnumDraggableList {
         ONE("1"), TWO("too"), THREE("three");
         private final String str;
-        EnumDraggableList(String str) { this.str = str; }
-        @Override public String toString() { return str; }
+
+        EnumDraggableList(String str) {
+            this.str = str;
+        }
+
+        @Override
+        public String toString() {
+            return str;
+        }
     }
 
     @ConfigOption(name = "Colour Test", desc = "Test a colour editor")

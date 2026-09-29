@@ -1,9 +1,12 @@
 package io.github.notenoughupdates.moulconfig.platform;
 
+import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.textures.FilterMode;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import io.github.notenoughupdates.moulconfig.common.*;
+import io.github.notenoughupdates.moulconfig.common.Layer;
+import io.github.notenoughupdates.moulconfig.common.RenderContext;
+import io.github.notenoughupdates.moulconfig.common.TextureFilter;
 import io.github.notenoughupdates.moulconfig.internal.FilterAssertionCache;
 import io.github.notenoughupdates.moulconfig.internal.Rect;
 import io.github.notenoughupdates.moulconfig.internal.Warnings;
@@ -11,25 +14,25 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
+import net.minecraft.client.gui.render.TextureSetup;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPositioner;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.renderer.state.gui.GuiElementRenderState;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
-import org.jspecify.annotations.NullMarked;
-import org.jspecify.annotations.Nullable;
 import org.joml.Matrix3x2f;
 import org.joml.Matrix3x2fStack;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 import java.util.function.Consumer;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
-import net.minecraft.client.gui.render.TextureSetup;
-import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.renderer.state.gui.GuiElementRenderState;
 
 @NullMarked
 public class MoulConfigRenderContext implements RenderContext {
@@ -409,7 +412,8 @@ public class MoulConfigRenderContext implements RenderContext {
         @Nullable
         ScreenRectangle scissorTop,
         Matrix3x2f transform
-    ) {}
+    ) {
+    }
 
     NavigableMap<Layer, List<DrawAction>> queuedLayers = new TreeMap<>();
 

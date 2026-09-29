@@ -44,39 +44,39 @@ public class CollapsibleComponent extends GuiComponent {
     @Override
     public void render(GuiImmediateContext context) {
         boolean collapsed = collapsedState.get();
-        context.getRenderContext().drawOpenCloseTriangle(!collapsed, 0F, 0F, (float) iconWidth, (float) iconWidth, -1);
+        context.renderContext().drawOpenCloseTriangle(!collapsed, 0F, 0F, (float) iconWidth, (float) iconWidth, -1);
         int barHeight = Math.max(title.get().getHeight(), fr.lineHeight);
-        context.getRenderContext().pushMatrix();
-        context.getRenderContext().translate((float) iconWidth, 0F);
-        title.get().render(context.translated(iconWidth, 0, context.getWidth() - iconWidth, barHeight));
-        context.getRenderContext().popMatrix();
+        context.renderContext().pushMatrix();
+        context.renderContext().translate((float) iconWidth, 0F);
+        title.get().render(context.translated(iconWidth, 0, context.width() - iconWidth, barHeight));
+        context.renderContext().popMatrix();
 
         if (!collapsed) {
-            context.getRenderContext().drawColoredRect(0F, barHeight + 1F, (float) context.getWidth(), barHeight + 2F, 0xFF000000);
-            context.getRenderContext().pushMatrix();
-            context.getRenderContext().translate(0F, (float) barHeight);
-            body.get().render(context.translated(0, barHeight, context.getWidth(), context.getHeight() - barHeight));
-            context.getRenderContext().popMatrix();
+            context.renderContext().drawColoredRect(0F, barHeight + 1F, (float) context.width(), barHeight + 2F, 0xFF000000);
+            context.renderContext().pushMatrix();
+            context.renderContext().translate(0F, (float) barHeight);
+            body.get().render(context.translated(0, barHeight, context.width(), context.height() - barHeight));
+            context.renderContext().popMatrix();
         }
     }
 
     @Override
     public boolean mouseEvent(MouseEvent mouseEvent, GuiImmediateContext context) {
         int barHeight = Math.max(title.get().getHeight(), fr.lineHeight);
-        if (mouseEvent instanceof MouseEvent.Click && context.translated(0, 0, context.getWidth(), barHeight).isHovered()) {
-            if (((MouseEvent.Click) mouseEvent).getMouseState()) {
+        if (mouseEvent instanceof MouseEvent.Click && context.translated(0, 0, context.width(), barHeight).isHovered()) {
+            if (((MouseEvent.Click) mouseEvent).mouseState()) {
                 collapsedState.set(!collapsedState.get());
             }
             return true;
         }
-        return title.get().mouseEvent(mouseEvent, context.translated(iconWidth, 0, context.getWidth() - iconWidth, barHeight))
-            || body.get().mouseEvent(mouseEvent, context.translated(0, barHeight, context.getWidth(), context.getHeight() - barHeight));
+        return title.get().mouseEvent(mouseEvent, context.translated(iconWidth, 0, context.width() - iconWidth, barHeight))
+            || body.get().mouseEvent(mouseEvent, context.translated(0, barHeight, context.width(), context.height() - barHeight));
     }
 
     @Override
     public boolean keyboardEvent(KeyboardEvent event, GuiImmediateContext context) {
         int barHeight = Math.max(title.get().getHeight(), fr.lineHeight);
-        return title.get().keyboardEvent(event, context.translated(iconWidth, 0, context.getWidth() - iconWidth, barHeight))
-            || body.get().keyboardEvent(event, context.translated(0, barHeight, context.getWidth(), context.getHeight() - barHeight));
+        return title.get().keyboardEvent(event, context.translated(iconWidth, 0, context.width() - iconWidth, barHeight))
+            || body.get().keyboardEvent(event, context.translated(0, barHeight, context.width(), context.height() - barHeight));
     }
 }

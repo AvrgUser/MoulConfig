@@ -38,16 +38,16 @@ public class MoulConfigScreenComponent extends Screen {
         assert minecraft != null;
         var im = IMinecraft.INSTANCE;
         var mousePos = im.getMousePositionHF();
-        var x = mousePos.getFirst().intValue();
-        var y = mousePos.getSecond().intValue();
+        var x = mousePos.first().intValue();
+        var y = mousePos.second().intValue();
         return new GuiImmediateContext(
             new MoulConfigRenderContext(drawContext != null ? drawContext : MoulConfigPlatform.makeDrawContext()),
             0, 0,
             im.getScaledWidth(),
             im.getScaledHeight(),
             x, y, x, y,
-            mousePos.getFirst().floatValue(),
-            mousePos.getSecond().floatValue()
+            mousePos.first().floatValue(),
+            mousePos.second().floatValue()
         );
     }
 
@@ -68,11 +68,11 @@ public class MoulConfigScreenComponent extends Screen {
         super.extractRenderState(context, mouseX, mouseY, deltaTicks);
         var ctx = createContext(context);
         guiContext.getRoot().render(ctx);
-        ctx.getRenderContext().renderExtraLayers();
+        ctx.renderContext().renderExtraLayers();
     }
 
     @Override
-    public boolean charTyped(CharacterEvent input){
+    public boolean charTyped(CharacterEvent input) {
         return guiContext.getRoot().keyboardEvent(new KeyboardEvent.CharTyped((char) input.codepoint()), createContext());
     }
 
@@ -108,15 +108,15 @@ public class MoulConfigScreenComponent extends Screen {
         var dx = (int) mouseX;
         var dy = (int) mouseY;
         var event = new MouseEvent.Move(
-            ((float) mouseX) - ctx.getMouseXHF(),
-            ((float) mouseY) - ctx.getMouseYHF()
+            ((float) mouseX) - ctx.mouseXHF(),
+            ((float) mouseY) - ctx.mouseYHF()
         );
         ctx = new GuiImmediateContext(
-            ctx.getRenderContext(),
-            ctx.getRenderOffsetX(),
-            ctx.getRenderOffsetY(),
-            ctx.getWidth(),
-            ctx.getHeight(),
+            ctx.renderContext(),
+            ctx.renderOffsetX(),
+            ctx.renderOffsetY(),
+            ctx.width(),
+            ctx.height(),
             dx, dy,
             dx, dy,
             (float) mouseX, (float) mouseY

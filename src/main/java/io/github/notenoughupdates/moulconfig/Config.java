@@ -20,10 +20,10 @@
 
 package io.github.notenoughupdates.moulconfig;
 
-import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.HorizontalAlign;
 import io.github.notenoughupdates.moulconfig.processor.ProcessedCategory;
 import io.github.notenoughupdates.moulconfig.processor.ProcessedOption;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
 

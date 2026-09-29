@@ -21,7 +21,6 @@
 package io.github.notenoughupdates.moulconfig.gui.component;
 
 import io.github.notenoughupdates.moulconfig.GuiTextures;
-import net.minecraft.resources.Identifier;
 import io.github.notenoughupdates.moulconfig.gui.GuiComponent;
 import io.github.notenoughupdates.moulconfig.gui.GuiImmediateContext;
 import io.github.notenoughupdates.moulconfig.gui.MouseEvent;
@@ -29,6 +28,7 @@ import io.github.notenoughupdates.moulconfig.internal.LerpUtils;
 import io.github.notenoughupdates.moulconfig.internal.LerpingInteger;
 import io.github.notenoughupdates.moulconfig.observer.GetSetter;
 import lombok.ToString;
+import net.minecraft.resources.Identifier;
 
 
 /**
@@ -59,7 +59,7 @@ public class SwitchComponent extends GuiComponent {
 
     @Override
     public void render(GuiImmediateContext context) {
-        context.getRenderContext().drawTexturedRect(GuiTextures.TOGGLE_BAR, 0, 0, context.getWidth(), context.getHeight());
+        context.renderContext().drawTexturedRect(GuiTextures.TOGGLE_BAR, 0, 0, context.width(), context.height());
 
         boolean val = value.get();
         if (lastValue != val) {
@@ -83,17 +83,16 @@ public class SwitchComponent extends GuiComponent {
         } else {
             buttonLocation = GuiTextures.TOGGLE_ON;
         }
-        context.getRenderContext().drawTexturedRect(
+        context.renderContext().drawTexturedRect(
             buttonLocation,
-            animationPercentage * (context.getWidth() - 12), 0, 12, context.getHeight());
+            animationPercentage * (context.width() - 12), 0, 12, context.height());
     }
 
     @Override
     public boolean mouseEvent(MouseEvent event, GuiImmediateContext context) {
         super.mouseEvent(event, context);
-        if (!(event instanceof MouseEvent.Click)) return false;
-        var click = (MouseEvent.Click) event;
-        if (context.isHovered() && click.getMouseButton() == 0 && click.getMouseState()) {
+        if (!(event instanceof MouseEvent.Click click)) return false;
+        if (context.isHovered() && click.mouseButton() == 0 && click.mouseState()) {
             value.set(!value.get());
             return true;
         }

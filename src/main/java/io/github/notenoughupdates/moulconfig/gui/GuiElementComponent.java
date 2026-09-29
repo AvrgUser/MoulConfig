@@ -32,7 +32,7 @@ public class GuiElementComponent extends GuiComponent {
 
     @Override
     public void render(@NotNull GuiImmediateContext context) {
-        if (context.getRenderOffsetX() != 0 || context.getRenderOffsetY() != 0) {
+        if (context.renderOffsetX() != 0 || context.renderOffsetY() != 0) {
             Warnings.warn("Cannot render GuiElement with a pretransformed matrix stack");
         }
         element.render();
@@ -40,7 +40,7 @@ public class GuiElementComponent extends GuiComponent {
 
     @Override
     public boolean mouseEvent(@NotNull MouseEvent mouseEvent, @NotNull GuiImmediateContext context) {
-        return element.mouseInput(context.getMouseX(), context.getMouseY(), mouseEvent);
+        return element.mouseInput(context.mouseX(), context.mouseY(), mouseEvent);
     }
 
     @Override

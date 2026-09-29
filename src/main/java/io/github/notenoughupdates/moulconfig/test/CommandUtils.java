@@ -9,6 +9,7 @@ public class CommandUtils {
     public static LiteralArgumentBuilder<FabricClientCommandSource> literal(String name) {
         return LiteralArgumentBuilder.literal(name);
     }
+
     public static <T> RequiredArgumentBuilder<FabricClientCommandSource, T> argument(String name, ArgumentType<T> type) {
         return RequiredArgumentBuilder.argument(name, type);
     }

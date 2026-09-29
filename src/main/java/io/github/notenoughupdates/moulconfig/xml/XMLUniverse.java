@@ -1,8 +1,6 @@
 package io.github.notenoughupdates.moulconfig.xml;
 
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
-import net.minecraft.resources.Identifier;
-import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.GuiComponent;
 import io.github.notenoughupdates.moulconfig.gui.HorizontalAlign;
 import io.github.notenoughupdates.moulconfig.gui.VerticalAlign;
@@ -14,7 +12,8 @@ import io.github.notenoughupdates.moulconfig.xml.loaders.*;
 import io.github.notenoughupdates.moulconfig.xml.trans.UnboxGetSetter;
 import io.github.notenoughupdates.moulconfig.xml.trans.UnboxPrimitives;
 import lombok.SneakyThrows;
-
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.w3c.dom.Element;
@@ -22,12 +21,14 @@ import org.w3c.dom.Element;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.awt.Color;
+import java.awt.*;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.*;
+import java.util.List;
+import java.util.Queue;
 import java.util.function.Function;
 
 public class XMLUniverse {
@@ -232,7 +233,7 @@ public class XMLUniverse {
     @ApiStatus.Experimental
     public <T, R> GetSetter<R> mapObject(GetSetter<T> getSetter, Class<T> source, Class<R> dest) {
         //noinspection unchecked
-        return (GetSetter<R>) mapObject(getSetter, (Type) source, (Type) dest);
+        return (GetSetter<R>) mapObject(getSetter, source, (Type) dest);
     }
 
     public <E> E mapXMLObject(String attributeValue, Class<E> type) {

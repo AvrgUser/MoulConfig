@@ -5,15 +5,13 @@ import io.github.notenoughupdates.moulconfig.TitleRenderingBehaviour;
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
 import io.github.notenoughupdates.moulconfig.common.MoulConfigFontRenderer;
 import io.github.notenoughupdates.moulconfig.common.RenderContext;
-import lombok.val;
-import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.*;
 import io.github.notenoughupdates.moulconfig.gui.component.CenterComponent;
 import io.github.notenoughupdates.moulconfig.gui.component.PanelComponent;
 import io.github.notenoughupdates.moulconfig.processor.ProcessedOption;
 import lombok.Getter;
-
-
+import lombok.val;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NullMarked;
@@ -109,27 +107,27 @@ public abstract class ComponentEditor extends GuiOptionEditor {
 
         @Override
         protected GuiImmediateContext getChildContext(GuiImmediateContext context) {
-            return context.translated(5, 15, context.getWidth() / 3 - 10, context.getHeight() - 15);
+            return context.translated(5, 15, context.width() / 3 - 10, context.height() - 15);
         }
 
         protected int getEffectiveTopHeight(GuiImmediateContext context) {
-            return Math.min(context.getHeight(), (getTopHeight()));
+            return Math.min(context.height(), (getTopHeight()));
         }
 
         protected GuiImmediateContext getBottomContext(GuiImmediateContext context) {
             int effectiveTopHeight = getEffectiveTopHeight(context);
-            return context.translated(5, effectiveTopHeight + bottomOffset, context.getWidth() - 10, context.getHeight() - effectiveTopHeight - bottomOffset - 8);
+            return context.translated(5, effectiveTopHeight + bottomOffset, context.width() - 10, context.height() - effectiveTopHeight - bottomOffset - 8);
         }
 
         protected GuiImmediateContext getTopContext(GuiImmediateContext context) {
-            return context.translated(0, 0, context.getWidth(), getEffectiveTopHeight(context));
+            return context.translated(0, 0, context.width(), getEffectiveTopHeight(context));
         }
 
         int bottomOffset = 0;
 
         @Override
         public void render(GuiImmediateContext context) {
-            context.getRenderContext().drawDarkRect(0, 0, context.getWidth(), context.getHeight() - 2);
+            context.renderContext().drawDarkRect(0, 0, context.width(), context.height() - 2);
 
             var topContext = getTopContext(context);
             renderTitle(topContext);
@@ -138,10 +136,10 @@ public abstract class ComponentEditor extends GuiOptionEditor {
 
             renderElement(topContext);
 
-            context.getRenderContext().pushMatrix();
-            context.getRenderContext().translate(5, getEffectiveTopHeight(context) + bottomOffset);
+            context.renderContext().pushMatrix();
+            context.renderContext().translate(5, getEffectiveTopHeight(context) + bottomOffset);
             renderBottomElement(getBottomContext(context));
-            context.getRenderContext().popMatrix();
+            context.renderContext().popMatrix();
         }
 
         protected void renderBottomElement(GuiImmediateContext context) {
@@ -150,27 +148,27 @@ public abstract class ComponentEditor extends GuiOptionEditor {
         }
 
         protected void renderElement(GuiImmediateContext context) {
-            context.getRenderContext().pushMatrix();
-            context.getRenderContext().translate(5, 15);
+            context.renderContext().pushMatrix();
+            context.renderContext().translate(5, 15);
             this.getElement().render(getChildContext(context));
-            context.getRenderContext().popMatrix();
+            context.renderContext().popMatrix();
         }
 
         protected void renderTitle(GuiImmediateContext context) {
-            int width = context.getWidth();
-            var minecraft = context.getRenderContext().getMinecraft();
+            int width = context.width();
+            var minecraft = context.renderContext().getMinecraft();
             var fr = minecraft.getDefaultFontRenderer();
             switch (option.getConfig().getTitleRenderingBehaviour(option)) {
                 case WIDE_CENTERED_UNDERLINED:
-                    context.getRenderContext().drawHorizontalLine(16, 10, width - 10, 0xFF404040);
+                    context.renderContext().drawHorizontalLine(16, 10, width - 10, 0xFF404040);
                     // fallthrough;
                 case WIDE_CENTERED:
-                    context.getRenderContext().drawStringCenteredScaledMaxWidth(
+                    context.renderContext().drawStringCenteredScaledMaxWidth(
                         option.getName(), fr, width / 2, 10, true, width - 10, 0xe0e0e0
                     );
                     break;
                 case LEFT:
-                    context.getRenderContext().drawStringCenteredScaledMaxWidth(
+                    context.renderContext().drawStringCenteredScaledMaxWidth(
                         option.getName(), fr, width / 6, 10, true, width / 3 - 10, 0xe0e0e0
                     );
                     break;
@@ -181,28 +179,24 @@ public abstract class ComponentEditor extends GuiOptionEditor {
         public boolean mouseEvent(MouseEvent mouseEvent, GuiImmediateContext context) {
             if (super.mouseEvent(mouseEvent, getTopContext(context)))
                 return true;
-            if (bottomComponent != null && bottomComponent.mouseEvent(mouseEvent, getBottomContext(context)))
-                return true;
-            return false;
+            return bottomComponent != null && bottomComponent.mouseEvent(mouseEvent, getBottomContext(context));
         }
 
         @Override
         public boolean keyboardEvent(KeyboardEvent event, GuiImmediateContext context) {
             if (super.keyboardEvent(event, getTopContext(context)))
                 return true;
-            if (bottomComponent != null && bottomComponent.keyboardEvent(event, getBottomContext(context)))
-                return true;
-            return false;
+            return bottomComponent != null && bottomComponent.keyboardEvent(event, getBottomContext(context));
         }
 
         protected void renderDescription(@NotNull GuiImmediateContext context) {
-            int width = context.getWidth();
-            var minecraft = context.getRenderContext().getMinecraft();
+            int width = context.width();
+            var minecraft = context.renderContext().getMinecraft();
             var fr = minecraft.getDefaultFontRenderer();
             int yOffset = option.getConfig().getTitleRenderingBehaviour(option) != TitleRenderingBehaviour.LEFT ? fr.lineHeight + 13 : 5;
             float scale = 1;
             List<Component> lines;
-            int descriptionHeight = context.getHeight() - yOffset;
+            int descriptionHeight = context.height() - yOffset;
             while (true) {
                 lines = MoulConfigFontRenderer.splitText(option.getDescription(), (int) (width * 2 / 3 / scale - 10));
                 if (lines.size() * scale * (fr.lineHeight + 1) < descriptionHeight)
@@ -210,14 +204,14 @@ public abstract class ComponentEditor extends GuiOptionEditor {
                 scale -= 1 / 8f;
                 if (scale < 1 / 16f) break;
             }
-            context.getRenderContext().pushMatrix();
-            context.getRenderContext().translate(5 + width / 3, yOffset);
-            context.getRenderContext().scale(scale, scale);
+            context.renderContext().pushMatrix();
+            context.renderContext().translate(5 + width / 3, yOffset);
+            context.renderContext().scale(scale, scale);
             for (var line : lines) {
-                context.getRenderContext().drawString(fr, line, 0, 0, 0xc0c0c0, false);
-                context.getRenderContext().translate(0, fr.lineHeight + 1);
+                context.renderContext().drawString(fr, line, 0, 0, 0xc0c0c0, false);
+                context.renderContext().translate(0, fr.lineHeight + 1);
             }
-            context.getRenderContext().popMatrix();
+            context.renderContext().popMatrix();
         }
     }
 
@@ -258,9 +252,7 @@ public abstract class ComponentEditor extends GuiOptionEditor {
             if (overlay.keyboardEvent(keyboardEvent, ctx))
                 return true;
         }
-        if (getDelegate().keyboardEvent(keyboardEvent, ctx))
-            return true;
-        return false;
+        return getDelegate().keyboardEvent(keyboardEvent, ctx);
     }
 
     @Override
@@ -280,10 +272,10 @@ public abstract class ComponentEditor extends GuiOptionEditor {
         lastRenderHeight = getHeight();
 
         var context = getImmContext(x, y, width, getHeight(), renderContext);
-        context.getRenderContext().pushMatrix();
-        context.getRenderContext().translate(context.getRenderOffsetX(), context.getRenderOffsetY());
+        context.renderContext().pushMatrix();
+        context.renderContext().translate(context.renderOffsetX(), context.renderOffsetY());
         getDelegate().render(context);
-        context.getRenderContext().popMatrix();
+        context.renderContext().popMatrix();
     }
 
     @Override
@@ -304,7 +296,7 @@ public abstract class ComponentEditor extends GuiOptionEditor {
             return _void;
         });
         val ctx = getImmContext(overlayX, overlayY, overlay.getWidth(), overlay.getHeight(), context);
-        ctx.getRenderContext().translate(overlayX, overlayY);
+        ctx.renderContext().translate(overlayX, overlayY);
         overlay.render(ctx);
     }
 }

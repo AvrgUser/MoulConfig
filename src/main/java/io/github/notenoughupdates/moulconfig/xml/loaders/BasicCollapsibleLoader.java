@@ -1,7 +1,6 @@
 package io.github.notenoughupdates.moulconfig.xml.loaders;
 
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
-import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.component.CollapsibleComponent;
 import io.github.notenoughupdates.moulconfig.gui.component.TextComponent;
 import io.github.notenoughupdates.moulconfig.observer.GetSetter;
@@ -9,6 +8,7 @@ import io.github.notenoughupdates.moulconfig.xml.ChildCount;
 import io.github.notenoughupdates.moulconfig.xml.XMLContext;
 import io.github.notenoughupdates.moulconfig.xml.XMLGuiLoader;
 import io.github.notenoughupdates.moulconfig.xml.XMLUniverse;
+import net.minecraft.network.chat.Component;
 import org.w3c.dom.Element;
 
 import javax.xml.namespace.QName;
@@ -32,9 +32,19 @@ public class BasicCollapsibleLoader implements XMLGuiLoader.Basic<CollapsibleCom
         );
         return new CollapsibleComponent(() -> textComponent, () -> body, state);
     }
-    @Override public QName getName() { return XMLUniverse.qName("Collapsible"); }
-    @Override public ChildCount getChildCount() { return ChildCount.ONE; }
-    @Override public Map<String, Boolean> getAttributeNames() {
+
+    @Override
+    public QName getName() {
+        return XMLUniverse.qName("Collapsible");
+    }
+
+    @Override
+    public ChildCount getChildCount() {
+        return ChildCount.ONE;
+    }
+
+    @Override
+    public Map<String, Boolean> getAttributeNames() {
         Map<String, Boolean> map = new LinkedHashMap<>();
         map.put("title", true);
         map.put("value", false);

@@ -34,7 +34,6 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.stream.Stream;
 
 @Slf4j
 @NullMarked
@@ -163,7 +162,7 @@ public class MoulConfigPlatform implements IMinecraft {
 
     @Override
     public int getScaleFactor() {
-        return (int) mc.getWindow().getGuiScale();
+        return mc.getWindow().getGuiScale();
     }
 
     @Override
@@ -205,11 +204,11 @@ public class MoulConfigPlatform implements IMinecraft {
             }));
         }
 
-        //? if >= 26.2 {
+        //? if >=26.2 {
         mc.gui.hud.getChat().addClientSystemMessage(message);
         //?} else {
         /*mc.gui.getChat().addClientSystemMessage(message);
-        *///?}
+         *///?}
     }
 
     @Override
@@ -247,11 +246,11 @@ public class MoulConfigPlatform implements IMinecraft {
 
         return new GuiGraphicsExtractor(
             mc,
-            //? if >= 26.2 {
+            //? if >=26.2 {
             mc.gameRenderer.gameRenderState().guiRenderState
             //?} else {
             /*mc.gameRenderer.getGameRenderState().guiRenderState
-            *///?}
+             *///?}
             ,
             (int) mc.mouseHandler.getScaledXPos(mc.getWindow()),
             (int) mc.mouseHandler.getScaledYPos(mc.getWindow())
@@ -264,11 +263,11 @@ public class MoulConfigPlatform implements IMinecraft {
     }
 
     public void openWrappedScreen(Screen screen) {
-        //?if >= 26.2 {
+        //? if >=26.2 {
         mc.gui.setScreen(screen);
-        //? } else {
+        //?} else {
         /*mc.setScreen(screen);
-        *///?}
+         *///?}
     }
 
     @Override

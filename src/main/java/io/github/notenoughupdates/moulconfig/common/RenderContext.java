@@ -1,10 +1,10 @@
 package io.github.notenoughupdates.moulconfig.common;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import io.github.notenoughupdates.moulconfig.internal.NinePatchRenderer;
 import juuxel.libninepatch.NinePatch;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
-import io.github.notenoughupdates.moulconfig.internal.NinePatchRenderer;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.ApiStatus;
@@ -118,12 +118,13 @@ public interface RenderContext {
 
     /**
      * Renders a list of triangles.
-     * @param colour the color to render the triangles in
+     *
+     * @param colour      the color to render the triangles in
      * @param coordinates The coordinates of the triangles, encoded as 3 vertices consisting of 6 floats arranged as {@code [x0, y0, x1, y1, x2, y2]}
      */
     default void drawColoredTriangles(int colour, float... coordinates) {
         assert coordinates.length % 6 == 0;
-        float[] newCoordinates =  new float[coordinates.length / 3 * 4];
+        float[] newCoordinates = new float[coordinates.length / 3 * 4];
         for (int i = 0; i < coordinates.length / 6; i++) {
             newCoordinates[i * 8] = coordinates[i * 6];
             newCoordinates[i * 8 + 1] = coordinates[i * 6 + 1];

@@ -25,7 +25,6 @@ import io.github.notenoughupdates.moulconfig.gui.GuiImmediateContext;
 import io.github.notenoughupdates.moulconfig.gui.MouseEvent;
 import io.github.notenoughupdates.moulconfig.processor.ProcessedOption;
 
-import lombok.val;
 import org.jetbrains.annotations.NotNull;
 
 public class GuiOptionEditorAccordion extends ComponentEditor {
@@ -50,15 +49,15 @@ public class GuiOptionEditorAccordion extends ComponentEditor {
 
         @Override
         public void render(@NotNull GuiImmediateContext context) {
-            context.getRenderContext().drawDarkRect(0, 0, context.getWidth(), context.getHeight(), true);
-            context.getRenderContext().drawOpenCloseTriangle(accordionToggled, 6, 6, 13.5F - 6F, 13.5F - 6F, -1);
-            context.getRenderContext().drawStringScaledMaxWidth(option.getName(), context.getRenderContext().getMinecraft().getDefaultFontRenderer(), 18, 6, false, context.getWidth() - 18, 0xc0c0c0);
+            context.renderContext().drawDarkRect(0, 0, context.width(), context.height(), true);
+            context.renderContext().drawOpenCloseTriangle(accordionToggled, 6, 6, 13.5F - 6F, 13.5F - 6F, -1);
+            context.renderContext().drawStringScaledMaxWidth(option.getName(), context.renderContext().getMinecraft().getDefaultFontRenderer(), 18, 6, false, context.width() - 18, 0xc0c0c0);
         }
 
         @Override
         public boolean mouseEvent(@NotNull MouseEvent mouseEvent, @NotNull GuiImmediateContext context) {
-            if (mouseEvent instanceof MouseEvent.Click click) {
-                if (click.getMouseState() && context.isHovered() && click.getMouseButton() == 0) {
+            if (mouseEvent instanceof MouseEvent.Click(int mouseButton, boolean mouseState)) {
+                if (mouseState && context.isHovered() && mouseButton == 0) {
                     accordionToggled = !accordionToggled;
                     return true;
                 }

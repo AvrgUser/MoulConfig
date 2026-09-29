@@ -22,9 +22,6 @@ package io.github.notenoughupdates.moulconfig.gui.editors;
 
 import io.github.notenoughupdates.moulconfig.Config;
 import io.github.notenoughupdates.moulconfig.GuiTextures;
-import io.github.notenoughupdates.moulconfig.common.IMinecraft;
-import lombok.val;
-import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.GuiComponent;
 import io.github.notenoughupdates.moulconfig.gui.GuiImmediateContext;
 import io.github.notenoughupdates.moulconfig.gui.MouseEvent;
@@ -32,8 +29,7 @@ import io.github.notenoughupdates.moulconfig.internal.TypeUtils;
 import io.github.notenoughupdates.moulconfig.internal.Warnings;
 import io.github.notenoughupdates.moulconfig.processor.ProcessedOption;
 import lombok.Getter;
-
-
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
@@ -117,19 +113,19 @@ public class GuiOptionEditorButton extends ComponentEditor {
         @Override
         public void render(@NotNull GuiImmediateContext context) {
 
-            context.getRenderContext().drawTexturedRect(GuiTextures.BUTTON, 0, 0, context.getWidth(), context.getHeight());
-            context.getRenderContext().drawStringCenteredScaledMaxWidth(
+            context.renderContext().drawTexturedRect(GuiTextures.BUTTON, 0, 0, context.width(), context.height());
+            context.renderContext().drawStringCenteredScaledMaxWidth(
                 buttonText,
-                context.getRenderContext().getMinecraft().getDefaultFontRenderer(),
-                context.getWidth() / 2f, context.getHeight() / 2f,
-                false, context.getWidth() - 4, 0xFF303030
+                context.renderContext().getMinecraft().getDefaultFontRenderer(),
+                context.width() / 2f, context.height() / 2f,
+                false, context.width() - 4, 0xFF303030
             );
         }
 
         @Override
         public boolean mouseEvent(@NotNull MouseEvent mouseEvent, @NotNull GuiImmediateContext context) {
-            if (mouseEvent instanceof MouseEvent.Click click) {
-                if (click.getMouseState() && context.isHovered() && click.getMouseButton() == 0) {
+            if (mouseEvent instanceof MouseEvent.Click(int mouseButton, boolean mouseState)) {
+                if (mouseState && context.isHovered() && mouseButton == 0) {
                     onClick();
                     return true;
                 }

@@ -2,7 +2,7 @@ package io.github.notenoughupdates.moulconfig;
 
 import com.google.gson.annotations.Expose;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.Objects;
 
 @SuppressWarnings({"DeprecatedIsStillUsed", "deprecation"})
@@ -160,13 +160,12 @@ public final class ChromaColour {
 
     @Deprecated
     public static String special(int chromaSpeed, int alpha, int r, int g, int b) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(Integer.toString(chromaSpeed, RADIX)).append(':');
-        sb.append(Integer.toString(alpha, RADIX)).append(':');
-        sb.append(Integer.toString(r, RADIX)).append(':');
-        sb.append(Integer.toString(g, RADIX)).append(':');
-        sb.append(Integer.toString(b, RADIX));
-        return sb.toString();
+        String sb = Integer.toString(chromaSpeed, RADIX) + ':' +
+            Integer.toString(alpha, RADIX) + ':' +
+            Integer.toString(r, RADIX) + ':' +
+            Integer.toString(g, RADIX) + ':' +
+            Integer.toString(b, RADIX);
+        return sb;
     }
 
     private static int[] decompose(String csv) {
@@ -267,17 +266,30 @@ public final class ChromaColour {
         return new ChromaColour(hue, saturation, brightness, timeForFullRotationInMillis, alpha);
     }
 
-    public float component1() { return hue; }
-    public float component2() { return saturation; }
-    public float component3() { return brightness; }
-    public int component4() { return timeForFullRotationInMillis; }
-    public int component5() { return alpha; }
+    public float component1() {
+        return hue;
+    }
+
+    public float component2() {
+        return saturation;
+    }
+
+    public float component3() {
+        return brightness;
+    }
+
+    public int component4() {
+        return timeForFullRotationInMillis;
+    }
+
+    public int component5() {
+        return alpha;
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ChromaColour)) return false;
-        ChromaColour that = (ChromaColour) o;
+        if (!(o instanceof ChromaColour that)) return false;
         return Float.compare(that.hue, hue) == 0
             && Float.compare(that.saturation, saturation) == 0
             && Float.compare(that.brightness, brightness) == 0

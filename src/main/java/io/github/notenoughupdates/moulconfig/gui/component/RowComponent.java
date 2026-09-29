@@ -65,7 +65,7 @@ public class RowComponent extends GuiComponent {
     }
 
     public void foldWithContext(GuiImmediateContext context, BiConsumer<GuiComponent, GuiImmediateContext> visitor) {
-        int height = context.getHeight();
+        int height = context.height();
         foldChildren(0, (child, position) -> {
             visitor.accept(child, context.translated(position, 0, child.getWidth(), height));
             return child.getWidth() + position;
@@ -74,12 +74,12 @@ public class RowComponent extends GuiComponent {
 
     @Override
     public void render(GuiImmediateContext context) {
-        context.getRenderContext().pushMatrix();
+        context.renderContext().pushMatrix();
         foldWithContext(context, (child, childContext) -> {
             child.render(childContext);
-            context.getRenderContext().translate(child.getWidth(), 0);
+            context.renderContext().translate(child.getWidth(), 0);
         });
-        context.getRenderContext().popMatrix();
+        context.renderContext().popMatrix();
     }
 
     @Override

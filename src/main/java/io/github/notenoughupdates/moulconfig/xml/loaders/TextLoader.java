@@ -1,15 +1,13 @@
 package io.github.notenoughupdates.moulconfig.xml.loaders;
 
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
-import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.component.TextComponent;
 import io.github.notenoughupdates.moulconfig.internal.MapOfs;
-import io.github.notenoughupdates.moulconfig.internal.ComponentHelper;
 import io.github.notenoughupdates.moulconfig.xml.ChildCount;
 import io.github.notenoughupdates.moulconfig.xml.XMLContext;
 import io.github.notenoughupdates.moulconfig.xml.XMLGuiLoader;
 import io.github.notenoughupdates.moulconfig.xml.XMLUniverse;
-
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 import org.w3c.dom.Element;

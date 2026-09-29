@@ -18,27 +18,26 @@ public class SliderWithTextComponent extends SliderComponent {
 
     @Override
     public void render(GuiImmediateContext context) {
-        context.getRenderContext().translate(-(getWidth() / 3F), 0F);
+        context.renderContext().translate(-(getWidth() / 3F), 0F);
         super.render(context);
-        context.getRenderContext().translate(60F, -5F);
+        context.renderContext().translate(60F, -5F);
         getComponentNumberInput().render(context.translated(60, -5, getComponentNumberInput().getWidth(), 18));
     }
 
     private boolean isHovered(GuiImmediateContext context) {
-        return context.getMouseX() >= -getWidth() / 3
-            && context.getMouseX() < getWidth() - 13
-            && context.getMouseY() >= 0
-            && context.getMouseY() < context.getHeight();
+        return context.mouseX() >= -getWidth() / 3
+            && context.mouseX() < getWidth() - 13
+            && context.mouseY() >= 0
+            && context.mouseY() < context.height();
     }
 
     @Override
     public boolean mouseEvent(MouseEvent mouseEvent, GuiImmediateContext context) {
-        if (!context.getRenderContext().isMouseButtonDown(0)) {
+        if (!context.renderContext().isMouseButtonDown(0)) {
             clicked = false;
         }
-        if (isHovered(context) && mouseEvent instanceof MouseEvent.Click) {
-            MouseEvent.Click click = (MouseEvent.Click) mouseEvent;
-            if (click.getMouseState() && click.getMouseButton() == 0) {
+        if (isHovered(context) && mouseEvent instanceof MouseEvent.Click click) {
+            if (click.mouseState() && click.mouseButton() == 0) {
                 clicked = true;
             }
         }
@@ -57,7 +56,7 @@ public class SliderWithTextComponent extends SliderComponent {
 
     @Override
     public void setValueFromContext(GuiImmediateContext context) {
-        float v = (context.getMouseX() + getWidth() / 3F) * (maxValue - minValue) / context.getWidth() + minValue;
+        float v = (context.mouseX() + getWidth() / 3F) * (maxValue - minValue) / context.width() + minValue;
         v = Math.min(v, maxValue);
         v = Math.max(v, minValue);
         v = Math.round(v / minStep) * minStep;

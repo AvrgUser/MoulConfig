@@ -9,11 +9,10 @@ import io.github.notenoughupdates.moulconfig.observer.GetSetter;
 import io.github.notenoughupdates.moulconfig.observer.ObservableList;
 import lombok.Getter;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.IdentityHashMap;
 import java.util.List;
-import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -70,8 +69,8 @@ public class ArrayComponent<T> extends GuiComponent {
 
     public void foldWithContext(GuiImmediateContext context, ContextVisitor visitor) {
         foldChildren(new MoulConfigPair<>(0, 0), (child, position) -> {
-            visitor.onContext(child, context.translated(0, position.getFirst(), child.getWidth(), child.getHeight()), position.getSecond());
-            return new MoulConfigPair<>(child.getHeight() + position.getFirst(), position.getSecond() + 1);
+            visitor.onContext(child, context.translated(0, position.first(), child.getWidth(), child.getHeight()), position.second());
+            return new MoulConfigPair<>(child.getHeight() + position.first(), position.second() + 1);
         });
     }
 
@@ -87,14 +86,14 @@ public class ArrayComponent<T> extends GuiComponent {
 
     @Override
     public void render(GuiImmediateContext context) {
-        context.getRenderContext().pushMatrix();
+        context.renderContext().pushMatrix();
         foldWithContext(context, (child, childContext, index) -> {
             Color color = (index % 2 == 0 ? evenRows : oddRows).get();
-            childContext.getRenderContext().drawColoredRect(0f, 0f, childContext.getWidth(), child.getHeight(), color.getRGB());
+            childContext.renderContext().drawColoredRect(0f, 0f, childContext.width(), child.getHeight(), color.getRGB());
             child.render(childContext);
-            context.getRenderContext().translate(0, child.getHeight());
+            context.renderContext().translate(0, child.getHeight());
         });
-        context.getRenderContext().popMatrix();
+        context.renderContext().popMatrix();
     }
 
     @Override

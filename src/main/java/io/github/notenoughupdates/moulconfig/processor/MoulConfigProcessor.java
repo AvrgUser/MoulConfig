@@ -23,18 +23,21 @@ package io.github.notenoughupdates.moulconfig.processor;
 
 import io.github.notenoughupdates.moulconfig.Config;
 import io.github.notenoughupdates.moulconfig.annotations.ConfigOption;
-import lombok.val;
-import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.GuiOptionEditor;
 import io.github.notenoughupdates.moulconfig.gui.editors.GuiOptionEditorAccordion;
 import io.github.notenoughupdates.moulconfig.internal.Warnings;
 import lombok.Getter;
+import lombok.val;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Stack;
 import java.util.function.BiFunction;
 
 public class MoulConfigProcessor<T extends Config> implements ConfigStructureReader {
@@ -42,12 +45,12 @@ public class MoulConfigProcessor<T extends Config> implements ConfigStructureRea
     private final T configBaseObject;
     private final LinkedHashMap<String, ProcessedCategoryImpl> categories = new LinkedHashMap<>();
     private ProcessedCategoryImpl currentCategory;
-    private Stack<Integer> accordion = new Stack<>();
-    private Stack<String> categoryPath = new Stack<>();
+    private final Stack<Integer> accordion = new Stack<>();
+    private final Stack<String> categoryPath = new Stack<>();
     @Getter
     private boolean isFinalized;
-    private Map<Field, ProcessedOption> optionLookup = new HashMap<>();
-    private Map<Class<? extends Annotation>, BiFunction<ProcessedOption, Annotation, GuiOptionEditor>> editors = new HashMap<>();
+    private final Map<Field, ProcessedOption> optionLookup = new HashMap<>();
+    private final Map<Class<? extends Annotation>, BiFunction<ProcessedOption, Annotation, GuiOptionEditor>> editors = new HashMap<>();
     private ConfigProcessorDriver driver;
 
     public MoulConfigProcessor(T configBaseObject) {

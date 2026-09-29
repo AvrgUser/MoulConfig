@@ -10,14 +10,7 @@ import java.util.List;
 import java.util.function.BiFunction;
 
 public class ManagedConfigBuilder<T> extends ManagedDataFileBuilder<T> {
-    static final class CustomProcessor {
-        final Class<? extends Annotation> annotation;
-        final BiFunction<ProcessedOption, Annotation, GuiOptionEditor> method;
-
-        CustomProcessor(Class<? extends Annotation> annotation, BiFunction<ProcessedOption, Annotation, GuiOptionEditor> method) {
-            this.annotation = annotation;
-            this.method = method;
-        }
+    record CustomProcessor(Class<? extends Annotation> annotation, BiFunction<ProcessedOption, Annotation, GuiOptionEditor> method) {
     }
 
     private boolean useDefaultProcessors = true;
@@ -28,13 +21,33 @@ public class ManagedConfigBuilder<T> extends ManagedDataFileBuilder<T> {
         super(file, clazz);
     }
 
-    public boolean getUseDefaultProcessors() { return useDefaultProcessors; }
-    public boolean isUseDefaultProcessors() { return useDefaultProcessors; }
-    public void setUseDefaultProcessors(boolean useDefaultProcessors) { this.useDefaultProcessors = useDefaultProcessors; }
-    public boolean getCheckExpose() { return checkExpose; }
-    public boolean isCheckExpose() { return checkExpose; }
-    public void setCheckExpose(boolean checkExpose) { this.checkExpose = checkExpose; }
-    List<CustomProcessor> getCustomProcessors() { return customProcessors; }
+    public boolean getUseDefaultProcessors() {
+        return useDefaultProcessors;
+    }
+
+    public boolean isUseDefaultProcessors() {
+        return useDefaultProcessors;
+    }
+
+    public void setUseDefaultProcessors(boolean useDefaultProcessors) {
+        this.useDefaultProcessors = useDefaultProcessors;
+    }
+
+    public boolean getCheckExpose() {
+        return checkExpose;
+    }
+
+    public boolean isCheckExpose() {
+        return checkExpose;
+    }
+
+    public void setCheckExpose(boolean checkExpose) {
+        this.checkExpose = checkExpose;
+    }
+
+    List<CustomProcessor> getCustomProcessors() {
+        return customProcessors;
+    }
 
     public void clearCustomProcessors() {
         customProcessors.clear();

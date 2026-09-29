@@ -1,11 +1,6 @@
 package io.github.notenoughupdates.moulconfig.gui.component;
 
-import io.github.notenoughupdates.moulconfig.gui.GuiComponent;
-import io.github.notenoughupdates.moulconfig.gui.GuiImmediateContext;
-import io.github.notenoughupdates.moulconfig.gui.HorizontalAlign;
-import io.github.notenoughupdates.moulconfig.gui.KeyboardEvent;
-import io.github.notenoughupdates.moulconfig.gui.MouseEvent;
-import io.github.notenoughupdates.moulconfig.gui.VerticalAlign;
+import io.github.notenoughupdates.moulconfig.gui.*;
 
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
@@ -21,9 +16,17 @@ public class AlignComponent extends GuiComponent {
         this.vertical = vertical;
     }
 
-    public GuiComponent getChild() { return child; }
-    public Supplier<HorizontalAlign> getHorizontal() { return horizontal; }
-    public Supplier<VerticalAlign> getVertical() { return vertical; }
+    public GuiComponent getChild() {
+        return child;
+    }
+
+    public Supplier<HorizontalAlign> getHorizontal() {
+        return horizontal;
+    }
+
+    public Supplier<VerticalAlign> getVertical() {
+        return vertical;
+    }
 
     @Override
     public int getWidth() {
@@ -44,9 +47,9 @@ public class AlignComponent extends GuiComponent {
             case LEFT:
                 return 0;
             case CENTER:
-                return context.getWidth() / 2 - child.getWidth() / 2;
+                return context.width() / 2 - child.getWidth() / 2;
             case RIGHT:
-                return context.getWidth() - child.getWidth();
+                return context.width() - child.getWidth();
             default:
                 throw new IllegalStateException("Unknown horizontal alignment");
         }
@@ -55,9 +58,9 @@ public class AlignComponent extends GuiComponent {
     public int getChildOffsetY(GuiImmediateContext context) {
         switch (vertical.get()) {
             case BOTTOM:
-                return context.getHeight() - child.getHeight();
+                return context.height() - child.getHeight();
             case CENTER:
-                return context.getHeight() / 2 - child.getHeight() / 2;
+                return context.height() / 2 - child.getHeight() / 2;
             case TOP:
                 return 0;
             default:
@@ -72,10 +75,10 @@ public class AlignComponent extends GuiComponent {
 
     @Override
     public void render(GuiImmediateContext context) {
-        context.getRenderContext().pushMatrix();
-        context.getRenderContext().translate((float) getChildOffsetX(context), (float) getChildOffsetY(context));
+        context.renderContext().pushMatrix();
+        context.renderContext().translate((float) getChildOffsetX(context), (float) getChildOffsetY(context));
         child.render(getChildContext(context));
-        context.getRenderContext().popMatrix();
+        context.renderContext().popMatrix();
     }
 
     @Override

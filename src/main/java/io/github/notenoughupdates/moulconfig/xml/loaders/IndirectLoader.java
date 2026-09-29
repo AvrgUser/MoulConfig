@@ -13,10 +13,23 @@ import java.util.Collections;
 import java.util.Map;
 
 public class IndirectLoader implements XMLGuiLoader.Basic<IndirectComponent> {
-    @Override public IndirectComponent createInstance(XMLContext<?> context, Element element) {
+    @Override
+    public IndirectComponent createInstance(XMLContext<?> context, Element element) {
         return new IndirectComponent(context.getPropertyFromAttribute(element, new QName("value"), GuiComponent.class));
     }
-    @Override public QName getName() { return XMLUniverse.qName("Indirect"); }
-    @Override public ChildCount getChildCount() { return ChildCount.NONE; }
-    @Override public Map<String, Boolean> getAttributeNames() { return Collections.singletonMap("value", true); }
+
+    @Override
+    public QName getName() {
+        return XMLUniverse.qName("Indirect");
+    }
+
+    @Override
+    public ChildCount getChildCount() {
+        return ChildCount.NONE;
+    }
+
+    @Override
+    public Map<String, Boolean> getAttributeNames() {
+        return Collections.singletonMap("value", true);
+    }
 }

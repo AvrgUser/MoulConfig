@@ -38,37 +38,37 @@ public class SliderComponent extends GuiComponent {
             setValueFromContext(context);
         }
         float currentValue = getValueAsFloat();
-        context.getRenderContext().drawTexturedRect(GuiTextures.SLIDER_ON_CAP, 0F, 0F, 4F, (float) context.getHeight());
-        context.getRenderContext().drawTexturedRect(GuiTextures.SLIDER_OFF_CAP, (float) (width - 4), 0F, 4F, (float) context.getHeight());
+        context.renderContext().drawTexturedRect(GuiTextures.SLIDER_ON_CAP, 0F, 0F, 4F, (float) context.height());
+        context.renderContext().drawTexturedRect(GuiTextures.SLIDER_OFF_CAP, (float) (width - 4), 0F, 4F, (float) context.height());
         float coerced = Math.max(minValue, Math.min(maxValue, currentValue));
-        int sliderPosition = (int) ((coerced - minValue) / (maxValue - minValue) * context.getWidth());
+        int sliderPosition = (int) ((coerced - minValue) / (maxValue - minValue) * context.width());
         if (sliderPosition > 5) {
-            context.getRenderContext().drawTexturedRect(GuiTextures.SLIDER_ON_SEGMENT, 4F, 0F, (float) (sliderPosition - 4), (float) context.getHeight());
+            context.renderContext().drawTexturedRect(GuiTextures.SLIDER_ON_SEGMENT, 4F, 0F, (float) (sliderPosition - 4), (float) context.height());
         }
-        if (sliderPosition < context.getWidth() - 5) {
-            context.getRenderContext().drawTexturedRect(
+        if (sliderPosition < context.width() - 5) {
+            context.renderContext().drawTexturedRect(
                 GuiTextures.SLIDER_OFF_SEGMENT,
                 (float) sliderPosition,
                 0F,
-                (float) (context.getWidth() - 4 - sliderPosition),
-                (float) context.getHeight()
+                (float) (context.width() - 4 - sliderPosition),
+                (float) context.height()
             );
         }
         for (int i = 0; i <= 3; i++) {
-            int notchX = context.getWidth() * i / 4 - 1;
-            context.getRenderContext().drawTexturedRect(
+            int notchX = context.width() * i / 4 - 1;
+            context.renderContext().drawTexturedRect(
                 notchX > sliderPosition ? GuiTextures.SLIDER_OFF_NOTCH : GuiTextures.SLIDER_ON_NOTCH,
                 (float) notchX,
-                (context.getHeight() - 4) / 2F,
+                (context.height() - 4) / 2F,
                 2F,
                 4F
             );
         }
-        context.getRenderContext().drawTexturedRect(GuiTextures.SLIDER_BUTTON, (float) (sliderPosition - 4), 0F, 8F, (float) context.getHeight());
+        context.renderContext().drawTexturedRect(GuiTextures.SLIDER_BUTTON, (float) (sliderPosition - 4), 0F, 8F, (float) context.height());
     }
 
     public void setValueFromContext(GuiImmediateContext context) {
-        float v = context.getMouseX() * (maxValue - minValue) / context.getWidth() + minValue;
+        float v = context.mouseX() * (maxValue - minValue) / context.width() + minValue;
         v = Math.min(v, maxValue);
         v = Math.max(v, minValue);
         v = Math.round(v / minStep) * minStep;
@@ -77,12 +77,11 @@ public class SliderComponent extends GuiComponent {
 
     @Override
     public boolean mouseEvent(MouseEvent mouseEvent, GuiImmediateContext context) {
-        if (!context.getRenderContext().isMouseButtonDown(0)) {
+        if (!context.renderContext().isMouseButtonDown(0)) {
             clicked = false;
         }
-        if (context.isHovered() && mouseEvent instanceof MouseEvent.Click) {
-            MouseEvent.Click click = (MouseEvent.Click) mouseEvent;
-            if (click.getMouseState() && click.getMouseButton() == 0) {
+        if (context.isHovered() && mouseEvent instanceof MouseEvent.Click click) {
+            if (click.mouseState() && click.mouseButton() == 0) {
                 clicked = true;
             }
         }

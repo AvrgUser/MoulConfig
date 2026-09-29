@@ -1,8 +1,6 @@
 package io.github.notenoughupdates.moulconfig.common;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import net.minecraft.client.gui.Font;
-import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.GuiComponent;
 import io.github.notenoughupdates.moulconfig.gui.GuiContext;
 import io.github.notenoughupdates.moulconfig.gui.GuiElement;
@@ -12,6 +10,8 @@ import io.github.notenoughupdates.moulconfig.internal.MCLogger;
 import io.github.notenoughupdates.moulconfig.internal.Warnings;
 import io.github.notenoughupdates.moulconfig.processor.MoulConfigProcessor;
 import io.github.notenoughupdates.moulconfig.xml.XMLUniverse;
+import net.minecraft.client.gui.Font;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.ApiStatus;
@@ -43,8 +43,8 @@ public interface IMinecraft {
     default MoulConfigPair<Integer, Integer> getMousePosition() {
         var mousePositionHF = getMousePositionHF();
         return new MoulConfigPair<>(
-                mousePositionHF.getFirst().intValue(),
-                mousePositionHF.getSecond().intValue());
+            mousePositionHF.first().intValue(),
+            mousePositionHF.second().intValue());
     }
 
     default int getMouseX() {
@@ -56,11 +56,11 @@ public interface IMinecraft {
     }
 
     default double getMouseXHF() {
-        return getMousePositionHF().getFirst();
+        return getMousePositionHF().first();
     }
 
     default double getMouseYHF() {
-        return getMousePositionHF().getSecond();
+        return getMousePositionHF().second();
     }
 
     boolean isDevelopmentEnvironment();

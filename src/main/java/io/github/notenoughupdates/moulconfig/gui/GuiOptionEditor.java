@@ -26,10 +26,11 @@ import io.github.notenoughupdates.moulconfig.annotations.SearchTag;
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
 import io.github.notenoughupdates.moulconfig.common.MoulConfigFontRenderer;
 import io.github.notenoughupdates.moulconfig.common.RenderContext;
-import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.processor.HasDebugLocation;
 import io.github.notenoughupdates.moulconfig.processor.ProcessedOption;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.ApiStatus;
+
 import java.util.List;
 import java.util.Locale;
 

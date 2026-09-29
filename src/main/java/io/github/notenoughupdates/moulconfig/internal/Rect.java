@@ -24,7 +24,7 @@ public class Rect {
     }
 
     public static Rect ofGuiImmediateContext(@NotNull GuiImmediateContext context) {
-        return ofXYWH(context.getRenderOffsetX(), context.getRenderOffsetY(), context.getWidth(), context.getHeight());
+        return ofXYWH(context.renderOffsetX(), context.renderOffsetY(), context.width(), context.height());
     }
 
     public int getX() {

@@ -21,8 +21,7 @@ public interface KeyboardEvent {
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
-            if (!(o instanceof CharTyped)) return false;
-            CharTyped charTyped = (CharTyped) o;
+            if (!(o instanceof CharTyped charTyped)) return false;
             return character == charTyped.character;
         }
 
@@ -79,8 +78,7 @@ public interface KeyboardEvent {
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
-            if (!(o instanceof KeyPressed)) return false;
-            KeyPressed that = (KeyPressed) o;
+            if (!(o instanceof KeyPressed that)) return false;
             return keycode == that.keycode && scancode == that.scancode && pressed == that.pressed;
         }
 

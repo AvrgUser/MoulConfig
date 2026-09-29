@@ -34,11 +34,11 @@ public class ScaleComponent extends GuiComponent {
 
     @Override
     public void render(GuiImmediateContext context) {
-        context.getRenderContext().pushMatrix();
+        context.renderContext().pushMatrix();
         float scale = scaleFactor.get();
-        context.getRenderContext().scale(scale, scale);
+        context.renderContext().scale(scale, scale);
         child.render(context.scaled(scale));
-        context.getRenderContext().popMatrix();
+        context.renderContext().popMatrix();
     }
 
     @Override

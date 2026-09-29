@@ -2,10 +2,10 @@ package io.github.notenoughupdates.moulconfig.processor;
 
 import io.github.notenoughupdates.moulconfig.Config;
 import io.github.notenoughupdates.moulconfig.annotations.SearchTag;
-import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.GuiOptionEditor;
 import io.github.notenoughupdates.moulconfig.gui.editors.GuiOptionEditorAccordion;
 import io.github.notenoughupdates.moulconfig.observer.Property;
+import net.minecraft.network.chat.Component;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
@@ -137,12 +137,10 @@ public class ProcessedOptionImpl implements ProcessedOption, ProcessedOption.Has
 
     private Object coerceValue(Object value) {
         Type type = getType();
-        if (!(value instanceof Number) || !(type instanceof Class<?>)) {
+        if (!(value instanceof Number number) || !(type instanceof Class<?> targetType)) {
             return value;
         }
 
-        Number number = (Number) value;
-        Class<?> targetType = (Class<?>) type;
         if (targetType == int.class || targetType == Integer.class) {
             return number.intValue();
         } else if (targetType == float.class || targetType == Float.class) {

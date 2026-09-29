@@ -22,7 +22,6 @@ package io.github.notenoughupdates.moulconfig.processor;
 
 import io.github.notenoughupdates.moulconfig.Config;
 import io.github.notenoughupdates.moulconfig.annotations.ConfigOption;
-import net.minecraft.network.chat.Component;
 
 import java.lang.reflect.Field;
 

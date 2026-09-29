@@ -25,116 +25,85 @@ import java.util.Objects;
 /**
  * A context containing the constraints of a gui elements, as well as the state of the user interface, relative to that gui element.
  */
-public final class GuiImmediateContext {
-    private final RenderContext renderContext;
-    private final int renderOffsetX;
-    private final int renderOffsetY;
-    private final int width;
-    private final int height;
-    private final int mouseX;
-    private final int mouseY;
-    private final int absoluteMouseX;
-    private final int absoluteMouseY;
-    private final float mouseXHF;
-    private final float mouseYHF;
-
-    public GuiImmediateContext(
-        RenderContext renderContext,
-        int renderOffsetX,
-        int renderOffsetY,
-        int width,
-        int height,
-        int mouseX,
-        int mouseY,
-        int absoluteMouseX,
-        int absoluteMouseY,
-        float mouseXHF,
-        float mouseYHF
-    ) {
-        this.renderContext = renderContext;
-        this.renderOffsetX = renderOffsetX;
-        this.renderOffsetY = renderOffsetY;
-        this.width = width;
-        this.height = height;
-        this.mouseX = mouseX;
-        this.mouseY = mouseY;
-        this.absoluteMouseX = absoluteMouseX;
-        this.absoluteMouseY = absoluteMouseY;
-        this.mouseXHF = mouseXHF;
-        this.mouseYHF = mouseYHF;
-    }
-
-    public RenderContext getRenderContext() {
-        return renderContext;
-    }
+public record GuiImmediateContext(RenderContext renderContext, int renderOffsetX, int renderOffsetY, int width, int height, int mouseX, int mouseY, int absoluteMouseX, int absoluteMouseY, float mouseXHF, float mouseYHF) {
 
     /**
      * The current absolute offset for this gui context. This should not need to be accessed, unless you are contacting some API that does not access GlStateManager.
      */
-    public int getRenderOffsetX() {
+    @Override
+    public int renderOffsetX() {
         return renderOffsetX;
     }
 
     /**
      * The current absolute offset for this gui context. This should not need to be accessed, unless you are contacting some API that does not access GlStateManager.
      */
-    public int getRenderOffsetY() {
+    @Override
+    public int renderOffsetY() {
         return renderOffsetY;
     }
 
     /**
      * The available width for that gui element to render in.
      */
-    public int getWidth() {
+    @Override
+    public int width() {
         return width;
     }
 
     /**
      * The available height for that gui element to render in.
      */
-    public int getHeight() {
+    @Override
+    public int height() {
         return height;
     }
 
     /**
      * The position of the mouse, relative to this gui element.
      */
-    public int getMouseX() {
+    @Override
+    public int mouseX() {
         return mouseX;
     }
 
     /**
      * The position of the mouse, relative to this gui element.
      */
-    public int getMouseY() {
+    @Override
+    public int mouseY() {
         return mouseY;
     }
 
     /**
      * The position of the mouse, relative to the root element.
      */
-    public int getAbsoluteMouseX() {
+    @Override
+    public int absoluteMouseX() {
         return absoluteMouseX;
     }
 
     /**
      * The position of the mouse, relative to the root element.
      */
-    public int getAbsoluteMouseY() {
+    @Override
+    public int absoluteMouseY() {
         return absoluteMouseY;
     }
 
     /**
      * The position of the mouse, relative to this gui element in as high of a resolution as possible.
      */
-    public float getMouseXHF() {
+    @Override
+    public float mouseXHF() {
         return mouseXHF;
     }
 
     /**
      * The position of the mouse, relative to this gui element in as high of a resolution as possible.
      */
-    public float getMouseYHF() {
+    @Override
+    public float mouseYHF() {
         return mouseYHF;
     }
 
@@ -219,7 +188,7 @@ public final class GuiImmediateContext {
     /**
      * Construct a new context, which has not been translated, but possible smaller if the arguments demand so.
      *
-     * @param maxWidth max width of the new context. this argument will be ignored if it is larger than the current width
+     * @param maxWidth  max width of the new context. this argument will be ignored if it is larger than the current width
      * @param maxHeight max height of the new context. this argument will be ignored if it is larger than the current height
      */
     public GuiImmediateContext limitSize(int maxWidth, int maxHeight) {
@@ -261,8 +230,7 @@ public final class GuiImmediateContext {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof GuiImmediateContext)) return false;
-        GuiImmediateContext that = (GuiImmediateContext) o;
+        if (!(o instanceof GuiImmediateContext that)) return false;
         return renderOffsetX == that.renderOffsetX
             && renderOffsetY == that.renderOffsetY
             && width == that.width
@@ -274,11 +242,6 @@ public final class GuiImmediateContext {
             && Float.compare(that.mouseXHF, mouseXHF) == 0
             && Float.compare(that.mouseYHF, mouseYHF) == 0
             && Objects.equals(renderContext, that.renderContext);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(renderContext, renderOffsetX, renderOffsetY, width, height, mouseX, mouseY, absoluteMouseX, absoluteMouseY, mouseXHF, mouseYHF);
     }
 
     @Override

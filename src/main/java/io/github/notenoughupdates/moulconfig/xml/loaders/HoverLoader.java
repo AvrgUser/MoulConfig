@@ -1,6 +1,5 @@
 package io.github.notenoughupdates.moulconfig.xml.loaders;
 
-import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.component.HoverComponent;
 import io.github.notenoughupdates.moulconfig.internal.ComponentHelper;
 import io.github.notenoughupdates.moulconfig.observer.GetSetter;
@@ -8,6 +7,7 @@ import io.github.notenoughupdates.moulconfig.xml.ChildCount;
 import io.github.notenoughupdates.moulconfig.xml.XMLContext;
 import io.github.notenoughupdates.moulconfig.xml.XMLGuiLoader;
 import io.github.notenoughupdates.moulconfig.xml.XMLUniverse;
+import net.minecraft.network.chat.Component;
 import org.w3c.dom.Element;
 
 import javax.xml.namespace.QName;
@@ -29,7 +29,19 @@ public class HoverLoader implements XMLGuiLoader.Basic<HoverComponent> {
             return result;
         });
     }
-    @Override public QName getName() { return XMLUniverse.qName("Hover"); }
-    @Override public ChildCount getChildCount() { return ChildCount.ONE; }
-    @Override public Map<String, Boolean> getAttributeNames() { return Collections.singletonMap("lines", true); }
+
+    @Override
+    public QName getName() {
+        return XMLUniverse.qName("Hover");
+    }
+
+    @Override
+    public ChildCount getChildCount() {
+        return ChildCount.ONE;
+    }
+
+    @Override
+    public Map<String, Boolean> getAttributeNames() {
+        return Collections.singletonMap("lines", true);
+    }
 }

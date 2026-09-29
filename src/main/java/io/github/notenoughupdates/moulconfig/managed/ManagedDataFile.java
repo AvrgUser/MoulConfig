@@ -1,7 +1,6 @@
 package io.github.notenoughupdates.moulconfig.managed;
 
 import java.io.File;
-import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -59,10 +58,21 @@ public class ManagedDataFile<T> {
         );
     }
 
-    public File getFile() { return file; }
-    public DataMapper<T> getMapper() { return mapper; }
-    public T getInstance() { return instance; }
-    public void setInstance(T instance) { this.instance = instance; }
+    public File getFile() {
+        return file;
+    }
+
+    public DataMapper<T> getMapper() {
+        return mapper;
+    }
+
+    public T getInstance() {
+        return instance;
+    }
+
+    public void setInstance(T instance) {
+        this.instance = instance;
+    }
 
     public void reloadFromFile() {
         beforeLoad.accept(this);

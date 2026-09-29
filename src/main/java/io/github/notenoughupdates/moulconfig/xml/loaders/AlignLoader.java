@@ -28,9 +28,18 @@ public class AlignLoader implements XMLGuiLoader.Basic<AlignComponent> {
         return value != null ? value : GetSetter.constant(def);
     }
 
-    @Override public QName getName() { return XMLUniverse.qName("Align"); }
-    @Override public ChildCount getChildCount() { return ChildCount.ONE; }
-    @Override public Map<String, Boolean> getAttributeNames() {
+    @Override
+    public QName getName() {
+        return XMLUniverse.qName("Align");
+    }
+
+    @Override
+    public ChildCount getChildCount() {
+        return ChildCount.ONE;
+    }
+
+    @Override
+    public Map<String, Boolean> getAttributeNames() {
         Map<String, Boolean> map = new LinkedHashMap<>();
         map.put("horizontal", false);
         map.put("vertical", false);

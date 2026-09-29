@@ -79,7 +79,7 @@ public class ManagedConfig<T extends Config> extends ManagedDataFile<T> {
             BuiltinMoulConfigGuis.addProcessors(processor);
         }
         for (ManagedConfigBuilder.CustomProcessor customProcessor : builder.getCustomProcessors()) {
-            cast(processor, customProcessor.annotation, customProcessor.method);
+            cast(processor, customProcessor.annotation(), customProcessor.method());
         }
         ConfigProcessorDriver driver = new ConfigProcessorDriver(processor);
         driver.checkExpose = builder.getCheckExpose();

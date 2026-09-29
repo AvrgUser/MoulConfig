@@ -22,31 +22,14 @@ package io.github.notenoughupdates.moulconfig.processor;
 
 import com.google.gson.annotations.Expose;
 import io.github.notenoughupdates.moulconfig.Config;
-import io.github.notenoughupdates.moulconfig.annotations.Accordion;
-import io.github.notenoughupdates.moulconfig.annotations.Category;
-import io.github.notenoughupdates.moulconfig.annotations.ConfigAccordionId;
-import io.github.notenoughupdates.moulconfig.annotations.ConfigEditorAccordion;
-import io.github.notenoughupdates.moulconfig.annotations.ConfigEditorButton;
-import io.github.notenoughupdates.moulconfig.annotations.ConfigEditorInfoText;
-import io.github.notenoughupdates.moulconfig.annotations.ConfigOption;
-import io.github.notenoughupdates.moulconfig.annotations.ConfigOrder;
-import io.github.notenoughupdates.moulconfig.annotations.ConfigOverride;
+import io.github.notenoughupdates.moulconfig.annotations.*;
 import io.github.notenoughupdates.moulconfig.internal.BoundField;
 import io.github.notenoughupdates.moulconfig.internal.Warnings;
-
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.IdentityHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Stack;
+import java.util.*;
 
 public class ConfigProcessorDriver {
     private final List<Class<? extends Annotation>> nonStoredConfigOptions = Arrays.asList(
@@ -125,8 +108,8 @@ public class ConfigProcessorDriver {
             ConfigOption optionAnnotation = field.getAnnotation(ConfigOption.class);
             if (optionAnnotation == null) continue;
             if (checkExpose && field.getAnnotation(Expose.class) == null
-                    && (field.getModifiers() & Modifier.TRANSIENT) == 0
-                    && nonStoredConfigOptions.stream().noneMatch(field::isAnnotationPresent)) {
+                && (field.getModifiers() & Modifier.TRANSIENT) == 0
+                && nonStoredConfigOptions.stream().noneMatch(field::isAnnotationPresent)) {
                 Warnings.warn("Non transient @ConfigOption without @Expose in " + categoryClass + " on field " + field);
             }
 
@@ -223,7 +206,7 @@ public class ConfigProcessorDriver {
         reader.endCategory();
         for (var subCategory : deferredSubCategories) {
             if (parentField == null) {
-                processCategoryMeta(subCategory.getBoundTo(), subCategory.getField(), categoryField);
+                processCategoryMeta(subCategory.boundTo(), subCategory.field(), categoryField);
             } else {
                 Warnings.warn("Found double recursive sub category at " + subCategory);
             }

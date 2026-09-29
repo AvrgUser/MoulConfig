@@ -5,6 +5,8 @@ import io.github.notenoughupdates.moulconfig.internal.CollectionUtils;
 import io.github.notenoughupdates.moulconfig.internal.Warnings;
 import io.github.notenoughupdates.moulconfig.observer.GetSetter;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
@@ -12,22 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class XMLContext<T> {
-    private final XMLUniverse universe;
-    private final T boundObject;
-
-    public XMLContext(XMLUniverse universe, T boundObject) {
-        this.universe = universe;
-        this.boundObject = boundObject;
-    }
-
-    public XMLUniverse getUniverse() {
-        return universe;
-    }
-
-    public T getBoundObject() {
-        return boundObject;
-    }
+public record XMLContext<T>(XMLUniverse universe, T boundObject) {
 
     public GuiComponent getChildFragment(Element element) {
         return CollectionUtils.getSingleOrThrow(getChildFragments(element, this));
@@ -46,10 +33,10 @@ public class XMLContext<T> {
     }
 
     public List<GuiComponent> getChildFragments(Element element, XMLContext<?> context) {
-        org.w3c.dom.NodeList childNodes = element.getChildNodes();
+        NodeList childNodes = element.getChildNodes();
         List<GuiComponent> list = new ArrayList<>();
         for (int i = 0; i < childNodes.getLength(); i++) {
-            org.w3c.dom.Node item = childNodes.item(i);
+            Node item = childNodes.item(i);
             if (item instanceof Element) {
                 list.add(universe.load(context, (Element) item));
             }
@@ -92,14 +79,16 @@ public class XMLContext<T> {
 
     public <E> Consumer<E> getMethodFromAttribute(Element element, QName name, Class<E> type) {
         String attribute = getRawXMLValue(element, name);
-        if (attribute == null) return value -> {};
+        if (attribute == null) return value -> {
+        };
         if (!attribute.startsWith("@")) throw new RuntimeException("Object bound method without @ prefix " + attribute + " at " + name);
         return getBoundMethod(attribute.substring(1), type);
     }
 
     public Runnable getMethodFromAttribute(Element element, QName name) {
         String attribute = getRawXMLValue(element, name);
-        if (attribute == null) return () -> {};
+        if (attribute == null) return () -> {
+        };
         if (!attribute.startsWith("@")) throw new RuntimeException("Object bound method without @ prefix " + attribute + " at " + name);
         return getBoundMethod(attribute.substring(1));
     }

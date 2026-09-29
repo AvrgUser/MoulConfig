@@ -27,9 +27,6 @@ import io.github.notenoughupdates.moulconfig.Social;
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
 import io.github.notenoughupdates.moulconfig.common.Layer;
 import io.github.notenoughupdates.moulconfig.common.RenderContext;
-import lombok.val;
-import net.minecraft.client.gui.Font;
-import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.component.MetaComponent;
 import io.github.notenoughupdates.moulconfig.gui.editors.GuiOptionEditorAccordion;
 import io.github.notenoughupdates.moulconfig.internal.ContextAware;
@@ -42,6 +39,9 @@ import io.github.notenoughupdates.moulconfig.processor.ProcessedCategory;
 import io.github.notenoughupdates.moulconfig.processor.ProcessedOption;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.val;
+import net.minecraft.client.gui.Font;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
 import org.jetbrains.annotations.NotNull;
@@ -76,14 +76,14 @@ public class MoulConfigEditor<T extends Config> extends GuiElement implements Cl
 
     private LinkedHashMap<String, ? extends ProcessedCategory> currentlyVisibleCategories;
     private Set<ProcessedOption> currentlyVisibleOptions;
-    private Map<String, Set<String>> childCategoryLookup = new HashMap<>();
+    private final Map<String, Set<String>> childCategoryLookup = new HashMap<>();
     @Getter
-    private List<ProcessedOption> allOptions = new ArrayList<>();
+    private final List<ProcessedOption> allOptions = new ArrayList<>();
     @Getter
     private final @Unmodifiable LinkedHashMap<String, ? extends ProcessedCategory> allCategories;
     @Getter
     private final @Unmodifiable T configObject;
-    private Map<Field, ProcessedOption> optionLookup = new HashMap<>();
+    private final Map<Field, ProcessedOption> optionLookup = new HashMap<>();
 
     public MoulConfigEditor(MoulConfigProcessor<T> processedConfig) {
         this(
@@ -159,8 +159,7 @@ public class MoulConfigEditor<T extends Config> extends GuiElement implements Cl
             }
             if (processedOption.getAccordionId() >= 0 && !activeAccordions.contains(processedOption.getAccordionId()))
                 continue;
-            if (editor instanceof GuiOptionEditorAccordion) {
-                GuiOptionEditorAccordion accordion = (GuiOptionEditorAccordion) editor;
+            if (editor instanceof GuiOptionEditorAccordion accordion) {
                 if (accordion.getToggled()) {
                     activeAccordions.add(accordion.getAccordionId());
                 }
@@ -602,8 +601,7 @@ public class MoulConfigEditor<T extends Config> extends GuiElement implements Cl
                     continue;
                 }
                 editor.setGuiContext(guiContext);
-                if (editor instanceof GuiOptionEditorAccordion) {
-                    GuiOptionEditorAccordion accordion = (GuiOptionEditorAccordion) editor;
+                if (editor instanceof GuiOptionEditorAccordion accordion) {
                     if (accordion.getToggled()) {
                         int accordionDepth = 0;
                         if (option.getAccordionId() >= 0) {
@@ -660,8 +658,7 @@ public class MoulConfigEditor<T extends Config> extends GuiElement implements Cl
                     continue;
                 }
                 editor.setGuiContext(guiContext);
-                if (editor instanceof GuiOptionEditorAccordion) {
-                    GuiOptionEditorAccordion accordion = (GuiOptionEditorAccordion) editor;
+                if (editor instanceof GuiOptionEditorAccordion accordion) {
                     if (accordion.getToggled()) {
                         int accordionDepth = 0;
                         if (option.getAccordionId() >= 0) {
@@ -740,7 +737,7 @@ public class MoulConfigEditor<T extends Config> extends GuiElement implements Cl
         context.renderExtraLayers();
     }
 
-    private GuiContext guiContext = new GuiContext(new MetaComponent());
+    private final GuiContext guiContext = new GuiContext(new MetaComponent());
 
     public boolean mouseInput(int mouseX, int mouseY, MouseEvent mouseEvent) {
         lastMouseX = mouseX;
@@ -791,8 +788,8 @@ public class MoulConfigEditor<T extends Config> extends GuiElement implements Cl
         int categoryBarStartX = catsInnerLeft + 3;
         int categoryBarEndX = catsInnerLeft + 8;
         keyboardScrollXCutoff = catsInnerLeft - 10;
-        int mouseButton = mouseEvent instanceof MouseEvent.Click ? ((MouseEvent.Click) mouseEvent).getMouseButton() : -1;
-        boolean mouseState = mouseEvent instanceof MouseEvent.Click && ((MouseEvent.Click) mouseEvent).getMouseState();
+        int mouseButton = mouseEvent instanceof MouseEvent.Click ? ((MouseEvent.Click) mouseEvent).mouseButton() : -1;
+        boolean mouseState = mouseEvent instanceof MouseEvent.Click && ((MouseEvent.Click) mouseEvent).mouseState();
         if (mouseState) {
             if ((mouseY < optionsBarStartY || mouseY > optionsBarEndY) &&
                 (mouseX >= optionsBarStartX && mouseX <= optionsBarEndX) && mouseY > innerTop + 6 && mouseY < innerBottom - 6) {
@@ -862,8 +859,7 @@ public class MoulConfigEditor<T extends Config> extends GuiElement implements Cl
                     GuiOptionEditor editor = option.getEditor();
                     if (editor == null) continue;
                     editor.setGuiContext(guiContext);
-                    if (editor instanceof GuiOptionEditorAccordion) {
-                        GuiOptionEditorAccordion accordion = (GuiOptionEditorAccordion) editor;
+                    if (editor instanceof GuiOptionEditorAccordion accordion) {
                         if (accordion.getToggled()) {
                             int accordionDepth = 0;
                             if (option.getAccordionId() >= 0) {
@@ -946,8 +942,7 @@ public class MoulConfigEditor<T extends Config> extends GuiElement implements Cl
                             editor.setGuiContext(guiContext);
                             return null;
                         });
-                        if (editor instanceof GuiOptionEditorAccordion) {
-                            GuiOptionEditorAccordion accordion = (GuiOptionEditorAccordion) editor;
+                        if (editor instanceof GuiOptionEditorAccordion accordion) {
                             if (accordion.getToggled()) {
                                 int accordionDepth = 0;
                                 if (option.getAccordionId() >= 0) {
@@ -975,7 +970,7 @@ public class MoulConfigEditor<T extends Config> extends GuiElement implements Cl
                 optionsScroll.resetTimer();
                 optionsScroll.setTarget(newTarget);
             }
-        } else if (mouseState && ((MouseEvent.Click) mouseEvent).getMouseButton() == 0) {
+        } else if (mouseState && ((MouseEvent.Click) mouseEvent).mouseButton() == 0) {
             if (getCurrentlyVisibleCategories() != null) {
                 int catY = -categoryScroll.getValue();
                 for (Map.Entry<String, ProcessedCategory> entry : getCurrentlyVisibleCategories().entrySet()) {
@@ -1030,8 +1025,7 @@ public class MoulConfigEditor<T extends Config> extends GuiElement implements Cl
                     continue;
                 }
                 editor.setGuiContext(guiContext);
-                if (editor instanceof GuiOptionEditorAccordion) {
-                    GuiOptionEditorAccordion accordion = (GuiOptionEditorAccordion) editor;
+                if (editor instanceof GuiOptionEditorAccordion accordion) {
                     if (accordion.getToggled()) {
                         int accordionDepth = 0;
                         if (option.getAccordionId() >= 0) {
@@ -1080,8 +1074,7 @@ public class MoulConfigEditor<T extends Config> extends GuiElement implements Cl
                         continue;
                     }
                     editor.setGuiContext(guiContext);
-                    if (editor instanceof GuiOptionEditorAccordion) {
-                        GuiOptionEditorAccordion accordion = (GuiOptionEditorAccordion) editor;
+                    if (editor instanceof GuiOptionEditorAccordion accordion) {
                         if (accordion.getToggled()) {
                             int accordionDepth = 0;
                             if (option.getAccordionId() >= 0) {
@@ -1149,8 +1142,7 @@ public class MoulConfigEditor<T extends Config> extends GuiElement implements Cl
                     continue;
                 }
                 editor.setGuiContext(guiContext);
-                if (editor instanceof GuiOptionEditorAccordion) {
-                    GuiOptionEditorAccordion accordion = (GuiOptionEditorAccordion) editor;
+                if (editor instanceof GuiOptionEditorAccordion accordion) {
                     if (accordion.getToggled()) {
                         int accordionDepth = 0;
                         if (option.getAccordionId() >= 0) {
@@ -1223,9 +1215,7 @@ public class MoulConfigEditor<T extends Config> extends GuiElement implements Cl
         }
         if (!scrollOptionIntoView(option, 200)) {
             search("");
-            if (!scrollOptionIntoView(option, 200)) {
-                return false;
-            }
+            return scrollOptionIntoView(option, 200);
         }
         return true;
     }

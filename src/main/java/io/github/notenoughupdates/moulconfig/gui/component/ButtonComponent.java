@@ -24,9 +24,8 @@ public class ButtonComponent extends PanelComponent {
 
     @Override
     public boolean mouseEvent(MouseEvent mouseEvent, GuiImmediateContext context) {
-        if (context.isHovered() && mouseEvent instanceof MouseEvent.Click) {
-            MouseEvent.Click click = (MouseEvent.Click) mouseEvent;
-            if (click.getMouseState() && click.getMouseButton() == 0) {
+        if (context.isHovered() && mouseEvent instanceof MouseEvent.Click click) {
+            if (click.mouseState() && click.mouseButton() == 0) {
                 onClick.run();
                 return true;
             }
@@ -36,8 +35,7 @@ public class ButtonComponent extends PanelComponent {
 
     @Override
     public boolean keyboardEvent(KeyboardEvent event, GuiImmediateContext context) {
-        if (isFocused() && event instanceof KeyboardEvent.KeyPressed) {
-            KeyboardEvent.KeyPressed keyPressed = (KeyboardEvent.KeyPressed) event;
+        if (isFocused() && event instanceof KeyboardEvent.KeyPressed keyPressed) {
             if (keyPressed.getPressed() && keyPressed.getKeycode() == InputConstants.KEY_RETURN) {
                 onClick.run();
                 return true;

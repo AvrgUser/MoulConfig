@@ -23,14 +23,11 @@ package io.github.notenoughupdates.moulconfig.processor;
 
 import io.github.notenoughupdates.moulconfig.Config;
 import io.github.notenoughupdates.moulconfig.annotations.SearchTag;
-import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.GuiOptionEditor;
-import io.github.notenoughupdates.moulconfig.gui.editors.GuiOptionEditorAccordion;
 import io.github.notenoughupdates.moulconfig.observer.GetSetter;
-import io.github.notenoughupdates.moulconfig.observer.Property;
+import net.minecraft.network.chat.Component;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 public interface ProcessedOption extends HasDebugLocation {

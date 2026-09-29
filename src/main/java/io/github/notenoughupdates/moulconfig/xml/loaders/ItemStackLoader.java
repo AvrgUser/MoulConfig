@@ -13,10 +13,23 @@ import java.util.Collections;
 import java.util.Map;
 
 public class ItemStackLoader implements XMLGuiLoader.Basic<ItemStackComponent> {
-    @Override public ItemStackComponent createInstance(XMLContext<?> context, Element element) {
+    @Override
+    public ItemStackComponent createInstance(XMLContext<?> context, Element element) {
         return new ItemStackComponent(context.getPropertyFromAttribute(element, new QName("value"), ItemStack.class));
     }
-    @Override public QName getName() { return XMLUniverse.qName("ItemStack"); }
-    @Override public ChildCount getChildCount() { return ChildCount.NONE; }
-    @Override public Map<String, Boolean> getAttributeNames() { return Collections.singletonMap("value", true); }
+
+    @Override
+    public QName getName() {
+        return XMLUniverse.qName("ItemStack");
+    }
+
+    @Override
+    public ChildCount getChildCount() {
+        return ChildCount.NONE;
+    }
+
+    @Override
+    public Map<String, Boolean> getAttributeNames() {
+        return Collections.singletonMap("value", true);
+    }
 }

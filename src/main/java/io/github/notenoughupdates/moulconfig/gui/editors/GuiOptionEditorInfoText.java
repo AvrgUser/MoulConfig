@@ -20,16 +20,16 @@
 
 package io.github.notenoughupdates.moulconfig.gui.editors;
 
-import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.GuiComponent;
 import io.github.notenoughupdates.moulconfig.gui.component.TextComponent;
 import io.github.notenoughupdates.moulconfig.processor.ProcessedOption;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
 
 public class GuiOptionEditorInfoText extends ComponentEditor {
-    private Component infoTitle;
+    private final Component infoTitle;
     GuiComponent component;
 
     public GuiOptionEditorInfoText(ProcessedOption option, Component infoTitle) {

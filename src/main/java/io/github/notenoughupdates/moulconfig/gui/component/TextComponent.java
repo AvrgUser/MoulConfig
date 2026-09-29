@@ -22,11 +22,11 @@ package io.github.notenoughupdates.moulconfig.gui.component;
 
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
 import io.github.notenoughupdates.moulconfig.common.MoulConfigFontRenderer;
-import net.minecraft.client.gui.Font;
-import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.GuiComponent;
 import io.github.notenoughupdates.moulconfig.gui.GuiImmediateContext;
 import lombok.RequiredArgsConstructor;
+import net.minecraft.client.gui.Font;
+import net.minecraft.network.chat.Component;
 
 import java.util.Collections;
 import java.util.List;
@@ -88,29 +88,29 @@ public class TextComponent extends GuiComponent {
 
     @Override
     public void render(GuiImmediateContext context) {
-        context.getRenderContext().pushMatrix();
-        List<Component> lines = split(string.get(), context.getWidth());
+        context.renderContext().pushMatrix();
+        List<Component> lines = split(string.get(), context.width());
         for (Component line : lines) {
             int length = fontRenderer.width(line);
-            if (length > context.getWidth()) {
-                context.getRenderContext().drawStringScaledMaxWidth(line, fontRenderer, 2, 2, shadow, context.getWidth(), -1);
+            if (length > context.width()) {
+                context.renderContext().drawStringScaledMaxWidth(line, fontRenderer, 2, 2, shadow, context.width(), -1);
             } else switch (alignment) {
                 case LEFT:
-                    context.getRenderContext().drawString(fontRenderer, line, 2, 2, -1, shadow);
+                    context.renderContext().drawString(fontRenderer, line, 2, 2, -1, shadow);
                     break;
                 case CENTER:
-                    context.getRenderContext().drawString(fontRenderer, line, context.getWidth() / 2 - length / 2 + 2, 2, -1, shadow);
+                    context.renderContext().drawString(fontRenderer, line, context.width() / 2 - length / 2 + 2, 2, -1, shadow);
                     break;
                 case RIGHT:
-                    context.getRenderContext().drawString(fontRenderer, line, context.getWidth() - length + 2, 2, -1, shadow);
+                    context.renderContext().drawString(fontRenderer, line, context.width() - length + 2, 2, -1, shadow);
                     break;
             }
-            context.getRenderContext().translate(0, fontRenderer.lineHeight + 2);
+            context.renderContext().translate(0, fontRenderer.lineHeight + 2);
         }
-        context.getRenderContext().popMatrix();
+        context.renderContext().popMatrix();
     }
 
     public enum TextAlignment {
-        LEFT, CENTER, RIGHT;
+        LEFT, CENTER, RIGHT
     }
 }

@@ -52,19 +52,19 @@ public class CenterComponent extends GuiComponent {
         return context.translated(
             getChildOffsetX(context),
             getChildOffsetY(context),
-            Math.min(child.getWidth(), context.getWidth()),
-            Math.min(child.getHeight(), context.getHeight())
+            Math.min(child.getWidth(), context.width()),
+            Math.min(child.getHeight(), context.height())
         );
     }
 
     public int getChildOffsetX(GuiImmediateContext context) {
-        if (child.getWidth() > context.getWidth()) return 0;
-        return context.getWidth() / 2 - child.getWidth() / 2;
+        if (child.getWidth() > context.width()) return 0;
+        return context.width() / 2 - child.getWidth() / 2;
     }
 
     public int getChildOffsetY(GuiImmediateContext context) {
-        if (child.getHeight() > context.getHeight()) return 0;
-        return context.getHeight() / 2 - child.getHeight() / 2;
+        if (child.getHeight() > context.height()) return 0;
+        return context.height() / 2 - child.getHeight() / 2;
     }
 
     @Override
@@ -74,10 +74,10 @@ public class CenterComponent extends GuiComponent {
 
     @Override
     public void render(GuiImmediateContext context) {
-        context.getRenderContext().pushMatrix();
-        context.getRenderContext().translate(getChildOffsetX(context), getChildOffsetY(context));
+        context.renderContext().pushMatrix();
+        context.renderContext().translate(getChildOffsetX(context), getChildOffsetY(context));
         child.render(getChildContext(context));
-        context.getRenderContext().popMatrix();
+        context.renderContext().popMatrix();
     }
 
     @Override

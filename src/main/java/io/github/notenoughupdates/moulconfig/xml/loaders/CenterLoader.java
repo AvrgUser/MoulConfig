@@ -12,8 +12,23 @@ import java.util.Collections;
 import java.util.Map;
 
 public class CenterLoader implements XMLGuiLoader.Basic<CenterComponent> {
-    @Override public CenterComponent createInstance(XMLContext<?> context, Element element) { return new CenterComponent(context.getChildFragment(element)); }
-    @Override public QName getName() { return XMLUniverse.qName("Center"); }
-    @Override public ChildCount getChildCount() { return ChildCount.ONE; }
-    @Override public Map<String, Boolean> getAttributeNames() { return Collections.emptyMap(); }
+    @Override
+    public CenterComponent createInstance(XMLContext<?> context, Element element) {
+        return new CenterComponent(context.getChildFragment(element));
+    }
+
+    @Override
+    public QName getName() {
+        return XMLUniverse.qName("Center");
+    }
+
+    @Override
+    public ChildCount getChildCount() {
+        return ChildCount.ONE;
+    }
+
+    @Override
+    public Map<String, Boolean> getAttributeNames() {
+        return Collections.emptyMap();
+    }
 }
