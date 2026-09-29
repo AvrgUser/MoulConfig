@@ -3,10 +3,9 @@
 Please first do all the standard things you would need to do to PR to a repository on GitHub (Forking, Cloning,
 creating a new branch, adding a remote, etc.).
 
-Then to set up a development environment, just make sure you have a Java 17 and and Java 8 version installed. To
-run the mod in a development environment, just run `./gradlew runClient` (Make sure to run the gradle task directly
-and not an IntelliJ task with a similar name. Otherwise you might need more configuration. Running that very gradle task
-through IntelliJ is fine, however.). Feel free to make changes to the test mod to test your changes.
+Then to set up a development environment, just make sure you have a Java 25 version installed. To
+run the mod in a development environment, just run `./gradlew :26.3:runClient`.
+Feel free to make changes to the test mod to test your changes.
 
 When creating a PR, try to have commits which are as atomic as possible.
 This means that when possible, commits should always:
@@ -39,4 +38,4 @@ to find the next version, so:
 Don't be scared of labeling a breaking change a breaking change, even if it is only a small one. Since people typically
 vendor our library and do not need to be up to date all the time.
 
-[the maven]: https://maven.notenoughupdates.org/#/releases/org/notenoughupdates/moulconfig/MoulConfig
+[the maven]: TODO

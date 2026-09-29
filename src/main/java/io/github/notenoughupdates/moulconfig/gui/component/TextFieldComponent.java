@@ -1,0 +1,365 @@
+package io.github.notenoughupdates.moulconfig.gui.component;
+
+import com.mojang.blaze3d.platform.InputConstants;
+import io.github.notenoughupdates.moulconfig.common.IMinecraft;
+import io.github.notenoughupdates.moulconfig.gui.GuiComponent;
+import io.github.notenoughupdates.moulconfig.gui.GuiImmediateContext;
+import io.github.notenoughupdates.moulconfig.gui.KeyboardEvent;
+import io.github.notenoughupdates.moulconfig.gui.MouseEvent;
+import io.github.notenoughupdates.moulconfig.observer.GetSetter;
+import net.minecraft.client.gui.Font;
+import net.minecraft.network.chat.Component;
+
+import java.util.Collections;
+import java.util.Set;
+import java.util.function.Supplier;
+
+public class TextFieldComponent extends GuiComponent {
+    private static final int TEXT_PADDING_X = 4;
+    private static final int BACKGROUND_COLOR = 0xFF000000;
+    private static final int BORDER_COLOR_SELECTED = 0xFF00FF00;
+    private static final int BORDER_COLOR_UNSELECTED = 0xFFFFFFFF;
+    private static final int ENABLED_COLOR = 0xFFE0E0E0;
+    private static final int SUGGESTION_COLOR = 0xFF808080;
+    private static final int DISABLED_COLOR = 0xFF707070;
+    private static final int CURSOR_COLOR = 0xFFD0D0D0;
+    private static final int TEXT_PADDING_Y = 2;
+
+    protected final GetSetter<String> text;
+    private final int preferredWidth;
+    protected final Supplier<Boolean> editable;
+    protected final String suggestion;
+    protected final Font font;
+    protected final Set<Character> forbiddenChars;
+
+    private int cursor;
+    private int selection = -1;
+    private int scrollOffset;
+    private String visibleText;
+    private boolean shouldExpandToFit;
+    private boolean initializedCursor;
+
+    public TextFieldComponent(GetSetter<String> text, int preferredWidth) {
+        this(text, preferredWidth, GetSetter.constant(true), "", IMinecraft.INSTANCE.getDefaultFontRenderer(), singletonCharSet('§'));
+    }
+
+    public TextFieldComponent(GetSetter<String> text, int preferredWidth, Supplier<Boolean> editable, String suggestion) {
+        this(text, preferredWidth, editable, suggestion, IMinecraft.INSTANCE.getDefaultFontRenderer(), singletonCharSet('§'));
+    }
+
+    public TextFieldComponent(GetSetter<String> text, int preferredWidth, Supplier<Boolean> editable, String suggestion, Font font) {
+        this(text, preferredWidth, editable, suggestion, font, singletonCharSet('§'));
+    }
+
+    public TextFieldComponent(GetSetter<String> text, int preferredWidth, Supplier<Boolean> editable, String suggestion, Font font, Set<Character> forbiddenChars) {
+        this.text = text;
+        this.preferredWidth = preferredWidth;
+        this.editable = editable;
+        this.suggestion = suggestion;
+        this.font = font;
+        this.forbiddenChars = forbiddenChars;
+    }
+
+    private static Set<Character> singletonCharSet(char c) {
+        return Collections.singleton(c);
+    }
+
+    public GetSetter<String> getText() {
+        return text;
+    }
+
+    @Override
+    public int getWidth() {
+        if (isFocused() && shouldExpandToFit) {
+            return Math.max(preferredWidth, font.width(Component.literal(text.get())) + 10);
+        }
+        return preferredWidth;
+    }
+
+    @Override
+    public int getHeight() {
+        return 14;
+    }
+
+    public void scrollCursorIntoView(int width) {
+        validateCursor();
+        if (scrollOffset > cursor) {
+            scrollOffset = cursor;
+        }
+        if (scrollOffset < cursor
+            && font.plainSubstrByWidth(safeSubString(text.get(), scrollOffset), width - TEXT_PADDING_X * 2).length() + scrollOffset < cursor) {
+            scrollOffset = cursor;
+        }
+        checkScrollOffset(width);
+    }
+
+    public void checkScrollOffset(int width) {
+        String value = text.get();
+        int rightMostScrollOffset = value.length() - font.plainSubstrByWidth(value, width - TEXT_PADDING_X * 2, true).length();
+        scrollOffset = Math.max(0, Math.min(rightMostScrollOffset, scrollOffset));
+    }
+
+    public void updateVisibleText(int width) {
+        visibleText = font.plainSubstrByWidth(safeSubString(text.get(), scrollOffset), width - TEXT_PADDING_X * 2);
+    }
+
+    @Override
+    public void render(GuiImmediateContext context) {
+        validateCursor();
+        checkScrollOffset(context.width());
+        updateVisibleText(context.width());
+        renderBox(context);
+        renderText(context, visibleText);
+        if (text.get().isEmpty() && !isFocused()) {
+            context.renderContext().drawString(
+                font,
+                Component.literal(suggestion),
+                TEXT_PADDING_X,
+                context.height() / 2 - font.lineHeight / 2,
+                SUGGESTION_COLOR,
+                false
+            );
+        }
+        if (isFocused()) {
+            renderCursor(context);
+        }
+        renderSelection(context);
+    }
+
+    public void validateCursor() {
+        cursor = Math.clamp(cursor, 0, text.get().length());
+    }
+
+    private void renderSelection(GuiImmediateContext context) {
+        if (selection == cursor || selection == -1) return;
+        int left = Math.min(cursor, selection);
+        int right = Math.max(cursor, selection);
+        if (right < scrollOffset || left > scrollOffset + visibleText.length()) return;
+        int normalizedLeft = Math.max(scrollOffset, left) - scrollOffset;
+        int normalizedRight = Math.min(scrollOffset + visibleText.length(), right) - scrollOffset;
+        int leftPos = font.width(safeSubString(visibleText, 0, normalizedLeft));
+        int rightPos = leftPos + font.width(safeSubString(visibleText, normalizedLeft, normalizedRight));
+        context.renderContext().invertedRect(
+            (float) (TEXT_PADDING_X + leftPos),
+            (float) TEXT_PADDING_Y,
+            (float) (TEXT_PADDING_X + rightPos),
+            (float) (context.height() - TEXT_PADDING_Y),
+            0xFF0000FF
+        );
+    }
+
+    private void renderCursor(GuiImmediateContext context) {
+        if (System.currentTimeMillis() / 1000 % 2 == 0) return;
+        if (cursor < scrollOffset) return;
+        if (cursor > scrollOffset + visibleText.length()) return;
+        int cursorOffset = font.width(safeSubString(visibleText, 0, cursor - scrollOffset));
+        context.renderContext().drawColoredRect(
+            (float) (TEXT_PADDING_X + cursorOffset),
+            (float) TEXT_PADDING_Y,
+            (float) (TEXT_PADDING_X + cursorOffset + 1),
+            (float) (context.height() - TEXT_PADDING_Y),
+            CURSOR_COLOR
+        );
+    }
+
+    private void renderText(GuiImmediateContext context, String visibleText) {
+        int textColor = editable.get() ? ENABLED_COLOR : DISABLED_COLOR;
+        context.renderContext().drawString(
+            font,
+            Component.literal(visibleText),
+            TEXT_PADDING_X,
+            context.height() / 2 - font.lineHeight / 2,
+            textColor,
+            true
+        );
+    }
+
+    private void renderBox(GuiImmediateContext context) {
+        int borderColor = isFocused() ? BORDER_COLOR_SELECTED : BORDER_COLOR_UNSELECTED;
+        context.renderContext().drawColoredRect(0F, 0F, (float) context.width(), (float) context.height(), borderColor);
+        context.renderContext().drawColoredRect(1F, 1F, (float) (context.width() - 1), (float) (context.height() - 1), BACKGROUND_COLOR);
+    }
+
+    @Override
+    public boolean keyboardEvent(KeyboardEvent event, GuiImmediateContext context) {
+        if (!editable.get()) return false;
+        if (!isFocused()) return false;
+        if (event instanceof KeyboardEvent.KeyPressed keyPressed) {
+            if (!keyPressed.getPressed()) return false;
+            int keycode = keyPressed.getKeycode();
+            if (keycode == InputConstants.KEY_LEFT) {
+                onDirectionalKey(context, -1);
+                return true;
+            } else if (keycode == InputConstants.KEY_RIGHT) {
+                onDirectionalKey(context, 1);
+                return true;
+            } else if (keycode == InputConstants.KEY_HOME || keycode == InputConstants.KEY_UP) {
+                if (context.renderContext().isShiftDown()) {
+                    if (selection == -1) selection = cursor;
+                } else {
+                    selection = -1;
+                }
+                cursor = 0;
+                scrollCursorIntoView(context.width());
+                return true;
+            } else if (keycode == InputConstants.KEY_DOWN || keycode == InputConstants.KEY_END) {
+                if (context.renderContext().isShiftDown()) {
+                    if (selection == -1) selection = cursor;
+                } else {
+                    selection = -1;
+                }
+                cursor = text.get().length();
+                scrollCursorIntoView(context.width());
+                return true;
+            } else if (keycode == InputConstants.KEY_BACKSPACE) {
+                if (selection == -1) selection = skipCharacters(context.renderContext().isLogicalCtrlDown(), -1);
+                writeText("", context.width());
+                return true;
+            } else if (keycode == InputConstants.KEY_DELETE) {
+                if (selection == -1) selection = skipCharacters(context.renderContext().isLogicalCtrlDown(), 1);
+                writeText("", context.width());
+                return true;
+            } else if (keycode == InputConstants.KEY_C) {
+                if (context.renderContext().isLogicalCtrlDown()) {
+                    IMinecraft.INSTANCE.copyToClipboard(getSelection());
+                    return true;
+                }
+                return false;
+            } else if (keycode == InputConstants.KEY_X) {
+                if (context.renderContext().isLogicalCtrlDown()) {
+                    IMinecraft.INSTANCE.copyToClipboard(getSelection());
+                    writeText("", context.width());
+                    return true;
+                }
+                return false;
+            } else if (keycode == InputConstants.KEY_V) {
+                if (context.renderContext().isLogicalCtrlDown()) {
+                    writeText(IMinecraft.INSTANCE.copyFromClipboard(), context.width());
+                    return true;
+                }
+                return false;
+            } else if (keycode == InputConstants.KEY_A) {
+                if (context.renderContext().isLogicalCtrlDown()) {
+                    cursor = text.get().length();
+                    selection = 0;
+                    scrollCursorIntoView(context.width());
+                    return true;
+                }
+                return false;
+            }
+            return false;
+        } else if (event instanceof KeyboardEvent.CharTyped) {
+            char c = ((KeyboardEvent.CharTyped) event).getChar();
+            if (c < ' ' || c == 127) return false;
+            if (forbiddenChars.contains(c)) return true;
+            writeText(Character.toString(c), context.width());
+            return true;
+        }
+        return false;
+    }
+
+    private String getSelection() {
+        if (selection == -1) return "";
+        int left = Math.min(cursor, selection);
+        int right = Math.max(cursor, selection);
+        return safeSubString(text.get(), left, right);
+    }
+
+    @Override
+    public boolean mouseEvent(MouseEvent mouseEvent, GuiImmediateContext context) {
+        super.mouseEvent(mouseEvent, context);
+        checkScrollOffset(context.width());
+        updateVisibleText(context.width());
+        if (mouseEvent instanceof MouseEvent.Click && ((MouseEvent.Click) mouseEvent).mouseState()) {
+            if (context.isHovered()) {
+                requestFocus();
+                if (!initializedCursor) {
+                    initializedCursor = true;
+                    cursor = Integer.MAX_VALUE;
+                    validateCursor();
+                    scrollCursorIntoView(context.width());
+                }
+                return true;
+            } else {
+                setFocus(false);
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void onGainedFocus() {
+        super.onGainedFocus();
+        IMinecraft.INSTANCE.startTextInput(this, true);
+    }
+
+    @Override
+    public void onLostFocus() {
+        super.onLostFocus();
+        IMinecraft.INSTANCE.startTextInput(this, false);
+    }
+
+    private String safeSubString(String str, int startIndex) {
+        return str.substring(Math.min(startIndex, str.length()));
+    }
+
+    private String safeSubString(String str, int startIndex, int endIndex) {
+        return str.substring(Math.min(startIndex, str.length()), Math.min(Math.max(startIndex, endIndex), str.length()));
+    }
+
+    public void writeText(String s, int width) {
+        StringBuilder filtered = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (!forbiddenChars.contains(c)) {
+                filtered.append(c);
+            }
+        }
+        String filteredString = filtered.toString();
+        if (filteredString.isEmpty() && !s.isEmpty()) return;
+
+        String current = text.get();
+        if (selection == -1) {
+            text.set(safeSubString(current, 0, cursor) + filteredString + safeSubString(current, cursor));
+            cursor += filteredString.length();
+        } else {
+            int left = Math.min(cursor, selection);
+            int right = Math.max(cursor, selection);
+            text.set(safeSubString(current, 0, left) + filteredString + safeSubString(current, right));
+            cursor = left + filteredString.length();
+            selection = -1;
+        }
+        scrollCursorIntoView(width);
+    }
+
+    public void onDirectionalKey(GuiImmediateContext context, int i) {
+        if (context.renderContext().isShiftDown()) {
+            if (selection == -1) selection = cursor;
+            cursor = skipCharacters(context.renderContext().isLogicalCtrlDown(), i);
+        } else {
+            if (selection != -1) {
+                cursor = i < 0 ? Math.min(cursor, selection) : Math.max(cursor, selection);
+                selection = -1;
+            } else {
+                cursor = skipCharacters(context.renderContext().isLogicalCtrlDown(), i);
+            }
+        }
+        scrollCursorIntoView(context.width());
+    }
+
+    private int skipCharacters(boolean skipWords, int i) {
+        if (i != -1 && i != 1) return cursor;
+        int position = cursor;
+        while (true) {
+            position += i;
+            if (position < 0) return 0;
+            if (position > text.get().length()) return text.get().length();
+            if (!skipWords) return position;
+            if (position < text.get().length() && Character.isWhitespace(text.get().charAt(position))) return position;
+        }
+    }
+
+    public void setShouldExpandToFit(boolean shouldExpandToFit) {
+        this.shouldExpandToFit = shouldExpandToFit;
+    }
+}
