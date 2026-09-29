@@ -4,7 +4,7 @@ import io.github.notenoughupdates.moulconfig.internal.TypeUtils;
 import io.github.notenoughupdates.moulconfig.observer.GetSetter;
 import lombok.Data;
 import lombok.SneakyThrows;
-import lombok.var;
+
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;

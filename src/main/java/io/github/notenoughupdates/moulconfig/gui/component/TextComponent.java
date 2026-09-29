@@ -20,8 +20,8 @@
 
 package io.github.notenoughupdates.moulconfig.gui.component;
 
-import io.github.notenoughupdates.moulconfig.common.IFontRenderer;
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.GuiComponent;
 import io.github.notenoughupdates.moulconfig.gui.GuiImmediateContext;
@@ -38,7 +38,7 @@ import java.util.regex.Pattern;
  */
 @RequiredArgsConstructor
 public class TextComponent extends GuiComponent {
-    final IFontRenderer fontRenderer;
+    final Font fontRenderer;
     final Supplier<Component> string;
     final int suggestedWidth;
     final TextAlignment alignment;
@@ -58,7 +58,7 @@ public class TextComponent extends GuiComponent {
     }
 
     public TextComponent(Component string) {
-        this(string, IMinecraft.INSTANCE.getDefaultFontRenderer().getStringWidth(string));
+        this(string, IMinecraft.INSTANCE.getDefaultFontRenderer().width(string));
     }
 
     public TextComponent(String string) {
@@ -72,7 +72,7 @@ public class TextComponent extends GuiComponent {
 
     @Override
     public int getHeight() {
-        return 2 + (fontRenderer.getHeight() + 2) * split(string.get(), getWidth()).size();
+        return 2 + (fontRenderer.lineHeight + 2) * split(string.get(), getWidth()).size();
     }
 
     public List<Component> split(Component text, int width) {
@@ -81,7 +81,7 @@ public class TextComponent extends GuiComponent {
             return lastSplit;
         lastString = text;
         lastWidth = width;
-        lastSplit = fontRenderer.splitText(text, width);
+        lastSplit = IMinecraft.INSTANCE.splitText(text, width);
         return lastSplit;
     }
 
@@ -90,7 +90,7 @@ public class TextComponent extends GuiComponent {
         context.getRenderContext().pushMatrix();
         List<Component> lines = split(string.get(), context.getWidth());
         for (Component line : lines) {
-            int length = fontRenderer.getStringWidth(line);
+            int length = fontRenderer.width(line);
             if (length > context.getWidth()) {
                 context.getRenderContext().drawStringScaledMaxWidth(line, fontRenderer, 2, 2, shadow, context.getWidth(), -1);
             } else switch (alignment) {
@@ -104,7 +104,7 @@ public class TextComponent extends GuiComponent {
                     context.getRenderContext().drawString(fontRenderer, line, context.getWidth() - length + 2, 2, -1, shadow);
                     break;
             }
-            context.getRenderContext().translate(0, fontRenderer.getHeight() + 2);
+            context.getRenderContext().translate(0, fontRenderer.lineHeight + 2);
         }
         context.getRenderContext().popMatrix();
     }

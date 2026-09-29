@@ -2,7 +2,7 @@ package io.github.notenoughupdates.moulconfig.xml;
 
 import io.github.notenoughupdates.moulconfig.observer.GetSetter;
 import lombok.Value;
-import lombok.var;
+
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;

@@ -1,5 +1,6 @@
 package io.github.notenoughupdates.moulconfig.common;
 
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.awt.image.BufferedImage;
@@ -34,16 +35,5 @@ public abstract class DynamicTextureReference implements Closeable {
     @Override
     public final void close() {
         destroy();
-    }
-
-    @Override
-    protected void finalize() throws Throwable {
-        try {
-            if (!wasDestroyed) {
-                IMinecraft.INSTANCE.getLogger("DynamicTextureReference").warn("Dangling DynamicTextureReference");
-            }
-        } finally {
-            super.finalize();
-        }
     }
 }

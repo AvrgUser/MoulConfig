@@ -9,6 +9,7 @@ import io.github.notenoughupdates.moulconfig.common.TextureFilter;
 import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.GuiImmediateContext;
 import io.github.notenoughupdates.moulconfig.observer.GetSetter;
+import org.jspecify.annotations.NonNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -43,7 +44,7 @@ public class SliderComponentTest {
         @Override public void popMatrix() {}
         @Override public void translate(float x, float y) {}
         @Override public void scale(float x, float y) {}
-        @Override public void drawOnTop(Layer layer, ScissorBehaviour escapeScissors, Consumer<RenderContext> later) {}
+        @Override public void drawOnTop(@NonNull Layer layer, @NonNull ScissorBehaviour escapeScissors, @NonNull Consumer<RenderContext> later) {}
         @Override public void drawColouredQuads(int colour, float... coordinates) {}
         @Override public void drawString(IFontRenderer fontRenderer, Component text, int x, int y, int color, boolean shadow) {}
         @Override public void drawColoredRect(float left, float top, float right, float bottom, int color) {}

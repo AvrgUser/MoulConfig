@@ -29,7 +29,7 @@ import io.github.notenoughupdates.moulconfig.internal.LerpUtils;
 import io.github.notenoughupdates.moulconfig.internal.LerpingInteger;
 import io.github.notenoughupdates.moulconfig.observer.GetSetter;
 import lombok.ToString;
-import lombok.var;
+
 
 /**
  * A gui element displaying a switch to represent a boolean value.

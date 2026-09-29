@@ -28,7 +28,7 @@ import io.github.notenoughupdates.moulconfig.gui.MouseEvent;
 import io.github.notenoughupdates.moulconfig.gui.component.ColorSelectComponent;
 import io.github.notenoughupdates.moulconfig.internal.ColourUtil;
 import io.github.notenoughupdates.moulconfig.processor.ProcessedOption;
-import lombok.val;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Type;

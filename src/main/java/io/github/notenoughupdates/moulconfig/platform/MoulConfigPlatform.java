@@ -10,6 +10,7 @@ import io.github.notenoughupdates.moulconfig.processor.MoulConfigProcessor;
 import io.github.notenoughupdates.moulconfig.xml.XMLUniverse;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -20,7 +21,6 @@ import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.item.ItemStack;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.ApiStatus;
@@ -48,52 +48,11 @@ public class MoulConfigPlatform implements IMinecraft {
         instance = this;
     }
 
-    //<editor-fold desc="Wrap / Unwrap helpers">
-    public static Identifier unwrap(Identifier resourceLocation) {
-        return Identifier.fromNamespaceAndPath(
-            resourceLocation.getRoot(),
-            resourceLocation.getPath()
-        );
-    }
-
-    public static Identifier wrap(Identifier identifier) {
-        return new Identifier(identifier.getNamespace(), identifier.getPath());
-    }
-
-    public static ItemStack unwrap(IItemStack itemStack) {
-        return ((MoulConfigItemStack) itemStack).getItemStack();
-    }
-
-    public static IItemStack wrap(ItemStack itemStack) {
-        return new MoulConfigItemStack(itemStack);
-    }
-
-    public static Component unwrap(Component component) {
-        return MoulConfigText.unwrap(component);
-    }
-
-    public static Component wrap(Component text) {
-        return MoulConfigText.wrap(text);
-    }
-
-    public static Component.Mutable wrap(MutableComponent text) {
-        return MoulConfigText.wrap(text);
-    }
-
-    public static Font unwrap(IFontRenderer fontRenderer) {
-        return ((MoulConfigFontRenderer) fontRenderer).font();
-    }
-
-    public static IFontRenderer wrap(Font font) {
-        return new MoulConfigFontRenderer(font);
-    }
-    //</editor-fold>
-
     @SneakyThrows
     @Override
     public InputStream loadResourceLocation(Identifier resourceLocation) {
         return mc.getResourceManager()
-            .getResourceOrThrow(unwrap(resourceLocation))
+            .getResourceOrThrow(resourceLocation)
             .open();
     }
 
@@ -187,13 +146,8 @@ public class MoulConfigPlatform implements IMinecraft {
     }
 
     @Override
-    public IFontRenderer getDefaultFontRenderer() {
-        return new MoulConfigFontRenderer(mc.font);
-    }
-
-    @Override
-    public IKeyboardConstants getKeyboardConstants() {
-        return ModernKeyboardConstants.INSTANCE;
+    public Font getDefaultFontRenderer() {
+        return mc.font;
     }
 
     @Override
@@ -243,34 +197,37 @@ public class MoulConfigPlatform implements IMinecraft {
         String action,
         @Nullable ClickType type
     ) {
-        var text = MoulConfigText.unwrap(message);
-
         if (type != null) {
-            text = text.copy().withStyle(it -> it.withClickEvent(switch (type) {
+            message = message.copy().withStyle(it -> it.withClickEvent(switch (type) {
                 case OPEN_LINK -> new ClickEvent.OpenUrl(URI.create(action));
                 case RUN_COMMAND -> new ClickEvent.RunCommand(action);
             }));
         }
 
         //? if >= 26.2 {
-        mc.gui.hud.getChat().addClientSystemMessage(text);
+        mc.gui.hud.getChat().addClientSystemMessage(message);
         //?} else {
-        /*mc.gui.getChat().addClientSystemMessage(text);
+        /*mc.gui.getChat().addClientSystemMessage(message);
         *///?}
     }
 
     @Override
-    public Component getKeyName(int keyCode) {
-        return ModernKeybindHelper.getKeyName(keyCode);
+    public String getKeyName(InputConstants.Key key) {
+        val componentName = key.getDisplayName();
+        val collapsed = componentName.tryCollapseToString();
+        if (collapsed != null) {
+            return collapsed;
+        }
+        return componentName.getString();
     }
 
     @Override
-    public Component.Mutable createLiteral(String text) {
+    public MutableComponent createLiteral(String text) {
         return wrap(Component.literal(text));
     }
 
     @Override
-    public Component.Mutable createTranslatable(String key, Component... args) {
+    public MutableComponent createTranslatable(String key, Component... args) {
         return wrap(Component.translatable(key, Stream.of(args).map(MoulConfigPlatform::unwrap).toArray()));
     }
 

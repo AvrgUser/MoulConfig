@@ -25,7 +25,7 @@ import io.github.notenoughupdates.moulconfig.annotations.*;
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
 import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.editors.*;
-import lombok.val;
+
 
 import java.lang.reflect.Field;
 

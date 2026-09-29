@@ -14,7 +14,7 @@ import io.github.notenoughupdates.moulconfig.xml.loaders.*;
 import io.github.notenoughupdates.moulconfig.xml.trans.UnboxGetSetter;
 import io.github.notenoughupdates.moulconfig.xml.trans.UnboxPrimitives;
 import lombok.SneakyThrows;
-import lombok.var;
+
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.w3c.dom.Element;
@@ -87,7 +87,7 @@ public class XMLUniverse {
         xmlUniverse.registerMapper(HorizontalAlign.class, HorizontalAlign::valueOf);
         xmlUniverse.registerMapper(VerticalAlign.class, VerticalAlign::valueOf);
         xmlUniverse.registerMapper(TextComponent.TextAlignment.class, TextComponent.TextAlignment::valueOf);
-        xmlUniverse.registerMapper(Component.class, Component::of);
+        xmlUniverse.registerMapper(Component.class, Component::literal);
         xmlUniverse.registerMapper(Color.class, str -> str.startsWith("#") ? new Color((int) Long.parseLong(str.substring(1), 16), str.length() == 9) : new Color(Integer.parseInt(str), true));
         return xmlUniverse;
     }

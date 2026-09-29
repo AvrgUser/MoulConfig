@@ -2,7 +2,7 @@ package io.github.notenoughupdates.moulconfig.internal;
 
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
 import net.minecraft.network.chat.Component;
-import lombok.var;
+
 
 public class ComponentHelper {
     public static Component mapStringOrComponent(Object object) {

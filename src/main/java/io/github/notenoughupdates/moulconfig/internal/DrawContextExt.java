@@ -1,7 +1,7 @@
 package io.github.notenoughupdates.moulconfig.internal;
 
-import io.github.notenoughupdates.moulconfig.common.IFontRenderer;
 import io.github.notenoughupdates.moulconfig.common.RenderContext;
+import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
 
 public final class DrawContextExt {
@@ -41,10 +41,10 @@ public final class DrawContextExt {
         int maxWidth,
         int color,
         boolean shadow,
-        IFontRenderer fr
+        Font fr
     ) {
         context.pushMatrix();
-        int width = fr.getStringWidth(text);
+        int width = fr.width(text);
         float factor = Math.min(maxWidth / (float) width, 1F);
         context.translate((float) centerX, (float) centerY);
         context.scale(factor, factor);

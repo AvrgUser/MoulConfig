@@ -22,7 +22,6 @@ package io.github.notenoughupdates.moulconfig.observer;
 
 import io.github.notenoughupdates.moulconfig.internal.Warnings;
 import lombok.SneakyThrows;
-import lombok.var;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

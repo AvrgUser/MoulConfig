@@ -20,8 +20,8 @@
 
 package io.github.notenoughupdates.moulconfig.gui.editors;
 
-import io.github.notenoughupdates.moulconfig.common.IFontRenderer;
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.GuiComponent;
 import io.github.notenoughupdates.moulconfig.gui.GuiImmediateContext;
@@ -36,8 +36,8 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class GuiOptionEditorDropdown extends ComponentEditor {
-    private List<Component> values;
-    private boolean useOrdinal;
+    private final List<Component> values;
+    private final boolean useOrdinal;
     private Enum<?>[] constants;
     private String valuesForSearch;
 
@@ -59,13 +59,13 @@ public class GuiOptionEditorDropdown extends ComponentEditor {
                 this.values.add(Component.literal(constant.toString()));
             }
         } else {
-            this.values = Arrays.stream(values).map(Component::of).collect(Collectors.toList());
+            this.values = Arrays.stream(values).map(Component::literal).collect(Collectors.toList());
             assert values.length > 0;
         }
         this.useOrdinal = clazz == int.class || clazz == Integer.class;
     }
     int componentWidth = 0;
-    private GuiComponent dropdownOverlay = new GuiComponent() {
+    private final GuiComponent dropdownOverlay = new GuiComponent() {
         @Override
         public int getWidth() {
             return componentWidth;
@@ -78,8 +78,7 @@ public class GuiOptionEditorDropdown extends ComponentEditor {
 
         @Override
         public boolean mouseEvent(@NotNull MouseEvent mouseEvent, @NotNull GuiImmediateContext context) {
-            if (mouseEvent instanceof MouseEvent.Click) {
-                MouseEvent.Click click = ((MouseEvent.Click) mouseEvent);
+            if (mouseEvent instanceof MouseEvent.Click click) {
                 if (click.getMouseState()) {
                     closeOverlay();
                 }
@@ -89,13 +88,12 @@ public class GuiOptionEditorDropdown extends ComponentEditor {
                     int dropdownY = 13;
                     for (int ordinal = 0; ordinal < values.size(); ordinal++) {
                         if (mouseY >= top + 3 + dropdownY && mouseY <= top + 3 + dropdownY + 12) {
-                            int selected = ordinal;
                             if (constants != null) {
-                                option.set(constants[selected]);
+                                option.set(constants[ordinal]);
                             } else if (useOrdinal) {
-                                option.set(selected);
+                                option.set(ordinal);
                             } else {
-                                option.set(values.get(selected).getText());
+                                option.set(values.get(ordinal).getString());
                             }
                         }
                         dropdownY += 12;
@@ -132,9 +130,9 @@ public class GuiOptionEditorDropdown extends ComponentEditor {
 
             context.getRenderContext().drawColoredRect(left + 1, top + 14 - 1, left + dropdownWidth - 1, top + 14, outlineColour); //Bar
             int dropdownY = 13;
-            IFontRenderer fr = IMinecraft.INSTANCE.getDefaultFontRenderer();
+            Font fr = IMinecraft.INSTANCE.getDefaultFontRenderer();
             for (Component option : values) {
-                if (option.getText().isEmpty()) {
+                if (option.getString().isEmpty()) {
                     option = Component.literal("<NONE>");
                 }
                 context.getRenderContext().drawStringScaledMaxWidth(
@@ -158,7 +156,7 @@ public class GuiOptionEditorDropdown extends ComponentEditor {
             context.getRenderContext().popMatrix();
         }
     };
-    private GuiComponent component = wrapComponent(new GuiComponent() {
+    private final GuiComponent component = wrapComponent(new GuiComponent() {
         @Override
         public int getWidth() {
             return 80;
@@ -225,16 +223,16 @@ public class GuiOptionEditorDropdown extends ComponentEditor {
         if (useOrdinal) {
             return (int) selectedObject;
         } else if (constants != null) {
-            return ((Enum) selectedObject).ordinal();
+            return ((Enum<?>) selectedObject).ordinal();
         } else {
-            return (values).stream().map(Component::getText).collect(Collectors.toList()).indexOf(selectedObject);
+            return (values).stream().map(Component::getString).toList().indexOf(selectedObject);
         }
     }
 
     @Override
     public boolean fulfillsSearch(String word) {
         if (valuesForSearch == null) {
-            valuesForSearch = values.stream().map(Component::getText).collect(Collectors.joining(" ")).toLowerCase(Locale.ROOT);
+            valuesForSearch = values.stream().map(Component::getString).collect(Collectors.joining(" ")).toLowerCase(Locale.ROOT);
         }
         return super.fulfillsSearch(word) || valuesForSearch.contains(word);
     }

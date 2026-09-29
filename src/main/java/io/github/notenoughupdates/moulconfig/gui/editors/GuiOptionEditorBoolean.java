@@ -27,7 +27,7 @@ import io.github.notenoughupdates.moulconfig.gui.component.SwitchComponent;
 import io.github.notenoughupdates.moulconfig.observer.GetSetter;
 import io.github.notenoughupdates.moulconfig.observer.Property;
 import io.github.notenoughupdates.moulconfig.processor.ProcessedOption;
-import lombok.var;
+
 import org.jetbrains.annotations.NotNull;
 
 public class GuiOptionEditorBoolean extends ComponentEditor {

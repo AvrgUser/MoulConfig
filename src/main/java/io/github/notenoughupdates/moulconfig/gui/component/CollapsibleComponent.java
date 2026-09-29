@@ -1,17 +1,17 @@
 package io.github.notenoughupdates.moulconfig.gui.component;
 
-import io.github.notenoughupdates.moulconfig.common.IFontRenderer;
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
 import io.github.notenoughupdates.moulconfig.gui.GuiComponent;
 import io.github.notenoughupdates.moulconfig.gui.GuiImmediateContext;
 import io.github.notenoughupdates.moulconfig.gui.KeyboardEvent;
 import io.github.notenoughupdates.moulconfig.gui.MouseEvent;
 import io.github.notenoughupdates.moulconfig.observer.GetSetter;
+import net.minecraft.client.gui.Font;
 
 import java.util.function.Supplier;
 
 public class CollapsibleComponent extends GuiComponent {
-    public static final IFontRenderer fr = IMinecraft.INSTANCE.getDefaultFontRenderer();
+    public static final Font fr = IMinecraft.INSTANCE.getDefaultFontRenderer();
     public static final int padding = 2;
     public static final int trim = 3;
     public static final int iconWidth = 9;
@@ -37,7 +37,7 @@ public class CollapsibleComponent extends GuiComponent {
 
     @Override
     public int getHeight() {
-        int barHeight = Math.max(title.get().getHeight(), fr.getHeight());
+        int barHeight = Math.max(title.get().getHeight(), fr.lineHeight);
         return collapsedState.get() ? barHeight : barHeight + trim + body.get().getHeight();
     }
 
@@ -45,7 +45,7 @@ public class CollapsibleComponent extends GuiComponent {
     public void render(GuiImmediateContext context) {
         boolean collapsed = collapsedState.get();
         context.getRenderContext().drawOpenCloseTriangle(!collapsed, 0F, 0F, (float) iconWidth, (float) iconWidth, -1);
-        int barHeight = Math.max(title.get().getHeight(), fr.getHeight());
+        int barHeight = Math.max(title.get().getHeight(), fr.lineHeight);
         context.getRenderContext().pushMatrix();
         context.getRenderContext().translate((float) iconWidth, 0F);
         title.get().render(context.translated(iconWidth, 0, context.getWidth() - iconWidth, barHeight));
@@ -62,7 +62,7 @@ public class CollapsibleComponent extends GuiComponent {
 
     @Override
     public boolean mouseEvent(MouseEvent mouseEvent, GuiImmediateContext context) {
-        int barHeight = Math.max(title.get().getHeight(), fr.getHeight());
+        int barHeight = Math.max(title.get().getHeight(), fr.lineHeight);
         if (mouseEvent instanceof MouseEvent.Click && context.translated(0, 0, context.getWidth(), barHeight).isHovered()) {
             if (((MouseEvent.Click) mouseEvent).getMouseState()) {
                 collapsedState.set(!collapsedState.get());
@@ -75,7 +75,7 @@ public class CollapsibleComponent extends GuiComponent {
 
     @Override
     public boolean keyboardEvent(KeyboardEvent event, GuiImmediateContext context) {
-        int barHeight = Math.max(title.get().getHeight(), fr.getHeight());
+        int barHeight = Math.max(title.get().getHeight(), fr.lineHeight);
         return title.get().keyboardEvent(event, context.translated(iconWidth, 0, context.getWidth() - iconWidth, barHeight))
             || body.get().keyboardEvent(event, context.translated(0, barHeight, context.getWidth(), context.getHeight() - barHeight));
     }

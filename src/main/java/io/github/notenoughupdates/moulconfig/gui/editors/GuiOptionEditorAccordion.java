@@ -24,7 +24,7 @@ import io.github.notenoughupdates.moulconfig.gui.GuiComponent;
 import io.github.notenoughupdates.moulconfig.gui.GuiImmediateContext;
 import io.github.notenoughupdates.moulconfig.gui.MouseEvent;
 import io.github.notenoughupdates.moulconfig.processor.ProcessedOption;
-import lombok.val;
+
 import org.jetbrains.annotations.NotNull;
 
 public class GuiOptionEditorAccordion extends ComponentEditor {

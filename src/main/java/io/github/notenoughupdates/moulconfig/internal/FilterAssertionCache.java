@@ -4,7 +4,7 @@ import io.github.notenoughupdates.moulconfig.common.IMinecraft;
 import net.minecraft.resources.Identifier;
 import io.github.notenoughupdates.moulconfig.common.TextureFilter;
 import lombok.Value;
-import lombok.val;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

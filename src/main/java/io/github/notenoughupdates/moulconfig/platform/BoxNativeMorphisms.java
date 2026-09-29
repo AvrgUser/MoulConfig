@@ -1,10 +1,10 @@
 package io.github.notenoughupdates.moulconfig.platform;
 
+import io.github.notenoughupdates.moulconfig.common.MoulConfigFontRenderer;
 import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.internal.TypeUtils;
 import io.github.notenoughupdates.moulconfig.observer.GetSetter;
 import io.github.notenoughupdates.moulconfig.xml.ParametricTypeMorphism;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 
 import java.lang.reflect.Type;
@@ -31,12 +31,12 @@ public interface BoxNativeMorphisms {
             return new GetSetter<Component>() {
                 @Override
                 public Component get() {
-                    return MoulConfigText.wrap(valueC.get());
+                    return valueC.get();
                 }
 
                 @Override
                 public void set(Component newValue) {
-                    valueC.set(MoulConfigText.unwrap(newValue));
+                    valueC.set(newValue);
                 }
             };
         }

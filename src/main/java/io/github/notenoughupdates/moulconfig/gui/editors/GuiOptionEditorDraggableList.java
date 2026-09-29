@@ -30,7 +30,7 @@ import io.github.notenoughupdates.moulconfig.gui.component.*;
 import io.github.notenoughupdates.moulconfig.internal.*;
 import io.github.notenoughupdates.moulconfig.observer.GetSetter;
 import io.github.notenoughupdates.moulconfig.processor.ProcessedOption;
-import lombok.var;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.ParameterizedType;

@@ -20,13 +20,15 @@
 
 package io.github.notenoughupdates.moulconfig.gui;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import io.github.notenoughupdates.moulconfig.Config;
 import io.github.notenoughupdates.moulconfig.GuiTextures;
 import io.github.notenoughupdates.moulconfig.Social;
-import io.github.notenoughupdates.moulconfig.common.IFontRenderer;
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
 import io.github.notenoughupdates.moulconfig.common.Layer;
 import io.github.notenoughupdates.moulconfig.common.RenderContext;
+import lombok.val;
+import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.component.MetaComponent;
 import io.github.notenoughupdates.moulconfig.gui.editors.GuiOptionEditorAccordion;
@@ -40,8 +42,8 @@ import io.github.notenoughupdates.moulconfig.processor.ProcessedCategory;
 import io.github.notenoughupdates.moulconfig.processor.ProcessedOption;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.val;
-import lombok.var;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextColor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
@@ -246,8 +248,8 @@ public class MoulConfigEditor<T extends Config> extends GuiElement implements Cl
             if (!getConfigObject().shouldSearchCategoryNames()) directlyMatchedCategories.clear();
             for (String word : toSearch.split(" +")) {
                 directlyMatchedCategories.removeIf(it -> ContextAware.wrapErrorWithContext(it,
-                    () -> !(it.getDisplayName().getText().toLowerCase(Locale.ROOT).contains(word)
-                        || it.getDescription().getText().toLowerCase(Locale.ROOT).contains(word))));
+                    () -> !(it.getDisplayName().getString().toLowerCase(Locale.ROOT).contains(word)
+                        || it.getDescription().getString().toLowerCase(Locale.ROOT).contains(word))));
             }
 
             Set<ProcessedOption> matchingOptionsAndDependencies = new HashSet<>();
@@ -378,7 +380,7 @@ public class MoulConfigEditor<T extends Config> extends GuiElement implements Cl
 
         context.drawDarkRect(x + 4, y + 5, xSize - 9, 20, false);
 
-        IFontRenderer ifr = iMinecraft.getDefaultFontRenderer();
+        Font ifr = iMinecraft.getDefaultFontRenderer();
         context.drawStringCenteredScaledMaxWidth(
             getConfigObject().getTitle(),
             ifr,
@@ -427,7 +429,7 @@ public class MoulConfigEditor<T extends Config> extends GuiElement implements Cl
             var childCategories = childCategoryLookup.get(entry.getKey());
             var catName = getConfigObject().formatCategoryName(entry.getValue(), isSelected);
             var align = getConfigObject().alignCategory(entry.getValue(), isSelected);
-            var textLength = ifr.getStringWidth(catName);
+            var textLength = ifr.width(catName);
             var isIndented = childCategories != null || entry.getValue().getParentCategoryId() != null;
             int maxTextLength = (int) (((isIndented) ? 90 : 100) * leftPanelScalar);
             int centerMark = x + (int) (75 * leftPanelScalar);
@@ -440,9 +442,9 @@ public class MoulConfigEditor<T extends Config> extends GuiElement implements Cl
                     ifr, centerMark, y + 70 + catY, false, maxTextLength, -1
                 );
             } else if (align == HorizontalAlign.RIGHT) {
-                context.drawString(ifr, catName, centerMark + 50 - textLength, y + 70 + catY - ifr.getHeight() / 2, -1, false);
+                context.drawString(ifr, catName, centerMark + 50 - textLength, y + 70 + catY - ifr.lineHeight / 2, -1, false);
             } else {
-                context.drawString(ifr, catName, centerMark - 50 + (isIndented ? 10 : 0), y + 70 + catY - ifr.getHeight() / 2, -1, false);
+                context.drawString(ifr, catName, centerMark - 50 + (isIndented ? 10 : 0), y + 70 + catY - ifr.lineHeight / 2, -1, false);
             }
             if (childCategories != null) {
                 var isExpanded = showSubcategories && (isSelected || childCategories.contains(getSelectedCategory()));
@@ -511,7 +513,7 @@ public class MoulConfigEditor<T extends Config> extends GuiElement implements Cl
 
         int rightStuffLen = 20;
         if (minimumSearchSize.getValue() > 1) {
-            int strLen = ifr.getStringWidth(searchFieldContent.get()) + 10;
+            int strLen = ifr.width(searchFieldContent.get()) + 10;
             if (!shouldShow) strLen = 0;
 
             int len = Math.max(strLen, minimumSearchSize.getValue());
@@ -559,18 +561,25 @@ public class MoulConfigEditor<T extends Config> extends GuiElement implements Cl
                 var titleScale = 2;
                 context.pushMatrix();
                 context.translate(titlePositionX, titlePositionY);
-                context.drawStringCenteredScaledMaxWidth(Component.literal("Seems like your search is found in a subcategory.").grey(), ifr,
+                context.drawStringCenteredScaledMaxWidth(
+                    Component.literal("Seems like your search is found in a subcategory.")
+                        .withStyle(Style.EMPTY.withColor(TextColor.GRAY)),
+                    ifr,
                     0,
-                    titleScale * ifr.getHeight(),
+                    titleScale * ifr.lineHeight,
                     true, innerSize, -1
                 );
-                context.drawStringCenteredScaledMaxWidth(Component.literal("Check out the subcategories on the left.").grey(), ifr,
+                context.drawStringCenteredScaledMaxWidth(Component.literal("Check out the subcategories on the left.")
+                        .withStyle(Style.EMPTY.withColor(TextColor.GRAY)),
+                    ifr,
                     0,
-                    (titleScale + 1) * ifr.getHeight(),
+                    (titleScale + 1) * ifr.lineHeight,
                     true, innerSize, -1
                 );
                 context.scale(titleScale, titleScale);
-                context.drawStringCenteredScaledMaxWidth(Component.literal("No options found.").grey(), ifr,
+                context.drawStringCenteredScaledMaxWidth(Component.literal("No options found.")
+                        .withStyle(Style.EMPTY.withColor(TextColor.GRAY)),
+                    ifr,
                     0,
                     0,
                     true, innerSize / titleScale, -1
@@ -811,7 +820,7 @@ public class MoulConfigEditor<T extends Config> extends GuiElement implements Cl
             }
 
             if (minimumSearchSize.getValue() > 1) {
-                int strLen = iMinecraft.getDefaultFontRenderer().getStringWidth(searchFieldContent.get()) + 10;
+                int strLen = iMinecraft.getDefaultFontRenderer().width(searchFieldContent.get()) + 10;
                 int len = Math.max(strLen, minimumSearchSize.getValue());
 
                 if (mouseX >= optsInnerRight - 25 - len && mouseX <= optsInnerRight - 25 &&
@@ -1157,8 +1166,8 @@ public class MoulConfigEditor<T extends Config> extends GuiElement implements Cl
         }
 
         if (event instanceof KeyboardEvent.KeyPressed && ((KeyboardEvent.KeyPressed) event).getPressed()) {
-            if (IMinecraft.INSTANCE.isKeyboardKeyDown(IMinecraft.INSTANCE.getKeyboardConstants().getCtrlLeft())
-                && IMinecraft.INSTANCE.isKeyboardKeyDown(IMinecraft.INSTANCE.getKeyboardConstants().getKeyF())) {
+            if (IMinecraft.INSTANCE.isKeyboardKeyDown(InputConstants.KEY_LCONTROL) &&
+                IMinecraft.INSTANCE.isKeyboardKeyDown(InputConstants.KEY_F)) {
                 searchField.setFocus(!searchField.isFocused());
                 return true;
             }
@@ -1174,7 +1183,7 @@ public class MoulConfigEditor<T extends Config> extends GuiElement implements Cl
             new GuiImmediateContext(iMinecraft.provideTopLevelRenderContext(), 0, 0, 0, 0, 0, 0, 0, 0, 0F, 0F));
 
         if (!searchFieldContent.get().equals(old)) {
-            searchFieldContent.set(IMinecraft.INSTANCE.getDefaultFontRenderer().trimStringToWidth(
+            searchFieldContent.set(IMinecraft.INSTANCE.getDefaultFontRenderer().plainSubstrByWidth(
                 searchFieldContent.get(),
                 innerWidth / 2 - 20
             ));
@@ -1187,11 +1196,11 @@ public class MoulConfigEditor<T extends Config> extends GuiElement implements Cl
 
     private void handleKeyboardPresses() {
         LerpingInteger target = lastMouseX < keyboardScrollXCutoff ? categoryScroll : optionsScroll;
-        if (IMinecraft.INSTANCE.isKeyboardKeyDown(IMinecraft.INSTANCE.getKeyboardConstants().getDown())) {
+        if (IMinecraft.INSTANCE.isKeyboardKeyDown(InputConstants.KEY_DOWN)) {
             target.setTimeToReachTarget(50);
             target.resetTimer();
             target.setTarget(target.getTarget() + 5);
-        } else if (IMinecraft.INSTANCE.isKeyboardKeyDown(IMinecraft.INSTANCE.getKeyboardConstants().getUp())) {
+        } else if (IMinecraft.INSTANCE.isKeyboardKeyDown(InputConstants.KEY_UP)) {
             target.setTimeToReachTarget(50);
             target.resetTimer();
             if (target.getTarget() >= 0) {

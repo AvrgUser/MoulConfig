@@ -23,13 +23,12 @@ package io.github.notenoughupdates.moulconfig.processor;
 
 import io.github.notenoughupdates.moulconfig.Config;
 import io.github.notenoughupdates.moulconfig.annotations.ConfigOption;
+import lombok.val;
 import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.GuiOptionEditor;
 import io.github.notenoughupdates.moulconfig.gui.editors.GuiOptionEditorAccordion;
 import io.github.notenoughupdates.moulconfig.internal.Warnings;
 import lombok.Getter;
-import lombok.val;
-import lombok.var;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

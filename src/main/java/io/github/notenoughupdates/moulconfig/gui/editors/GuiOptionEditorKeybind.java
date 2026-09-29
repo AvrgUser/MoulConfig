@@ -1,10 +1,11 @@
 package io.github.notenoughupdates.moulconfig.gui.editors;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import io.github.notenoughupdates.moulconfig.GuiTextures;
 import io.github.notenoughupdates.moulconfig.annotations.ConfigEditorKeybind;
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
-import io.github.notenoughupdates.moulconfig.common.KeyboardConstants;
 import io.github.notenoughupdates.moulconfig.common.RenderContext;
+import lombok.val;
 import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.GuiComponent;
 import io.github.notenoughupdates.moulconfig.gui.GuiImmediateContext;
@@ -12,7 +13,8 @@ import io.github.notenoughupdates.moulconfig.gui.KeyboardEvent;
 import io.github.notenoughupdates.moulconfig.gui.MouseEvent;
 import io.github.notenoughupdates.moulconfig.internal.Warnings;
 import io.github.notenoughupdates.moulconfig.processor.ProcessedOption;
-import lombok.var;
+
+import net.minecraft.network.chat.TextColor;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
@@ -23,8 +25,8 @@ public class GuiOptionEditorKeybind extends ComponentEditor {
 
     public GuiOptionEditorKeybind(ProcessedOption option, int defaultKeyCode) {
         super(option);
-        if (option.getType() != int.class && option.getType() != Integer.class)
-            Warnings.warn(ConfigEditorKeybind.class + " can only be applied to int properties.");
+        if (option.getType() != String.class)
+            Warnings.warn(ConfigEditorKeybind.class + " can only be applied to String properties.");
 
         component = wrapComponent(new GuiComponent() {
             @Override
@@ -45,8 +47,8 @@ public class GuiOptionEditorKeybind extends ComponentEditor {
 
                 renderContext.drawTexturedRect(GuiTextures.BUTTON, width / 6 - 24, height - 7 - 14, 48, 16);
 
-
-                Component keyName = IMinecraft.INSTANCE.getKeyName((int) option.get());
+                final var key = InputConstants.getKey((String) option.get());
+                Component keyName = IMinecraft.INSTANCE.getKeyName(key);
                 Component text = editingKeycode ? Component.literal("> ").append(keyName).append(" <") : keyName;
                 renderContext.drawStringCenteredScaledMaxWidth(text,
                     IMinecraft.INSTANCE.getDefaultFontRenderer(),
@@ -64,7 +66,8 @@ public class GuiOptionEditorKeybind extends ComponentEditor {
                     mouseY >= resetY && mouseY < resetY + 11) {
                     renderContext.scheduleDrawTooltip(
                         context.getMouseX(), context.getMouseY(),
-                        Collections.singletonList(Component.literal("Reset to Default").red()));
+                        Collections.singletonList(Component.literal("Reset to Default")
+                            .withColor(TextColor.RED)));
                 }
             }
 
@@ -75,7 +78,8 @@ public class GuiOptionEditorKeybind extends ComponentEditor {
                 if (click.getMouseState() && click.getMouseButton() != -1 && editingKeycode) {
                     editingKeycode = false;
                     int mouseButton = click.getMouseButton();
-                    option.set(mouseButton); // TODO: make this distinct. This is also different from the way 1.8.9 handles those keybindings, so this class is incompatible right now. A "proper" way to do this would be to make a Keybinding class that stores both the button and whether this is a mouse or keyboard button, with some version specific helpers to test if an event matches.
+                    val key = InputConstants.Type.MOUSE.getOrCreate(mouseButton);
+                    option.set(key.getName());
                     return true;
                 }
 
@@ -107,10 +111,11 @@ public class GuiOptionEditorKeybind extends ComponentEditor {
                         if (keyPressed.getPressed()) return true;
                         editingKeycode = false;
                         int keycode = keyPressed.getKeycode();
-                        if (keycode == KeyboardConstants.INSTANCE.getEscape() || keycode == 0) {
-                            keycode = KeyboardConstants.INSTANCE.getNone();
+                        if (keycode == InputConstants.KEY_ESCAPE || keycode == 0) {
+                            keycode = InputConstants.UNKNOWN.getValue();
                         }
-                        option.set(keycode);
+                        val key = InputConstants.Type.KEYSYM.getOrCreate(keycode);
+                        option.set(key.getName());
                         return true;
                     } else {
                         return false;

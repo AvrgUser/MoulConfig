@@ -1,6 +1,6 @@
 package io.github.notenoughupdates.moulconfig.internal;
 
-import lombok.val;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.*;

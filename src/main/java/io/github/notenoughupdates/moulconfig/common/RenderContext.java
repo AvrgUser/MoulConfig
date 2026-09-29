@@ -1,8 +1,12 @@
 package io.github.notenoughupdates.moulconfig.common;
 
+import com.mojang.blaze3d.platform.InputConstants;
+import juuxel.libninepatch.NinePatch;
+import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.internal.NinePatchRenderer;
-import juuxel.libninepatch.NinePatch;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NullMarked;
@@ -44,18 +48,18 @@ public interface RenderContext {
     }
 
     default boolean isShiftDown() {
-        return isKeyboardKeyDown(KeyboardConstants.INSTANCE.getShiftLeft()) || isKeyboardKeyDown(KeyboardConstants.INSTANCE.getShiftRight());
+        return isKeyboardKeyDown(InputConstants.KEY_LSHIFT) || isKeyboardKeyDown(InputConstants.KEY_RSHIFT);
     }
 
     default boolean isPhysicalCtrlDown() {
-        return isKeyboardKeyDown(KeyboardConstants.INSTANCE.getCtrlLeft()) || isKeyboardKeyDown(KeyboardConstants.INSTANCE.getCtrlRight());
+        return isKeyboardKeyDown(InputConstants.KEY_LCONTROL) || isKeyboardKeyDown(InputConstants.KEY_RCONTROL);
     }
 
     /**
      * @return if the command (on 🍎) or super (on 🐧) or windows (on 🪟) key is down.
      */
     default boolean isCmdDown() {
-        return isKeyboardKeyDown(KeyboardConstants.INSTANCE.getCmdLeft()) || isKeyboardKeyDown(KeyboardConstants.INSTANCE.getCmdRight());
+        return isKeyboardKeyDown(InputConstants.KEY_LSUPER) || isKeyboardKeyDown(InputConstants.KEY_RSUPER);
     }
 
     /**
@@ -69,28 +73,28 @@ public interface RenderContext {
         }
     }
 
-    default void drawStringScaledMaxWidth(Component text, IFontRenderer fontRenderer, int x, int y, boolean shadow, int width, int color) {
+    default void drawStringScaledMaxWidth(Component text, Font font, int x, int y, boolean shadow, int width, int color) {
         pushMatrix();
         translate(x, y);
-        float scale = Math.min(1F, Math.max(0.1F, width / (float) fontRenderer.getStringWidth(text)));
+        float scale = Math.min(1F, Math.max(0.1F, width / (float) font.width(text)));
         scale(scale, scale);
-        drawString(fontRenderer, text, 0, 0, color, shadow);
+        drawString(font, text, 0, 0, color, shadow);
         popMatrix();
     }
 
     default void drawStringCenteredScaledMaxWidth(
         Component text,
-        IFontRenderer fr,
+        Font font,
         float x, float y,
         boolean shadow,
         int length, int color
     ) {
         pushMatrix();
-        int strLength = fr.getStringWidth(text);
+        int strLength = font.width(text);
         float factor = Math.min(length / (float) strLength, 1f);
         translate(x, y);
         scale(factor, factor);
-        drawString(fr, text, -strLength / 2, -fr.getHeight() / 2, color, shadow);
+        drawString(font, text, -strLength / 2, -font.lineHeight / 2, color, shadow);
         popMatrix();
     }
 
@@ -154,7 +158,7 @@ public interface RenderContext {
         }
     }
 
-    void drawString(IFontRenderer fontRenderer, Component text, int x, int y, int color, boolean shadow);
+    void drawString(Font font, Component text, int x, int y, int color, boolean shadow);
 
     void drawColoredRect(float left, float top, float right, float bottom, int color);
 
@@ -253,7 +257,7 @@ public interface RenderContext {
     @Deprecated
     void clearScissor();  // TODO: this sort of escapes out of the current context.
 
-    void renderItemStack(IItemStack itemStack, int x, int y, @Nullable Component overlayText);
+    void renderItemStack(ItemStack itemStack, int x, int y, @Nullable Component overlayText);
 
     void drawTooltipNow(int x, int y, List<Component> tooltipLines);
 

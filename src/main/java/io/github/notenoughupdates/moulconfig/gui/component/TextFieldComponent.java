@@ -1,8 +1,8 @@
 package io.github.notenoughupdates.moulconfig.gui.component;
 
-import io.github.notenoughupdates.moulconfig.common.IFontRenderer;
+import com.mojang.blaze3d.platform.InputConstants;
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
-import io.github.notenoughupdates.moulconfig.common.KeyboardConstants;
+import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.GuiComponent;
 import io.github.notenoughupdates.moulconfig.gui.GuiImmediateContext;
@@ -11,7 +11,6 @@ import io.github.notenoughupdates.moulconfig.gui.MouseEvent;
 import io.github.notenoughupdates.moulconfig.observer.GetSetter;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Supplier;
 
@@ -30,7 +29,7 @@ public class TextFieldComponent extends GuiComponent {
     private final int preferredWidth;
     protected final Supplier<Boolean> editable;
     protected final String suggestion;
-    protected final IFontRenderer font;
+    protected final Font font;
     protected final Set<Character> forbiddenChars;
 
     private int cursor;
@@ -41,18 +40,18 @@ public class TextFieldComponent extends GuiComponent {
     private boolean initializedCursor;
 
     public TextFieldComponent(GetSetter<String> text, int preferredWidth) {
-        this(text, preferredWidth, GetSetter.constant(true), "", IMinecraft.INSTANCE.getDefaultFontRenderer(), singletonCharSet('\u00a7'));
+        this(text, preferredWidth, GetSetter.constant(true), "", IMinecraft.INSTANCE.getDefaultFontRenderer(), singletonCharSet('§'));
     }
 
     public TextFieldComponent(GetSetter<String> text, int preferredWidth, Supplier<Boolean> editable, String suggestion) {
-        this(text, preferredWidth, editable, suggestion, IMinecraft.INSTANCE.getDefaultFontRenderer(), singletonCharSet('\u00a7'));
+        this(text, preferredWidth, editable, suggestion, IMinecraft.INSTANCE.getDefaultFontRenderer(), singletonCharSet('§'));
     }
 
-    public TextFieldComponent(GetSetter<String> text, int preferredWidth, Supplier<Boolean> editable, String suggestion, IFontRenderer font) {
-        this(text, preferredWidth, editable, suggestion, font, singletonCharSet('\u00a7'));
+    public TextFieldComponent(GetSetter<String> text, int preferredWidth, Supplier<Boolean> editable, String suggestion, Font font) {
+        this(text, preferredWidth, editable, suggestion, font, singletonCharSet('§'));
     }
 
-    public TextFieldComponent(GetSetter<String> text, int preferredWidth, Supplier<Boolean> editable, String suggestion, IFontRenderer font, Set<Character> forbiddenChars) {
+    public TextFieldComponent(GetSetter<String> text, int preferredWidth, Supplier<Boolean> editable, String suggestion, Font font, Set<Character> forbiddenChars) {
         this.text = text;
         this.preferredWidth = preferredWidth;
         this.editable = editable;
@@ -72,7 +71,7 @@ public class TextFieldComponent extends GuiComponent {
     @Override
     public int getWidth() {
         if (isFocused() && shouldExpandToFit) {
-            return Math.max(preferredWidth, font.getStringWidth(Component.literal(text.get())) + 10);
+            return Math.max(preferredWidth, font.width(Component.literal(text.get())) + 10);
         }
         return preferredWidth;
     }
@@ -88,7 +87,7 @@ public class TextFieldComponent extends GuiComponent {
             scrollOffset = cursor;
         }
         if (scrollOffset < cursor
-            && font.trimStringToWidth(safeSubString(text.get(), scrollOffset), width - TEXT_PADDING_X * 2).length() + scrollOffset < cursor) {
+            && font.plainSubstrByWidth(safeSubString(text.get(), scrollOffset), width - TEXT_PADDING_X * 2).length() + scrollOffset < cursor) {
             scrollOffset = cursor;
         }
         checkScrollOffset(width);
@@ -96,12 +95,12 @@ public class TextFieldComponent extends GuiComponent {
 
     public void checkScrollOffset(int width) {
         String value = text.get();
-        int rightMostScrollOffset = value.length() - font.trimStringToWidth(value, width - TEXT_PADDING_X * 2, true).length();
+        int rightMostScrollOffset = value.length() - font.plainSubstrByWidth(value, width - TEXT_PADDING_X * 2, true).length();
         scrollOffset = Math.max(0, Math.min(rightMostScrollOffset, scrollOffset));
     }
 
     public void updateVisibleText(int width) {
-        visibleText = font.trimStringToWidth(safeSubString(text.get(), scrollOffset), width - TEXT_PADDING_X * 2);
+        visibleText = font.plainSubstrByWidth(safeSubString(text.get(), scrollOffset), width - TEXT_PADDING_X * 2);
     }
 
     @Override
@@ -116,7 +115,7 @@ public class TextFieldComponent extends GuiComponent {
                 font,
                 Component.literal(suggestion),
                 TEXT_PADDING_X,
-                context.getHeight() / 2 - font.getHeight() / 2,
+                context.getHeight() / 2 - font.lineHeight / 2,
                 SUGGESTION_COLOR,
                 false
             );
@@ -128,7 +127,7 @@ public class TextFieldComponent extends GuiComponent {
     }
 
     public void validateCursor() {
-        cursor = Math.max(0, Math.min(text.get().length(), cursor));
+        cursor = Math.clamp(cursor, 0, text.get().length());
     }
 
     private void renderSelection(GuiImmediateContext context) {
@@ -138,8 +137,8 @@ public class TextFieldComponent extends GuiComponent {
         if (right < scrollOffset || left > scrollOffset + visibleText.length()) return;
         int normalizedLeft = Math.max(scrollOffset, left) - scrollOffset;
         int normalizedRight = Math.min(scrollOffset + visibleText.length(), right) - scrollOffset;
-        int leftPos = font.getStringWidth(safeSubString(visibleText, 0, normalizedLeft));
-        int rightPos = leftPos + font.getStringWidth(safeSubString(visibleText, normalizedLeft, normalizedRight));
+        int leftPos = font.width(safeSubString(visibleText, 0, normalizedLeft));
+        int rightPos = leftPos + font.width(safeSubString(visibleText, normalizedLeft, normalizedRight));
         context.getRenderContext().invertedRect(
             (float) (TEXT_PADDING_X + leftPos),
             (float) TEXT_PADDING_Y,
@@ -153,7 +152,7 @@ public class TextFieldComponent extends GuiComponent {
         if (System.currentTimeMillis() / 1000 % 2 == 0) return;
         if (cursor < scrollOffset) return;
         if (cursor > scrollOffset + visibleText.length()) return;
-        int cursorOffset = font.getStringWidth(safeSubString(visibleText, 0, cursor - scrollOffset));
+        int cursorOffset = font.width(safeSubString(visibleText, 0, cursor - scrollOffset));
         context.getRenderContext().drawColoredRect(
             (float) (TEXT_PADDING_X + cursorOffset),
             (float) TEXT_PADDING_Y,
@@ -169,7 +168,7 @@ public class TextFieldComponent extends GuiComponent {
             font,
             Component.literal(visibleText),
             TEXT_PADDING_X,
-            context.getHeight() / 2 - font.getHeight() / 2,
+            context.getHeight() / 2 - font.lineHeight / 2,
             textColor,
             true
         );
@@ -189,13 +188,13 @@ public class TextFieldComponent extends GuiComponent {
             KeyboardEvent.KeyPressed keyPressed = (KeyboardEvent.KeyPressed) event;
             if (!keyPressed.getPressed()) return false;
             int keycode = keyPressed.getKeycode();
-            if (keycode == KeyboardConstants.INSTANCE.getLeft()) {
+            if (keycode == InputConstants.KEY_LEFT) {
                 onDirectionalKey(context, -1);
                 return true;
-            } else if (keycode == KeyboardConstants.INSTANCE.getRight()) {
+            } else if (keycode == InputConstants.KEY_RIGHT) {
                 onDirectionalKey(context, 1);
                 return true;
-            } else if (keycode == KeyboardConstants.INSTANCE.getHome() || keycode == KeyboardConstants.INSTANCE.getUp()) {
+            } else if (keycode == InputConstants.KEY_HOME || keycode == InputConstants.KEY_UP) {
                 if (context.getRenderContext().isShiftDown()) {
                     if (selection == -1) selection = cursor;
                 } else {
@@ -204,7 +203,7 @@ public class TextFieldComponent extends GuiComponent {
                 cursor = 0;
                 scrollCursorIntoView(context.getWidth());
                 return true;
-            } else if (keycode == KeyboardConstants.INSTANCE.getDown() || keycode == KeyboardConstants.INSTANCE.getEnd()) {
+            } else if (keycode == InputConstants.KEY_DOWN || keycode == InputConstants.KEY_END) {
                 if (context.getRenderContext().isShiftDown()) {
                     if (selection == -1) selection = cursor;
                 } else {
@@ -213,34 +212,34 @@ public class TextFieldComponent extends GuiComponent {
                 cursor = text.get().length();
                 scrollCursorIntoView(context.getWidth());
                 return true;
-            } else if (keycode == KeyboardConstants.INSTANCE.getBackSpace()) {
+            } else if (keycode == InputConstants.KEY_BACKSPACE) {
                 if (selection == -1) selection = skipCharacters(context.getRenderContext().isLogicalCtrlDown(), -1);
                 writeText("", context.getWidth());
                 return true;
-            } else if (keycode == KeyboardConstants.INSTANCE.getDelete()) {
+            } else if (keycode == InputConstants.KEY_DELETE) {
                 if (selection == -1) selection = skipCharacters(context.getRenderContext().isLogicalCtrlDown(), 1);
                 writeText("", context.getWidth());
                 return true;
-            } else if (keycode == KeyboardConstants.INSTANCE.getKeyC()) {
+            } else if (keycode == InputConstants.KEY_C) {
                 if (context.getRenderContext().isLogicalCtrlDown()) {
                     IMinecraft.INSTANCE.copyToClipboard(getSelection());
                     return true;
                 }
                 return false;
-            } else if (keycode == KeyboardConstants.INSTANCE.getKeyX()) {
+            } else if (keycode == InputConstants.KEY_X) {
                 if (context.getRenderContext().isLogicalCtrlDown()) {
                     IMinecraft.INSTANCE.copyToClipboard(getSelection());
                     writeText("", context.getWidth());
                     return true;
                 }
                 return false;
-            } else if (keycode == KeyboardConstants.INSTANCE.getKeyV()) {
+            } else if (keycode == InputConstants.KEY_V) {
                 if (context.getRenderContext().isLogicalCtrlDown()) {
                     writeText(IMinecraft.INSTANCE.copyFromClipboard(), context.getWidth());
                     return true;
                 }
                 return false;
-            } else if (keycode == KeyboardConstants.INSTANCE.getKeyA()) {
+            } else if (keycode == InputConstants.KEY_A) {
                 if (context.getRenderContext().isLogicalCtrlDown()) {
                     cursor = text.get().length();
                     selection = 0;

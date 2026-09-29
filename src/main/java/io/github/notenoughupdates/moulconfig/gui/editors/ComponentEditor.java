@@ -3,15 +3,17 @@ package io.github.notenoughupdates.moulconfig.gui.editors;
 import io.github.notenoughupdates.moulconfig.DescriptionRendereringBehaviour;
 import io.github.notenoughupdates.moulconfig.TitleRenderingBehaviour;
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
+import io.github.notenoughupdates.moulconfig.common.MoulConfigFontRenderer;
 import io.github.notenoughupdates.moulconfig.common.RenderContext;
+import lombok.val;
 import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.*;
 import io.github.notenoughupdates.moulconfig.gui.component.CenterComponent;
 import io.github.notenoughupdates.moulconfig.gui.component.PanelComponent;
 import io.github.notenoughupdates.moulconfig.processor.ProcessedOption;
 import lombok.Getter;
-import lombok.val;
-import lombok.var;
+
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NullMarked;
@@ -90,13 +92,13 @@ public abstract class ComponentEditor extends GuiOptionEditor {
             if (option.getConfig().getDescriptionBehaviour(option) == DescriptionRendereringBehaviour.SCALE_TEXT)
                 return super.getHeight();
             var fr = IMinecraft.INSTANCE.getDefaultFontRenderer();
-            return Math.max(45, fr.splitText(option.getDescription(), 250 * 2 / 3 - 10).size() * (fr.getHeight() + 1) + 10);
+            return Math.max(45, MoulConfigFontRenderer.splitText(option.getDescription(), 250 * 2 / 3 - 10).size() * (fr.lineHeight + 1) + 10);
         }
 
         public int getTopHeight() {
             int height = getDescriptionHeight();
             if (option.getConfig().getTitleRenderingBehaviour(option) != TitleRenderingBehaviour.LEFT)
-                height += IMinecraft.INSTANCE.getDefaultFontRenderer().getHeight() + 1;
+                height += IMinecraft.INSTANCE.getDefaultFontRenderer().lineHeight + 1;
             return Math.max(HEIGHT, height);
         }
 
@@ -197,13 +199,13 @@ public abstract class ComponentEditor extends GuiOptionEditor {
             int width = context.getWidth();
             var minecraft = context.getRenderContext().getMinecraft();
             var fr = minecraft.getDefaultFontRenderer();
-            int yOffset = option.getConfig().getTitleRenderingBehaviour(option) != TitleRenderingBehaviour.LEFT ? fr.getHeight() + 13 : 5;
+            int yOffset = option.getConfig().getTitleRenderingBehaviour(option) != TitleRenderingBehaviour.LEFT ? fr.lineHeight + 13 : 5;
             float scale = 1;
             List<Component> lines;
             int descriptionHeight = context.getHeight() - yOffset;
             while (true) {
-                lines = fr.splitText(option.getDescription(), (int) (width * 2 / 3 / scale - 10));
-                if (lines.size() * scale * (fr.getHeight() + 1) < descriptionHeight)
+                lines = MoulConfigFontRenderer.splitText(option.getDescription(), (int) (width * 2 / 3 / scale - 10));
+                if (lines.size() * scale * (fr.lineHeight + 1) < descriptionHeight)
                     break;
                 scale -= 1 / 8f;
                 if (scale < 1 / 16f) break;
@@ -213,7 +215,7 @@ public abstract class ComponentEditor extends GuiOptionEditor {
             context.getRenderContext().scale(scale, scale);
             for (var line : lines) {
                 context.getRenderContext().drawString(fr, line, 0, 0, 0xc0c0c0, false);
-                context.getRenderContext().translate(0, fr.getHeight() + 1);
+                context.getRenderContext().translate(0, fr.lineHeight + 1);
             }
             context.getRenderContext().popMatrix();
         }

@@ -24,6 +24,8 @@ import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.HorizontalAlign;
 import io.github.notenoughupdates.moulconfig.processor.ProcessedCategory;
 import io.github.notenoughupdates.moulconfig.processor.ProcessedOption;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextColor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,11 +41,14 @@ public abstract class Config {
 
     public Component formatCategoryName(ProcessedCategory category, boolean isSelected) {
         if (isSelected) {
-            return category.getDisplayName().copyShallow().underlined().aqua();
+            return category.getDisplayName().plainCopy()
+                .setStyle(Style.EMPTY.withUnderlined(true).withColor(TextColor.AQUA));
         } else if (category.getParentCategoryId() == null) {
-            return category.getDisplayName().copyShallow().grey();
+            return category.getDisplayName().plainCopy()
+                .setStyle(Style.EMPTY.withColor(TextColor.GRAY));
         } else {
-            return category.getDisplayName().copyShallow().darkGrey();
+            return category.getDisplayName().plainCopy()
+                .setStyle(Style.EMPTY.withColor(TextColor.DARK_GRAY));
         }
     }
 

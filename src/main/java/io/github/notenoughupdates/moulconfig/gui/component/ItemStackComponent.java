@@ -1,19 +1,19 @@
 package io.github.notenoughupdates.moulconfig.gui.component;
 
-import io.github.notenoughupdates.moulconfig.common.IItemStack;
 import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.GuiComponent;
 import io.github.notenoughupdates.moulconfig.gui.GuiImmediateContext;
 import io.github.notenoughupdates.moulconfig.observer.GetSetter;
+import net.minecraft.world.item.ItemStack;
 
 public class ItemStackComponent extends GuiComponent {
-    private final GetSetter<IItemStack> itemStack;
+    private final GetSetter<ItemStack> itemStack;
 
-    public ItemStackComponent(GetSetter<IItemStack> itemStack) {
+    public ItemStackComponent(GetSetter<ItemStack> itemStack) {
         this.itemStack = itemStack;
     }
 
-    public GetSetter<IItemStack> getItemStack() {
+    public GetSetter<ItemStack> getItemStack() {
         return itemStack;
     }
 

@@ -76,6 +76,10 @@ dependencies {
     implementation("net.fabricmc.fabric-api:fabric-api:${libs.versions.fabric.api.get()}+$fullMinecraftVersion")
 
     implementation(libs.fabric.loader)
+    implementation(libs.libninepatch)
+    include(libs.libninepatch)
+
+    compileOnly(libs.lombok)
 
     testImplementation(libs.junit)
     testRuntimeOnly(libs.junit.launcher)

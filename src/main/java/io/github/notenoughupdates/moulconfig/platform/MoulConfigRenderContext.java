@@ -7,14 +7,16 @@ import io.github.notenoughupdates.moulconfig.common.*;
 import io.github.notenoughupdates.moulconfig.internal.FilterAssertionCache;
 import io.github.notenoughupdates.moulconfig.internal.Rect;
 import io.github.notenoughupdates.moulconfig.internal.Warnings;
-import lombok.Getter;
-import lombok.Value;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPositioner;
 import net.minecraft.locale.Language;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.ItemStack;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 import org.joml.Matrix3x2f;
@@ -31,8 +33,8 @@ import net.minecraft.client.renderer.state.gui.GuiElementRenderState;
 
 @NullMarked
 public class MoulConfigRenderContext implements RenderContext {
-    @Getter
     final GuiGraphicsExtractor drawContext;
+
     Minecraft mc = Minecraft.getInstance();
 
     public MoulConfigRenderContext(GuiGraphicsExtractor drawContext) {
@@ -148,7 +150,7 @@ public class MoulConfigRenderContext implements RenderContext {
 
     @Override
     public void drawString(
-        IFontRenderer fontRenderer,
+        Font fontRenderer,
         Component text,
         int x,
         int y,
@@ -156,8 +158,8 @@ public class MoulConfigRenderContext implements RenderContext {
         boolean shadow
     ) {
         drawContext.text(
-            MoulConfigPlatform.unwrap(fontRenderer),
-            MoulConfigPlatform.unwrap(text),
+            fontRenderer,
+            text,
             x,
             y,
             color | 0xFF000000,
@@ -365,13 +367,11 @@ public class MoulConfigRenderContext implements RenderContext {
 
     @Override
     public void renderItemStack(
-        IItemStack itemStack,
+        ItemStack item,
         int x,
         int y,
         @Nullable Component overlayText
     ) {
-        var item = MoulConfigPlatform.unwrap(itemStack);
-
         drawContext.item(item, x, y);
 
         if (overlayText != null) {
@@ -380,7 +380,7 @@ public class MoulConfigRenderContext implements RenderContext {
                 item,
                 x,
                 y,
-                overlayText.getText()
+                overlayText.getString()
             );
         }
     }
@@ -407,15 +407,12 @@ public class MoulConfigRenderContext implements RenderContext {
         );
     }
 
-    @Value
-    static class DrawAction {
-        Consumer<RenderContext> action;
-
+    record DrawAction(
+        Consumer<RenderContext> action,
         @Nullable
-        ScreenRectangle scissorTop;
-
-        Matrix3x2f transform;
-    }
+        ScreenRectangle scissorTop,
+        Matrix3x2f transform
+    ) {}
 
     NavigableMap<Layer, List<DrawAction>> queuedLayers = new TreeMap<>();
 

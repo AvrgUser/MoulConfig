@@ -24,14 +24,12 @@ import io.github.notenoughupdates.moulconfig.DescriptionRendereringBehaviour;
 import io.github.notenoughupdates.moulconfig.TitleRenderingBehaviour;
 import io.github.notenoughupdates.moulconfig.annotations.SearchTag;
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
+import io.github.notenoughupdates.moulconfig.common.MoulConfigFontRenderer;
 import io.github.notenoughupdates.moulconfig.common.RenderContext;
 import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.processor.HasDebugLocation;
 import io.github.notenoughupdates.moulconfig.processor.ProcessedOption;
-import lombok.var;
 import org.jetbrains.annotations.ApiStatus;
-
-import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.Locale;
 
@@ -69,7 +67,7 @@ public abstract class GuiOptionEditor implements HasDebugLocation {
         var fr = minecraft.getDefaultFontRenderer();
         boolean wideTitle = option.getConfig().getTitleRenderingBehaviour(option) != TitleRenderingBehaviour.LEFT;
         int yOffset = wideTitle
-            ? fr.getHeight() + 1 : 5;
+            ? fr.lineHeight + 1 : 5;
 
         context.drawDarkRect(x, y, width, height, true);
         if (wideTitle) {
@@ -86,8 +84,8 @@ public abstract class GuiOptionEditor implements HasDebugLocation {
         List<Component> lines;
         int descriptionHeight = option.getConfig().getDescriptionBehaviour(option) != DescriptionRendereringBehaviour.EXPAND_PANEL ? HEIGHT : getHeight();
         while (true) {
-            lines = fr.splitText(option.getDescription(), (int) (width * 2 / 3 / scale - 10));
-            if (lines.size() * scale * (fr.getHeight() + 1) + 10 < descriptionHeight)
+            lines = MoulConfigFontRenderer.splitText(option.getDescription(), (int) (width * 2 / 3 / scale - 10));
+            if (lines.size() * scale * (fr.lineHeight + 1) + 10 < descriptionHeight)
                 break;
             scale -= 1 / 8f;
             if (scale < 1 / 16f) break;
@@ -95,23 +93,23 @@ public abstract class GuiOptionEditor implements HasDebugLocation {
         context.pushMatrix();
         context.translate(x + 5 + width / 3, y + yOffset);
         context.scale(scale, scale);
-        context.translate(0, ((descriptionHeight - 10) - (fr.getHeight() + 1) * (lines.size() - 1) * scale) / 2F);
+        context.translate(0, ((descriptionHeight - 10) - (fr.lineHeight + 1) * (lines.size() - 1) * scale) / 2F);
         for (var line : lines) {
             context.drawString(fr, line, 0, 0, 0xc0c0c0, false);
-            context.translate(0, fr.getHeight() + 1);
+            context.translate(0, fr.lineHeight + 1);
         }
         context.popMatrix();
     }
 
     public int getHeight() {
-        return getDescriptionHeight() + (option.getConfig().getTitleRenderingBehaviour(option) != TitleRenderingBehaviour.LEFT ? IMinecraft.INSTANCE.getDefaultFontRenderer().getHeight() + 1 : 5);
+        return getDescriptionHeight() + (option.getConfig().getTitleRenderingBehaviour(option) != TitleRenderingBehaviour.LEFT ? IMinecraft.INSTANCE.getDefaultFontRenderer().lineHeight + 1 : 5);
     }
 
     public int getDescriptionHeight() {
         if (option.getConfig().getDescriptionBehaviour(option) != DescriptionRendereringBehaviour.EXPAND_PANEL)
             return HEIGHT;
         var fr = IMinecraft.INSTANCE.getDefaultFontRenderer();
-        return Math.max(45, fr.splitText(option.getDescription(), 250 * 2 / 3 - 10).size() * (fr.getHeight() + 1) + 10);
+        return Math.max(45, MoulConfigFontRenderer.splitText(option.getDescription(), 250 * 2 / 3 - 10).size() * (fr.lineHeight + 1) + 10);
     }
 
     @Deprecated
@@ -149,7 +147,7 @@ public abstract class GuiOptionEditor implements HasDebugLocation {
 
     public boolean fulfillsSearch(String word) {
         if (searchDescNameCache == null) {
-            searchDescNameCache = (option.getName().getText() + option.getDescription().getText() + searchTags).toLowerCase(Locale.ROOT);
+            searchDescNameCache = (option.getName().getString() + option.getDescription().getString() + searchTags).toLowerCase(Locale.ROOT);
         }
         return searchDescNameCache.contains(word);
     }

@@ -1,5 +1,7 @@
 package io.github.notenoughupdates.moulconfig.common;
 
+import com.mojang.blaze3d.platform.InputConstants;
+import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.GuiComponent;
 import io.github.notenoughupdates.moulconfig.gui.GuiContext;
@@ -10,7 +12,8 @@ import io.github.notenoughupdates.moulconfig.internal.MCLogger;
 import io.github.notenoughupdates.moulconfig.internal.Warnings;
 import io.github.notenoughupdates.moulconfig.processor.MoulConfigProcessor;
 import io.github.notenoughupdates.moulconfig.xml.XMLUniverse;
-import lombok.var;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
@@ -62,9 +65,7 @@ public interface IMinecraft {
 
     boolean isDevelopmentEnvironment();
 
-    IFontRenderer getDefaultFontRenderer();
-
-    IKeyboardConstants getKeyboardConstants();
+    Font getDefaultFontRenderer();
 
     int getScaledWidth();
 
@@ -86,11 +87,9 @@ public interface IMinecraft {
         sendClickableChatMessage(message, "", null);
     }
 
-    Component getKeyName(int keyCode);
+    MutableComponent createLiteral(String text);
 
-    Component.Mutable createLiteral(String text);
-
-    Component.Mutable createTranslatable(String key, Component... args);
+    MutableComponent createTranslatable(String key, Component... args);
 
     /**
      * Create a structured text from an untyped platform object. Must be a platform type exactly, not a string or a structured text.
@@ -142,4 +141,6 @@ public interface IMinecraft {
     static IMinecraft getInstance() {
         return INSTANCE;
     }
+
+    String getKeyName(InputConstants.Key key);
 }

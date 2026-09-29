@@ -24,7 +24,6 @@ import io.github.notenoughupdates.moulconfig.Config;
 import net.minecraft.network.chat.Component;
 import io.github.notenoughupdates.moulconfig.gui.MoulConfigEditor;
 import io.github.notenoughupdates.moulconfig.internal.Warnings;
-import lombok.var;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
 

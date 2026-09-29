@@ -2,6 +2,7 @@ package io.github.notenoughupdates.moulconfig.common;
 
 import io.github.notenoughupdates.moulconfig.GuiTextures;
 import juuxel.libninepatch.NinePatch;
+import net.minecraft.resources.Identifier;
 
 public final class NinePatches {
     public static final NinePatches INSTANCE = new NinePatches();

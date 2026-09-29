@@ -33,7 +33,7 @@ import io.github.notenoughupdates.moulconfig.annotations.ConfigOrder;
 import io.github.notenoughupdates.moulconfig.annotations.ConfigOverride;
 import io.github.notenoughupdates.moulconfig.internal.BoundField;
 import io.github.notenoughupdates.moulconfig.internal.Warnings;
-import lombok.var;
+
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;

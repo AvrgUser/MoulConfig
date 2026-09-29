@@ -34,18 +34,15 @@ public class GuiTextures {
         COLOUR_PICKER_INTERNAL, COLOUR_PICKER_INTERNAL_VALUE, COLOUR_PICKER_INTERNAL_OPACITY,
         SEARCH, VANILLA_PANEL, VANILLA_TAB_SELECTED, VANILLA_TAB_UNSELECTED;
 
-    private static Identifier root;
-
     static {
-        setTextureRoot(new Identifier("moulconfig", ""));
+        setTextureRoot();
     }
 
     private static Identifier r(String name) {
-        return new Identifier(root.getRoot(), ("".equals(root.getPath()) ? name : root.getPath() + "/" + name));
+        return Identifier.fromNamespaceAndPath("moulconfig", name);
     }
 
-    public static void setTextureRoot(Identifier root) {
-        GuiTextures.root = root;
+    public static void setTextureRoot() {
         DELETE = r("delete.png");
         RESET = r("reset.png");
         BUTTON = r("button.png");

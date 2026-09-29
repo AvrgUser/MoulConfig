@@ -31,8 +31,8 @@ import io.github.notenoughupdates.moulconfig.internal.TypeUtils;
 import io.github.notenoughupdates.moulconfig.internal.Warnings;
 import io.github.notenoughupdates.moulconfig.processor.ProcessedOption;
 import lombok.Getter;
-import lombok.val;
-import lombok.var;
+
+
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;

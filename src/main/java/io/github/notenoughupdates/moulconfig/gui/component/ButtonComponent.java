@@ -1,6 +1,6 @@
 package io.github.notenoughupdates.moulconfig.gui.component;
 
-import io.github.notenoughupdates.moulconfig.common.KeyboardConstants;
+import com.mojang.blaze3d.platform.InputConstants;
 import io.github.notenoughupdates.moulconfig.gui.GuiComponent;
 import io.github.notenoughupdates.moulconfig.gui.GuiImmediateContext;
 import io.github.notenoughupdates.moulconfig.gui.KeyboardEvent;
@@ -38,7 +38,7 @@ public class ButtonComponent extends PanelComponent {
     public boolean keyboardEvent(KeyboardEvent event, GuiImmediateContext context) {
         if (isFocused() && event instanceof KeyboardEvent.KeyPressed) {
             KeyboardEvent.KeyPressed keyPressed = (KeyboardEvent.KeyPressed) event;
-            if (keyPressed.getPressed() && keyPressed.getKeycode() == KeyboardConstants.INSTANCE.getEnter()) {
+            if (keyPressed.getPressed() && keyPressed.getKeycode() == InputConstants.KEY_RETURN) {
                 onClick.run();
                 return true;
             }

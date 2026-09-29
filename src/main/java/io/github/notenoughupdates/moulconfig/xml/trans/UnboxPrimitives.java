@@ -3,7 +3,7 @@ package io.github.notenoughupdates.moulconfig.xml.trans;
 import io.github.notenoughupdates.moulconfig.internal.TypeUtils;
 import io.github.notenoughupdates.moulconfig.observer.GetSetter;
 import io.github.notenoughupdates.moulconfig.xml.ParametricTypeMorphism;
-import lombok.val;
+
 
 import java.lang.reflect.Type;
 import java.util.Optional;

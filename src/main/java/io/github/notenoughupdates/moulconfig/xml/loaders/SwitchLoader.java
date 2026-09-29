@@ -6,7 +6,7 @@ import io.github.notenoughupdates.moulconfig.xml.ChildCount;
 import io.github.notenoughupdates.moulconfig.xml.XMLContext;
 import io.github.notenoughupdates.moulconfig.xml.XMLGuiLoader;
 import io.github.notenoughupdates.moulconfig.xml.XMLUniverse;
-import lombok.var;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 import org.w3c.dom.Element;
