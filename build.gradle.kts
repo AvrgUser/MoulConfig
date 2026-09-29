@@ -66,7 +66,7 @@ tasks.withType<JavaCompile> {
 
 tasks.withType<GradleJar> {
     archiveBaseName.set("MoulConfig")
-    archiveVersion.set("$version-mc$fullMinecraftVersion")
+    archiveVersion.set("$version-mc$minecraftVersion")
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
