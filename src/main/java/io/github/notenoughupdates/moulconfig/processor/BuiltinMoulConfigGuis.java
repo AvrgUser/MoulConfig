@@ -1,0 +1,97 @@
+/*
+ * Copyright (C) 2023 NotEnoughUpdates contributors
+ *
+ * This file is part of MoulConfig.
+ *
+ * MoulConfig is free software: you can redistribute it
+ * and/or modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation, either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * MoulConfig is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with MoulConfig. If not, see <https://www.gnu.org/licenses/>.
+ *
+ */
+
+/**/
+package io.github.notenoughupdates.moulconfig.processor;
+
+import io.github.notenoughupdates.moulconfig.annotations.ConfigEditorAccordion;
+import io.github.notenoughupdates.moulconfig.annotations.ConfigEditorBoolean;
+import io.github.notenoughupdates.moulconfig.annotations.ConfigEditorButton;
+import io.github.notenoughupdates.moulconfig.annotations.ConfigEditorColour;
+import io.github.notenoughupdates.moulconfig.annotations.ConfigEditorDraggableList;
+import io.github.notenoughupdates.moulconfig.annotations.ConfigEditorDropdown;
+import io.github.notenoughupdates.moulconfig.annotations.ConfigEditorInfoText;
+import io.github.notenoughupdates.moulconfig.annotations.ConfigEditorKeybind;
+import io.github.notenoughupdates.moulconfig.annotations.ConfigEditorSlider;
+import io.github.notenoughupdates.moulconfig.annotations.ConfigEditorText;
+import io.github.notenoughupdates.moulconfig.annotations.ConfigLink;
+import io.github.notenoughupdates.moulconfig.common.IMinecraft;
+import io.github.notenoughupdates.moulconfig.gui.editors.GuiOptionEditorAccordion;
+import io.github.notenoughupdates.moulconfig.gui.editors.GuiOptionEditorBoolean;
+import io.github.notenoughupdates.moulconfig.gui.editors.GuiOptionEditorButton;
+import io.github.notenoughupdates.moulconfig.gui.editors.GuiOptionEditorColour;
+import io.github.notenoughupdates.moulconfig.gui.editors.GuiOptionEditorDraggableList;
+import io.github.notenoughupdates.moulconfig.gui.editors.GuiOptionEditorDropdown;
+import io.github.notenoughupdates.moulconfig.gui.editors.GuiOptionEditorInfoText;
+import io.github.notenoughupdates.moulconfig.gui.editors.GuiOptionEditorKeybind;
+import io.github.notenoughupdates.moulconfig.gui.editors.GuiOptionEditorSlider;
+import io.github.notenoughupdates.moulconfig.gui.editors.GuiOptionEditorText;
+import lombok.val;
+import net.minecraft.network.chat.Component;
+import java.lang.reflect.Field;
+
+public class BuiltinMoulConfigGuis {
+    public static void addProcessors(MoulConfigProcessor<?> processor) {
+        processor.registerConfigEditor(ConfigEditorButton.class, (processedOption, configEditorButton) ->
+            new GuiOptionEditorButton(processedOption, configEditorButton.runnableId(), Component.literal(configEditorButton.buttonText()), processedOption.getConfig()));
+        processor.registerConfigEditor(ConfigEditorBoolean.class, (processedOption, configEditorBoolean) ->
+            new GuiOptionEditorBoolean(processedOption, configEditorBoolean.runnableId(), processedOption.getConfig()));
+        processor.registerConfigEditor(ConfigEditorAccordion.class, (processedOption, accordion) ->
+            new GuiOptionEditorAccordion(processedOption, accordion.id()));
+        processor.registerConfigEditor(ConfigEditorColour.class, (processedOption, configEditorColour) ->
+            new GuiOptionEditorColour(processedOption));
+        processor.registerConfigEditor(ConfigEditorDropdown.class, (processedOption, configEditorDropdown) ->
+            new GuiOptionEditorDropdown(
+                processedOption,
+                configEditorDropdown.values()
+            ));
+        processor.registerConfigEditor(ConfigEditorKeybind.class, (processedOption, keybind) ->
+            new GuiOptionEditorKeybind(processedOption, keybind.defaultCategory().getOrCreate(keybind.defaultKey())));
+        processor.registerConfigEditor(ConfigEditorSlider.class, (processedOption, configEditorSlider) ->
+            new GuiOptionEditorSlider(processedOption, configEditorSlider.minValue(), configEditorSlider.maxValue(), configEditorSlider.minStep()));
+        processor.registerConfigEditor(ConfigEditorInfoText.class, (processedOption, configEditorInfoText) ->
+            new GuiOptionEditorInfoText(processedOption, Component.literal(configEditorInfoText.infoTitle())));
+        processor.registerConfigEditor(ConfigEditorText.class, (processedOption, configEditorText) ->
+            new GuiOptionEditorText(processedOption, configEditorText.forbidden()));
+        processor.registerConfigEditor(ConfigEditorDraggableList.class, (processedOption, configEditorDraggableList) ->
+            new GuiOptionEditorDraggableList(processedOption, configEditorDraggableList.exampleText(), configEditorDraggableList.allowDeleting(), configEditorDraggableList.requireNonEmpty()));
+
+        processor.registerConfigEditor(ConfigLink.class, ((option, configLink) -> {
+            Field field;
+            try {
+                field = configLink.owner().getDeclaredField(configLink.field());
+                field.setAccessible(true);
+            } catch (NoSuchFieldException e) {
+                throw new RuntimeException(e);
+            }
+            return new GuiOptionEditorButton(option, -1, Component.literal("Link"), option.getConfig()) {
+                @Override
+                public void onClick() {
+                    val linkedOption = activeConfigGUI.getOptionFromField(field);
+                    if (linkedOption == null) {
+                        throw new NullPointerException("No ProcessedOption.Field present for " + field);
+                    }
+                    activeConfigGUI.goToOption(linkedOption);
+                }
+            };
+        }));
+        IMinecraft.INSTANCE.addExtraBuiltinConfigProcessors(processor);
+    }
+}

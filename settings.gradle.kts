@@ -1,47 +1,47 @@
 pluginManagement {
-	repositories {
-		mavenCentral()
-		gradlePluginPortal()
-		maven("https://oss.sonatype.org/content/repositories/snapshots")
-		maven("https://maven.architectury.dev/")
-		maven("https://maven.fabricmc.net")
-		maven("https://maven.wagyourtail.xyz/releases")
-		maven("https://maven.wagyourtail.xyz/snapshots")
-		maven("https://maven.neoforged.net/releases")
-		maven("https://maven.minecraftforge.net/")
-		maven("https://repo.spongepowered.org/maven/")
-        maven {
-            url = uri("https://repo.sk1er.club/repository/maven-releases/")
+    repositories {
+        mavenCentral()
+        mavenLocal()
+        gradlePluginPortal()
+        maven("https://maven.fabricmc.net") {
             content {
-                excludeGroup("xyz.wagyourtail.unimined.mapping")
+                includeGroupAndSubgroups("net.fabricmc")
             }
         }
-	}
-	resolutionStrategy {
-		eachPlugin {
-			when (requested.id.id) {
-				"gg.essential.loom" -> useModule("gg.essential:architectury-loom:${requested.version}")
-			}
-		}
-	}
+        maven("https://jitpack.io") {
+            content {
+                includeGroupAndSubgroups("com.github")
+            }
+        }
+        // Stonecutter
+        maven("https://maven.kikugie.dev/snapshots") {
+            content {
+                includeGroupAndSubgroups("dev.kikugie")
+            }
+        }
+    }
+    resolutionStrategy.eachPlugin {
+        requested.apply {
+            if ("$id".startsWith("com.github.")) {
+                val (_, _, user, name) = "$id".split(".", limit = 4)
+                useModule("com.github.$user:$name:$version")
+            }
+        }
+    }
+}
+
+plugins {
+    // We can't use libs refs in settings, so these are not stored in `libs.versions.toml`
+    id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
+    id("dev.kikugie.stonecutter") version "0.10-alpha.10"
 }
 
 rootProject.name = "MoulConfig"
+rootProject.buildFileName = "root.gradle.kts"
 
-include("common")
-include("legacy")
-include("modern")
-listOf(
-	"1.21.4",
-	"1.21.5",
-	"1.21.7",
-	"1.21.10",
-	"1.21.11",
-    "26.1",
-    "26.2"
-).forEach { version ->
-	val modPath = "modern:$version"
-	include(modPath)
-	project(":$modPath").name = "modern-$version"
+stonecutter {
+    create(rootProject) {
+        versions("26.1", "26.2", "26.3")
+        vcsVersion = "26.3"
+    }
 }
-includeBuild("build-src")

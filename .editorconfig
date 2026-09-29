@@ -1,19 +1,26 @@
 root = true
 
-[*.java]
-charset = utf-8
+# All Files
+[*]
+# Unix-style newlines with a newline ending every file
 end_of_line = lf
-indent_size = 4
-indent_style = space
-max_line_length = off
-trim_trailing_whitespace = true
 insert_final_newline = true
 
-[*.kt]
-charset = utf-8
-end_of_line = lf
+# Indent styling
 indent_size = 4
 indent_style = space
-max_line_length = off
-trim_trailing_whitespace = true
-insert_final_newline = true
+
+# Comments styling to add space after comment start
+ij_any_block_comment_add_space = true
+ij_any_line_comment_add_space = true
+
+# Max line length
+max_line_length = 140
+
+# Java Files
+[*.java]
+# Java files should not use wildcard imports
+ij_java_names_count_to_use_import_on_demand = 2147483647
+ij_java_class_count_to_use_import_on_demand = 2147483647
+ij_java_packages_to_use_import_on_demand = 2147483647
+ij_java_imports_layout = *,java.**,javax.**,kotlin.**,kotlinx.**,$*
