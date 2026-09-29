@@ -1,4 +1,111 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 plugins {
-	base
-	id("moulconfig.base")
+    id 'java'
+    id 'com.gradleup.shadow' version '9.0.0-beta12'
+    id 'systems.manifold.manifold-gradle-plugin' version '0.0.2-alpha'
+}
+
+group = 'org.notenoughupdates.moulconfig'
+version = getGitVersion()
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url = 'https://repo.spongepowered.org/maven/' }
+    maven { url = 'https://maven.fabricmc.net/' }
+    maven { url = 'https://maven.architectury.dev/' }
+    maven { url = 'https://maven.neoforged.net/releases' }
+    maven { url = 'https://repo.nea.moe/releases' }
+}
+
+manifold {
+    manifoldVersion = '2025.1.27'
+}
+
+def lombokVersion = '1.18.44'
+
+dependencies {
+    // Core Dependencies
+    implementation 'io.github.juuxel:libninepatch:1.2.0'
+    implementation 'commons-io:commons-io:2.16.1'
+    compileOnly 'org.jetbrains:annotations:24.0.1'
+    compileOnly 'org.jspecify:jspecify:1.0.0'
+
+    // Lombok
+    compileOnly "org.projectlombok:lombok:$lombokVersion"
+    annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+
+    // Manifold Preprocessor & String Interpolation
+    annotationProcessor "systems.manifold:manifold-strings:${manifold.manifoldVersion.get()}"
+    annotationProcessor "systems.manifold:manifold-preprocessor:${manifold.manifoldVersion.get()}"
+
+    // Testing
+    testImplementation platform('org.junit:junit-bom:5.8.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+// Preprocessor Dump Configuration
+def sourceDump = layout.buildDirectory.dir("manifoldSourceDump")
+
+compileJava {
+    options.encoding = 'UTF-8'
+    options.compilerArgs += [
+        "-Amanifold.source.target=${sourceDump.get().asFile.absolutePath}"
+    ]
+}
+
+test {
+    useJUnitPlatform()
+}
+
+// Preprocessing for Access Widener & JSON manifests
+def processAccessWidener = tasks.register('processAccessWidener', Copy) {
+    from('src/main/resources') {
+        include('*.accesswidener', 'fabric.mod.json')
+    }
+    into(layout.buildDirectory.dir('processedResources'))
+
+    filter { line ->
+        def trimmed = line.trim()
+        if (trimmed.startsWith('#if') || trimmed.startsWith('#endif') || trimmed.startsWith('#else')) {
+            return ''
+        }
+        return line
+    }
+}
+
+processResources {
+    dependsOn processAccessWidener
+    from processAccessWidener
+}
+
+shadowJar {
+    archiveClassifier = ''
+    relocate 'juuxel.libninepatch', 'io.github.notenoughupdates.moulconfig.deps.libninepatch'
+}
+
+build.dependsOn shadowJar
+
+def cmd(String... args) {
+    try {
+        def process = new ProcessBuilder(args)
+            .redirectOutput(ProcessBuilder.Redirect.PIPE)
+            .start()
+        if (process.waitFor() == 0) {
+            return process.inputStream.text.trim()
+        }
+    } catch (Exception ignored) {
+    }
+    return null
+}
+
+def getGitVersion() {
+    def tag = cmd('git', 'describe', '--tags', 'HEAD')
+    def hash = cmd('git', 'rev-parse', '--short', 'HEAD')
+    if (tag == null || (hash != null && tag.contains(hash))) {
+        return '9999.9999.9999'
+    }
+    return tag
 }
