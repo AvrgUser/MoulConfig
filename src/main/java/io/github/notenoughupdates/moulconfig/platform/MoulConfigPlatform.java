@@ -289,7 +289,7 @@ public class MoulConfigPlatform implements IMinecraft {
 
         return new GuiGraphicsExtractor(
             mc,
-            //? if >= 26.2
+            //? if >= 26.2 {
             mc.gameRenderer.gameRenderState().guiRenderState
             //?} else {
             /*mc.gameRenderer.getGameRenderState().guiRenderState

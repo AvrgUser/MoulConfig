@@ -11,6 +11,12 @@ plugins {
 }
 
 val minecraftVersion = project.name
+val fullMinecraftVersion = when (minecraftVersion) {
+    "26.1" -> "26.1.2"
+    "26.2" -> "26.2"
+    else -> throw GradleException("Unknown Minecraft version: $minecraftVersion")
+}
+
 
 val runDirectory = rootProject.file("run")
 runDirectory.mkdirs()
@@ -60,14 +66,14 @@ tasks.withType<JavaCompile> {
 
 tasks.withType<GradleJar> {
     archiveBaseName.set("MoulConfig")
-    archiveVersion.set("$version-mc$minecraftVersion")
+    archiveVersion.set("$version-mc$fullMinecraftVersion")
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 dependencies {
-    minecraft("com.mojang:minecraft:$minecraftVersion")
+    minecraft("com.mojang:minecraft:$fullMinecraftVersion")
     compileOnly(libs.jbAnnotations)
-    implementation("net.fabricmc.fabric-api:fabric-api:${libs.versions.fabric.api.get()}+$minecraftVersion")
+    implementation("net.fabricmc.fabric-api:fabric-api:${libs.versions.fabric.api.get()}+$fullMinecraftVersion")
 
     implementation(libs.fabric.loader)
 
