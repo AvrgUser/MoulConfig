@@ -1,111 +1,116 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-
 plugins {
-    id 'java'
-    id 'com.gradleup.shadow' version '9.0.0-beta12'
-    id 'systems.manifold.manifold-gradle-plugin' version '0.0.2-alpha'
+    id 'net.fabricmc.fabric-loom-remap' version "${loom_version}"
+    id 'com.diffplug.spotless' version "${spotless_version}"
+    id 'checkstyle'
+    id 'maven-publish'
+    id 'me.modmuss50.mod-publish-plugin' version "${mod_publish_plugin_version}"
 }
 
-group = 'org.notenoughupdates.moulconfig'
-version = getGitVersion()
+version = "${mod_version}+${minecraft_version}"
+group = maven_group
+
+base {
+    archivesName = archives_base_name
+}
 
 repositories {
-    mavenLocal()
     mavenCentral()
-    maven { url = 'https://repo.spongepowered.org/maven/' }
-    maven { url = 'https://maven.fabricmc.net/' }
-    maven { url = 'https://maven.architectury.dev/' }
-    maven { url = 'https://maven.neoforged.net/releases' }
-    maven { url = 'https://repo.nea.moe/releases' }
-}
 
-manifold {
-    manifoldVersion = '2025.1.27'
-}
+    // Fabric / Terraformers
+    exclusiveContent {
+        forRepository {
+            maven {
+                url = 'https://maven.terraformersmc.com/releases'
+            }
+        }
+        filter {
+            includeGroup 'com.terraformersmc'
+        }
+    }
 
-def lombokVersion = '1.18.44'
+    // SpongePowered
+    maven {
+        url = 'https://repo.spongepowered.org/repository/maven-public/'
+    }
+}
 
 dependencies {
-    // Core Dependencies
-    implementation 'io.github.juuxel:libninepatch:1.2.0'
-    implementation 'commons-io:commons-io:2.16.1'
-    compileOnly 'org.jetbrains:annotations:24.0.1'
-    compileOnly 'org.jspecify:jspecify:1.0.0'
+    minecraft "com.mojang:minecraft:${minecraft_version}"
+	mappings loom.officialMojangMappings()
 
-    // Lombok
-    compileOnly "org.projectlombok:lombok:$lombokVersion"
-    annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+    implementation "net.fabricmc:fabric-loader:${loader_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
 
-    // Manifold Preprocessor & String Interpolation
-    annotationProcessor "systems.manifold:manifold-strings:${manifold.manifoldVersion.get()}"
-    annotationProcessor "systems.manifold:manifold-preprocessor:${manifold.manifoldVersion.get()}"
+    // JSON Serialization & Annotations
+    implementation "com.google.code.gson:gson:${gson_version}"
+    compileOnly "org.checkerframework:checker-qual:${checker_qual_version}"
 
     // Testing
-    testImplementation platform('org.junit:junit-bom:5.8.1')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation "net.fabricmc:fabric-loader-junit:${loader_version}"
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.2'
 }
 
-// Preprocessor Dump Configuration
-def sourceDump = layout.buildDirectory.dir("manifoldSourceDump")
+loom {
+    accessWidenerPath = file('src/main/resources/moulconfig.accesswidener')
 
-compileJava {
+    runs {
+        configureEach {
+            preferGradleTask = true
+        }
+    }
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+    withSourcesJar()
+    withJavadocJar()
+}
+
+tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
-    options.compilerArgs += [
-        "-Amanifold.source.target=${sourceDump.get().asFile.absolutePath}"
-    ]
+    options.release = 21
 }
 
-test {
+tasks.withType(ProcessResources).configureEach {
+    inputs.property 'version', project.version
+    inputs.property 'minecraft_version', minecraft_version
+
+    filesMatching('fabric.mod.json') {
+        expand([
+            'version': project.version,
+            'minecraft_version': minecraft_version
+        ])
+    }
+}
+
+tasks.named('jar', Jar) {
+    from('LICENSE') {
+        rename { "${it}_${base.archivesName.get()}" }
+    }
+}
+
+tasks.named('test', Test) {
     useJUnitPlatform()
 }
 
-// Preprocessing for Access Widener & JSON manifests
-def processAccessWidener = tasks.register('processAccessWidener', Copy) {
-    from('src/main/resources') {
-        include('*.accesswidener', 'fabric.mod.json')
+spotless {
+    java {
+        target 'src/**/*.java'
+        removeUnusedImports()
+        leadingSpacesToTabs()
+        trimTrailingWhitespace()
+        endWithNewline()
+        lineEndings = com.diffplug.spotless.LineEnding.UNIX
     }
-    into(layout.buildDirectory.dir('processedResources'))
 
-    filter { line ->
-        def trimmed = line.trim()
-        if (trimmed.startsWith('#if') || trimmed.startsWith('#endif') || trimmed.startsWith('#else')) {
-            return ''
-        }
-        return line
+    groovyGradle {
+        target 'src/**/*.gradle', '*.gradle', 'gradle/*.gradle'
     }
 }
 
-processResources {
-    dependsOn processAccessWidener
-    from processAccessWidener
-}
-
-shadowJar {
-    archiveClassifier = ''
-    relocate 'juuxel.libninepatch', 'io.github.notenoughupdates.moulconfig.deps.libninepatch'
-}
-
-build.dependsOn shadowJar
-
-def cmd(String... args) {
-    try {
-        def process = new ProcessBuilder(args)
-            .redirectOutput(ProcessBuilder.Redirect.PIPE)
-            .start()
-        if (process.waitFor() == 0) {
-            return process.inputStream.text.trim()
-        }
-    } catch (Exception ignored) {
-    }
-    return null
-}
-
-def getGitVersion() {
-    def tag = cmd('git', 'describe', '--tags', 'HEAD')
-    def hash = cmd('git', 'rev-parse', '--short', 'HEAD')
-    if (tag == null || (hash != null && tag.contains(hash))) {
-        return '9999.9999.9999'
-    }
-    return tag
+checkstyle {
+    toolVersion = checkstyle_version
+    configFile = rootProject.file('checkstyle.xml')
 }
