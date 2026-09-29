@@ -3,7 +3,7 @@
  *
  * This file is part of MoulConfig.
  *
- * MoulConfig is free software: you can redistribute it
+ * MoulConfig is free software; you can redistribute it
  * and/or modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
@@ -15,13 +15,13 @@
  *
  * You should have received a copy of the GNU Lesser General Public License
  * along with MoulConfig. If not, see <https://www.gnu.org/licenses/>.
- *
  */
 
 package io.github.notenoughupdates.moulconfig.gui.editors;
 
 import io.github.notenoughupdates.moulconfig.GuiTextures;
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
+import io.github.notenoughupdates.moulconfig.common.MoulConfigPair;
 import io.github.notenoughupdates.moulconfig.common.text.StructuredText;
 import io.github.notenoughupdates.moulconfig.gui.GuiComponent;
 import io.github.notenoughupdates.moulconfig.gui.GuiImmediateContext;
@@ -30,7 +30,6 @@ import io.github.notenoughupdates.moulconfig.gui.component.*;
 import io.github.notenoughupdates.moulconfig.internal.*;
 import io.github.notenoughupdates.moulconfig.observer.GetSetter;
 import io.github.notenoughupdates.moulconfig.processor.ProcessedOption;
-import kotlin.Pair;
 import lombok.var;
 import org.jetbrains.annotations.NotNull;
 
@@ -49,7 +48,7 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
     private static final int DROPDOWN_SCREEN_MARGIN = 4;
 
     private LerpingInteger2 trashAnimation = new LerpingInteger2(255, 3, 2);
-    private Pair<Integer, Integer> lastListRenderPos = new Pair<>(0, 0);
+    private MoulConfigPair<Integer, Integer> lastListRenderPos = new MoulConfigPair<>(0, 0);
 
     private Enum<?>[] enumConstants;
     private String exampleTextConcat;
@@ -186,7 +185,6 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
                                         dragStartIndex = i;
                                         var mouseY = trans.getMouseY() - 4;
                                         openOverlay(makeDragComponent(indexObject, trans.getMouseX(), mouseY, context.getWidth()),
-                                            // context.getRenderOffsetX()
                                             context.getAbsoluteMouseX() - trans.getMouseX(),
                                             context.getAbsoluteMouseY() - mouseY);
                                         return true;
@@ -201,7 +199,7 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
 
                     @Override
                     public void render(@NotNull GuiImmediateContext context) {
-                        lastListRenderPos = new Pair<>(context.getRenderOffsetX(), context.getRenderOffsetY());
+                        lastListRenderPos = new MoulConfigPair<>(context.getRenderOffsetX(), context.getRenderOffsetY());
                         var renderContext = context.getRenderContext();
                         var width = context.getWidth();
                         var fr = IMinecraft.INSTANCE.getDefaultFontRenderer();
@@ -242,7 +240,6 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
             );
         return delegate;
     }
-
 
     GuiComponent makeDragComponent(Object indexObject, int mouseOffsetX, int mouseOffsetY, int width) {
         return new GuiComponent() {
@@ -468,7 +465,6 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
             }
         };
     }
-
 
     @Override
     public boolean fulfillsSearch(String word) {
