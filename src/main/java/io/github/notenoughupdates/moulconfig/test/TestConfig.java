@@ -21,12 +21,4 @@ public class TestConfig extends Config {
 
     @Category(name = "Cat b", desc = "Cat b desc")
     public TestCategoryB testCategoryB = new TestCategoryB();
-
-    public TestCategoryA getTestCategoryA() {
-        return testCategoryA;
-    }
-
-    public TestCategoryB getTestCategoryB() {
-        return testCategoryB;
-    }
 }

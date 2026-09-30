@@ -32,10 +32,6 @@ public class TestCategoryA {
     @ConfigEditorBoolean
     transient public boolean isWide = false;
 
-    public boolean isWide() {
-        return isWide;
-    }
-
     @ConfigOption(name = "Test Option", desc = "Test toggle")
     @ConfigEditorBoolean
     public boolean shouldTestToggle = false;

@@ -14,12 +14,13 @@ public class FabricMain implements ModInitializer {
     @Override
     public void onInitialize() {
         Warnings.shouldCrash = false;
+        @SuppressWarnings("unchecked")
         ManagedConfig<TestConfig> config = ManagedConfig.create(new File("config/moulconfig/test.json"), TestConfig.class);
         ClientCommandRegistrationCallback.EVENT.register((a, b) -> {
             a.register(literal("moulconfig").executes(ctx -> {
                 Minecraft.getInstance().schedule(() -> {
                     var editor = config.getEditor();
-                    editor.setWide(config.getInstance().getTestCategoryA().isWide());
+                    editor.setWide(config.getInstance().testCategoryA.isWide);
                     IMinecraft.INSTANCE.openWrappedScreen(editor);
                 });
                 return 0;
