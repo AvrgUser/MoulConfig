@@ -1,4 +1,5 @@
 pluginManagement {
+    includeBuild("sharedVariables")
     repositories {
         mavenCentral()
         mavenLocal()
@@ -38,6 +39,7 @@ pluginManagement {
 plugins {
     // We can't use libs refs in settings, so these are not stored in `libs.versions.toml`
     id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
+    id("io.github.notenoughupdates.moulconfig.shared-variables")
     id("dev.kikugie.stonecutter") version "0.10-alpha.10"
 }
 

@@ -2,7 +2,6 @@
 jbAnnotations = "26.1.0"
 
 loom = "1.17-SNAPSHOT"
-fabric-loader = "0.19.3"
 libninepatch = "1.2.0"
 lombok = "1.18.48"
 junit = "5.14.4"
@@ -10,7 +9,6 @@ junit = "5.14.4"
 [libraries]
 jbAnnotations = { module = "org.jetbrains:annotations", version.ref = "jbAnnotations" }
 libninepatch = { module = "io.github.juuxel:libninepatch", version.ref = "libninepatch" }
-fabric-loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric-loader"}
 lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
 
 junit = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }

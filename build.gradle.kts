@@ -1,9 +1,9 @@
 import dev.kikugie.stonecutter.StonecutterExperimentalAPI
+import io.github.notenoughupdates.moulconfig.sharedvariables.ProjectTarget
 import net.fabricmc.loom.task.RemapSourcesJarTask
 import net.fabricmc.loom.task.ValidateAccessWidenerTask
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.jvm.tasks.Jar as GradleJar
-import org.gradle.jvm.toolchain.JavaLanguageVersion
 
 plugins {
     idea
@@ -11,31 +11,7 @@ plugins {
     id("net.fabricmc.fabric-loom")
 }
 
-enum class ProjectTarget(
-    val projectName: String,
-    val fabricApiVersion: String,
-    private val minecraftVersionOverride: String? = null,
-    ) {
-    MC26_1(
-        "26.1",
-        fabricApiVersion = "net.fabricmc.fabric-api:fabric-api:0.155.2+26.1.2",
-        minecraftVersionOverride = "26.1.2"
-    ),
-    MC26_2(
-        "26.2",
-        fabricApiVersion = "net.fabricmc.fabric-api:fabric-api:0.155.2+26.2",
-    ),
-    MC26_3(
-        "26.3",
-        fabricApiVersion = "net.fabricmc.fabric-api:fabric-api:0.160.3+26.3",
-    ),
-
-    ;
-
-    val fullMinecraftVersion get() = minecraftVersionOverride ?: projectName
-}
-
-val target = ProjectTarget.entries.find { it.projectName == project.name }!!
+val target = ProjectTarget.entries.find { it.versionName == project.name }!!
 
 val runDirectory = rootProject.file("run")
 runDirectory.mkdirs()
@@ -51,7 +27,7 @@ loom {
     if (accessWidenerFile.exists()) {
         accessWidenerPath = accessWidenerFile
     } else {
-        println("No accessWidner file for ${target.projectName}")
+        println("No accessWidner file for ${target.versionName}")
     }
 
     runs {
@@ -59,7 +35,7 @@ loom {
             generateRunConfig.set(true)
             preferGradleTask = true
             appendProjectPathToDisplayName.set(true)
-            this.runDirectory = rootProject.file("versions/${target.projectName}/run").relativeTo(projectDir)
+            this.runDirectory = rootProject.file("versions/${target.versionName}/run").relativeTo(projectDir)
             jvmArguments.add("-Xmx4G")
         }
         removeIf { it.name == "server" }
@@ -84,16 +60,34 @@ tasks.withType<JavaCompile> {
 
 tasks.withType<GradleJar> {
     archiveBaseName.set("MoulConfig")
-    archiveVersion.set("$version-mc${target.projectName}")
+    archiveVersion.set("$version-mc${target.versionName}")
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
+tasks.processResources {
+    val fapiVersion = target.fabricApiVersion.split(":").last()
+    val floaderVersion = target.fabricLoaderVersion.split(":").last()
+    val minecraftVersion = target.fabricModJsonVersion
+    val props = buildMap {
+        put("version", version)
+        put("minecraft", minecraftVersion)
+        put("fapi", fapiVersion)
+        put("floader", floaderVersion)
+    }
+
+    props.forEach(inputs::property)
+
+    filesMatching("fabric.mod.json") {
+        expand(props)
+    }
+}
+
 dependencies {
-    minecraft("com.mojang:minecraft:${target.fullMinecraftVersion}")
+    minecraft("com.mojang:minecraft:${target.minecraftVersion}")
     compileOnly(libs.jbAnnotations)
     implementation(target.fabricApiVersion)
 
-    implementation(libs.fabric.loader)
+    implementation(target.fabricLoaderVersion)
     implementation(libs.libninepatch)
     include(libs.libninepatch)
 
