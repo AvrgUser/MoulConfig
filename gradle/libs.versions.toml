@@ -2,7 +2,6 @@
 jbAnnotations = "26.1.0"
 
 loom = "1.17-SNAPSHOT"
-fabric-api = "0.155.2"
 fabric-loader = "0.19.3"
 libninepatch = "1.2.0"
 lombok = "1.18.48"

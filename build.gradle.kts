@@ -11,11 +11,31 @@ plugins {
     id("net.fabricmc.fabric-loom")
 }
 
-val minecraftVersion = project.name
-val fullMinecraftVersion = when (minecraftVersion) {
-    "26.1" -> "26.1.2"
-    else -> minecraftVersion
+enum class ProjectTarget(
+    val projectName: String,
+    val fabricApiVersion: String,
+    private val minecraftVersionOverride: String? = null,
+    ) {
+    MC26_1(
+        "26.1",
+        fabricApiVersion = "net.fabricmc.fabric-api:fabric-api:0.155.2+26.1.2",
+        minecraftVersionOverride = "26.1.2"
+    ),
+    MC26_2(
+        "26.2",
+        fabricApiVersion = "net.fabricmc.fabric-api:fabric-api:0.155.2+26.2",
+    ),
+    MC26_3(
+        "26.3",
+        fabricApiVersion = "net.fabricmc.fabric-api:fabric-api:0.160.3+26.3",
+    ),
+
+    ;
+
+    val fullMinecraftVersion get() = minecraftVersionOverride ?: projectName
 }
+
+val target = ProjectTarget.entries.find { it.projectName == project.name }!!
 
 val runDirectory = rootProject.file("run")
 runDirectory.mkdirs()
@@ -31,7 +51,7 @@ loom {
     if (accessWidenerFile.exists()) {
         accessWidenerPath = accessWidenerFile
     } else {
-        println("No accessWidner file for $minecraftVersion")
+        println("No accessWidner file for ${target.projectName}")
     }
 
     runs {
@@ -39,7 +59,7 @@ loom {
             generateRunConfig.set(true)
             preferGradleTask = true
             appendProjectPathToDisplayName.set(true)
-            this.runDirectory = rootProject.file("versions/$minecraftVersion/run").relativeTo(projectDir)
+            this.runDirectory = rootProject.file("versions/${target.projectName}/run").relativeTo(projectDir)
             jvmArguments.add("-Xmx4G")
         }
         removeIf { it.name == "server" }
@@ -64,14 +84,14 @@ tasks.withType<JavaCompile> {
 
 tasks.withType<GradleJar> {
     archiveBaseName.set("MoulConfig")
-    archiveVersion.set("$version-mc$minecraftVersion")
+    archiveVersion.set("$version-mc${target.projectName}")
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 dependencies {
-    minecraft("com.mojang:minecraft:$fullMinecraftVersion")
+    minecraft("com.mojang:minecraft:${target.fullMinecraftVersion}")
     compileOnly(libs.jbAnnotations)
-    implementation("net.fabricmc.fabric-api:fabric-api:${libs.versions.fabric.api.get()}+$fullMinecraftVersion")
+    implementation(target.fabricApiVersion)
 
     implementation(libs.fabric.loader)
     implementation(libs.libninepatch)
