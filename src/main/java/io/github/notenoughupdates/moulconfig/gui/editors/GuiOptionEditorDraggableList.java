@@ -20,7 +20,6 @@
 package io.github.notenoughupdates.moulconfig.gui.editors;
 
 import io.github.notenoughupdates.moulconfig.GuiTextures;
-import io.github.notenoughupdates.moulconfig.common.ComponentHelper;
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
 import io.github.notenoughupdates.moulconfig.common.MoulConfigPair;
 import io.github.notenoughupdates.moulconfig.gui.GuiComponent;
@@ -33,6 +32,7 @@ import io.github.notenoughupdates.moulconfig.gui.component.RowComponent;
 import io.github.notenoughupdates.moulconfig.gui.component.SpacerComponent;
 import io.github.notenoughupdates.moulconfig.gui.component.TextComponent;
 import io.github.notenoughupdates.moulconfig.internal.ColourUtil;
+import io.github.notenoughupdates.moulconfig.internal.ComponentHelper;
 import io.github.notenoughupdates.moulconfig.internal.LerpingInteger2;
 import io.github.notenoughupdates.moulconfig.internal.Rect;
 import io.github.notenoughupdates.moulconfig.internal.TypeUtils;

@@ -1,5 +1,6 @@
-package io.github.notenoughupdates.moulconfig.common;
+package io.github.notenoughupdates.moulconfig.internal;
 
+import io.github.notenoughupdates.moulconfig.common.IMinecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import org.jspecify.annotations.NonNull;

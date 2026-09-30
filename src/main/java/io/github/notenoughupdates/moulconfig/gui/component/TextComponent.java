@@ -20,10 +20,10 @@
 
 package io.github.notenoughupdates.moulconfig.gui.component;
 
-import io.github.notenoughupdates.moulconfig.common.ComponentHelper;
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
 import io.github.notenoughupdates.moulconfig.gui.GuiComponent;
 import io.github.notenoughupdates.moulconfig.gui.GuiImmediateContext;
+import io.github.notenoughupdates.moulconfig.internal.ComponentHelper;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;

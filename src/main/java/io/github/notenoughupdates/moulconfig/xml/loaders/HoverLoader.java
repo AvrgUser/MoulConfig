@@ -1,7 +1,7 @@
 package io.github.notenoughupdates.moulconfig.xml.loaders;
 
-import io.github.notenoughupdates.moulconfig.common.ComponentHelper;
 import io.github.notenoughupdates.moulconfig.gui.component.HoverComponent;
+import io.github.notenoughupdates.moulconfig.internal.ComponentHelper;
 import io.github.notenoughupdates.moulconfig.observer.GetSetter;
 import io.github.notenoughupdates.moulconfig.xml.ChildCount;
 import io.github.notenoughupdates.moulconfig.xml.XMLContext;
