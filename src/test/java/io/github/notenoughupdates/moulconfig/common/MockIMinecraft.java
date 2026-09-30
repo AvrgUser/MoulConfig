@@ -10,6 +10,7 @@ import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
+import java.net.URI;
 
 @NullMarked
 public class MockIMinecraft implements IMinecraft {
@@ -117,6 +118,11 @@ public class MockIMinecraft implements IMinecraft {
 
     @Override
     public String copyFromClipboard() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void openUri(URI uri) {
         throw new UnsupportedOperationException();
     }
 }

@@ -24,7 +24,6 @@ import io.github.notenoughupdates.moulconfig.common.ClickType;
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
-import java.awt.Desktop;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
@@ -60,7 +59,7 @@ public abstract class Social {
         @Override
         public void onClick() {
             try {
-                Desktop.getDesktop().browse(url);
+                IMinecraft.INSTANCE.openUri(url);
             } catch (Exception e) {
                 IMinecraft.INSTANCE.sendClickableChatMessage(Component.literal("Click here to open ").append(name), url.toString(), ClickType.OPEN_LINK);
             }

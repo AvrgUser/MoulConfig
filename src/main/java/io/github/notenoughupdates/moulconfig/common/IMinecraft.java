@@ -15,6 +15,7 @@ import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
+import java.net.URI;
 import java.util.ServiceLoader;
 
 @NullMarked
@@ -109,6 +110,8 @@ public interface IMinecraft {
 
     default void startTextInput(Object owner, boolean focused) {
     }
+
+    void openUri(URI uri);
 
     IMinecraft INSTANCE = InitUtil.makeUnchecked(() -> {
         var serviceLoader = ServiceLoader.load(IMinecraft.class);

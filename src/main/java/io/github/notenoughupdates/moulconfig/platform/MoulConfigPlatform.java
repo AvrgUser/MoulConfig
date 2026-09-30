@@ -33,10 +33,12 @@ import java.net.URI;
 import java.util.Objects;
 
 //? if >=26.3 {
+import com.mojang.blaze3d.Blaze3D;
 import org.lwjgl.sdl.SDLMouse;
 //?} else {
 /*import org.lwjgl.glfw.GLFW;
- *///?}
+import net.minecraft.util.Util;
+*///?}
 
 @Slf4j
 @NullMarked
@@ -272,5 +274,14 @@ public class MoulConfigPlatform implements IMinecraft {
     public void startTextInput(Object owner, boolean focused) {
         //? if >=26.3
         mc.textInputManager().onTextInputFocusChange(owner, focused);
+    }
+
+    @Override
+    public void openUri(URI uri) {
+        //? if >=26.3 {
+        Blaze3D.openUri(uri);
+        //?} else {
+        /*Util.getPlatform().openUri(uri);
+         *///?}
     }
 }
