@@ -40,10 +40,9 @@ import io.github.notenoughupdates.moulconfig.processor.ProcessedOption;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.val;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TextColor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
@@ -570,14 +569,14 @@ public class MoulConfigEditor<T extends Config> extends GuiElement implements Cl
                 context.translate(titlePositionX, titlePositionY);
                 context.drawStringCenteredScaledMaxWidth(
                     Component.literal("Seems like your search is found in a subcategory.")
-                        .withStyle(Style.EMPTY.withColor(TextColor.GRAY)),
+                        .withStyle(ChatFormatting.GRAY),
                     ifr,
                     0,
                     titleScale * ifr.lineHeight,
                     true, innerSize, -1
                 );
                 context.drawStringCenteredScaledMaxWidth(Component.literal("Check out the subcategories on the left.")
-                        .withStyle(Style.EMPTY.withColor(TextColor.GRAY)),
+                        .withStyle(ChatFormatting.GRAY),
                     ifr,
                     0,
                     (titleScale + 1) * ifr.lineHeight,
@@ -585,7 +584,7 @@ public class MoulConfigEditor<T extends Config> extends GuiElement implements Cl
                 );
                 context.scale(titleScale, titleScale);
                 context.drawStringCenteredScaledMaxWidth(Component.literal("No options found.")
-                        .withStyle(Style.EMPTY.withColor(TextColor.GRAY)),
+                        .withStyle(ChatFormatting.GRAY),
                     ifr,
                     0,
                     0,

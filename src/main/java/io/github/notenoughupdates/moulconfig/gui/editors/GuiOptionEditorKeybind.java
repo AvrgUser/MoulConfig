@@ -12,10 +12,9 @@ import io.github.notenoughupdates.moulconfig.gui.KeyboardEvent;
 import io.github.notenoughupdates.moulconfig.gui.MouseEvent;
 import io.github.notenoughupdates.moulconfig.internal.Warnings;
 import io.github.notenoughupdates.moulconfig.processor.ProcessedOption;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextColor;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.Collections;
 
 public class GuiOptionEditorKeybind extends ComponentEditor {
@@ -68,7 +67,7 @@ public class GuiOptionEditorKeybind extends ComponentEditor {
                     renderContext.scheduleDrawTooltip(
                         context.mouseX(), context.mouseY(),
                         Collections.singletonList(Component.literal("Reset to Default")
-                            .withColor(TextColor.RED)));
+                            .withStyle(ChatFormatting.RED)));
                 }
             }
 

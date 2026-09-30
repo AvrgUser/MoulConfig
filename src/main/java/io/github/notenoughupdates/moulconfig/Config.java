@@ -23,10 +23,9 @@ package io.github.notenoughupdates.moulconfig;
 import io.github.notenoughupdates.moulconfig.gui.HorizontalAlign;
 import io.github.notenoughupdates.moulconfig.processor.ProcessedCategory;
 import io.github.notenoughupdates.moulconfig.processor.ProcessedOption;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TextColor;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,13 +41,13 @@ public abstract class Config {
     public Component formatCategoryName(ProcessedCategory category, boolean isSelected) {
         if (isSelected) {
             return category.getDisplayName().plainCopy()
-                .setStyle(Style.EMPTY.withUnderlined(true).withColor(TextColor.AQUA));
+                .setStyle(Style.EMPTY.withUnderlined(true).withColor(ChatFormatting.AQUA));
         } else if (category.getParentCategoryId() == null) {
             return category.getDisplayName().plainCopy()
-                .setStyle(Style.EMPTY.withColor(TextColor.GRAY));
+                .setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
         } else {
             return category.getDisplayName().plainCopy()
-                .setStyle(Style.EMPTY.withColor(TextColor.DARK_GRAY));
+                .setStyle(Style.EMPTY.withColor(ChatFormatting.DARK_GRAY));
         }
     }
 
