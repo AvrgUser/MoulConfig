@@ -8,6 +8,11 @@ pluginManagement {
                 includeGroupAndSubgroups("net.fabricmc")
             }
         }
+        maven("https://repo.spongepowered.org/maven/") {
+            content {
+                includeGroup("org.spongepowered")
+            }
+        }
         maven("https://jitpack.io") {
             content {
                 includeGroupAndSubgroups("com.github")

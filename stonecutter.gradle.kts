@@ -34,6 +34,16 @@ allprojects {
                 includeGroupAndSubgroups("net.fabricmc")
             }
         }
+
+        // Mixin
+        exclusiveContent {
+            forRepository {
+                maven("https://repo.spongepowered.org/repository/maven-public")
+            }
+            filter {
+                includeGroup("org.spongepowered")
+            }
+        }
     }
 }
 
