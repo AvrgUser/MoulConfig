@@ -27,4 +27,14 @@ public class ComponentHelper {
     public static List<@NotNull Component> splitLines(@NotNull Component text) {
         return splitText(text, Integer.MAX_VALUE);
     }
+
+    public static Component mapStringOrComponent(Object object) {
+        if (object instanceof String) {
+            return Component.literal((String) object);
+        }
+        if (object instanceof Component) {
+            return (Component) object;
+        }
+        throw new IllegalArgumentException("Expected string or structured text, found " + object);
+    }
 }

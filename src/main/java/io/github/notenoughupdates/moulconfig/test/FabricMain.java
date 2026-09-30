@@ -3,9 +3,11 @@ package io.github.notenoughupdates.moulconfig.test;
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
 import io.github.notenoughupdates.moulconfig.internal.Warnings;
 import io.github.notenoughupdates.moulconfig.managed.ManagedConfig;
+import io.github.notenoughupdates.moulconfig.xml.XMLUniverse;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.minecraft.client.Minecraft;
+import net.minecraft.resources.Identifier;
 import java.io.File;
 
 import static io.github.notenoughupdates.moulconfig.test.CommandUtils.literal;
@@ -25,6 +27,19 @@ public class FabricMain implements ModInitializer {
                 });
                 return 0;
             }));
+            a.register(literal("moulconfigxml").executes(ctx -> {
+                Minecraft.getInstance().schedule(() -> {
+                    XMLUniverse xmlUniverse = XMLUniverse.getDefaultUniverse();
+                    var scene = xmlUniverse.load(
+                        new ObjectBound(),
+                        IMinecraft.INSTANCE.loadResourceLocation(Identifier.parse("moulconfig:test.xml"))
+                    );
+                    IMinecraft.getInstance()
+                        .openWrappedScreen(scene);
+                });
+                return 0;
+            }));
         });
+
     }
 }
