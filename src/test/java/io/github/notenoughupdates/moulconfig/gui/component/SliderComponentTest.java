@@ -8,7 +8,9 @@ import io.github.notenoughupdates.moulconfig.observer.GetSetter;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.ItemStack;
 import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import java.util.List;
@@ -116,6 +118,10 @@ public class SliderComponentTest {
 
         @Override
         public void clearScissor() {
+        }
+
+        @Override
+        public void renderItemStack(ItemStack itemStack, int x, int y, @Nullable Component overlayText) {
         }
 
         @Override
