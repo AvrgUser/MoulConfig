@@ -3,6 +3,8 @@ package io.github.notenoughupdates.moulconfig.test;
 import io.github.notenoughupdates.moulconfig.gui.CloseEventListener;
 import io.github.notenoughupdates.moulconfig.observer.ObservableList;
 import io.github.notenoughupdates.moulconfig.xml.Bind;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Blocks;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -21,6 +23,9 @@ public class ObjectBound {
         System.out.println("Before close");
         return CloseEventListener.CloseAction.NO_OBJECTIONS_TO_CLOSE;
     }
+
+    @Bind
+    public ItemStack itemStack = new ItemStack(Blocks.SAND);
 
     @Bind
     public boolean value = false;
