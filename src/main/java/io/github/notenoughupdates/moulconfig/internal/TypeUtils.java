@@ -1,7 +1,6 @@
 package io.github.notenoughupdates.moulconfig.internal;
 
 
-import lombok.val;
 import org.jspecify.annotations.NonNull;
 import java.lang.reflect.Array;
 import java.lang.reflect.GenericArrayType;
@@ -65,7 +64,7 @@ public class TypeUtils {
      * @see #fillTypeUniverse for the concrete meaning of this
      */
     public static Map<TypeVariable<?>, Type> createTypeUniverse(Type instantiation) {
-        val universe = new HashMap<TypeVariable<?>, Type>();
+        final var universe = new HashMap<TypeVariable<?>, Type>();
         fillTypeUniverse(instantiation, resolveRawType(instantiation), universe);
         return universe;
     }
@@ -91,7 +90,7 @@ public class TypeUtils {
                 return;
             }
             case ParameterizedType par -> {
-                val con = par.getActualTypeArguments();
+                final var con = par.getActualTypeArguments();
                 final TypeVariable<?>[] abs = context.getTypeParameters();
                 for (int i = 0; i < abs.length; i++) {
                     universe.put(abs[i], con[i]);
@@ -102,8 +101,8 @@ public class TypeUtils {
             case GenericArrayType _ ->
                 throw new IllegalArgumentException("Encountered array type while walking the type hierarchy " + instantiation);
             case Class<?> cls -> {
-                val gInters = cls.getGenericInterfaces();
-                val inters = cls.getInterfaces();
+                final var gInters = cls.getGenericInterfaces();
+                final var inters = cls.getInterfaces();
                 for (int i = gInters.length; i-- > 0; ) {
                     fillTypeUniverse(gInters[i], inters[i], universe);
                 }

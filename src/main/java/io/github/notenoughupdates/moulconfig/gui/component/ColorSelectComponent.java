@@ -33,7 +33,6 @@ import io.github.notenoughupdates.moulconfig.gui.MouseEvent;
 import io.github.notenoughupdates.moulconfig.internal.DrawContextExt;
 import io.github.notenoughupdates.moulconfig.internal.LerpUtils;
 import io.github.notenoughupdates.moulconfig.observer.GetSetter;
-import lombok.val;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import org.jspecify.annotations.NonNull;
@@ -213,7 +212,7 @@ public class ColorSelectComponent extends GuiComponent {
         Color c = new Color(currentColour, true);
         float[] hsv = Color.RGBtoHSB(c.getRed(), c.getGreen(), c.getBlue(), null);
 
-        val renderContext = context.renderContext();
+        final var renderContext = context.renderContext();
         renderContext.drawDarkRect(0, 0, xSize, ySize);
 
         float selradius = (float) Math.pow(wheelRadius, 1 / 1.5f) * 32;

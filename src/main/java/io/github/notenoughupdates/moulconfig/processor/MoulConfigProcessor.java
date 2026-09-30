@@ -27,11 +27,9 @@ import io.github.notenoughupdates.moulconfig.gui.GuiOptionEditor;
 import io.github.notenoughupdates.moulconfig.gui.editors.GuiOptionEditorAccordion;
 import io.github.notenoughupdates.moulconfig.internal.Warnings;
 import lombok.Getter;
-import lombok.val;
 import net.minecraft.network.chat.Component;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -112,7 +110,7 @@ public class MoulConfigProcessor<T extends Config> implements ConfigStructureRea
     @Override
     public void endCategory() {
         for (ProcessedOption option : currentCategory.options) {
-            val editor = option.getEditor();
+            final var editor = option.getEditor();
             if (editor instanceof GuiOptionEditorAccordion) {
                 currentCategory.accordionAnchors.put(((GuiOptionEditorAccordion) editor).getAccordionId(), option);
             }

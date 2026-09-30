@@ -43,7 +43,6 @@ import io.github.notenoughupdates.moulconfig.gui.editors.GuiOptionEditorInfoText
 import io.github.notenoughupdates.moulconfig.gui.editors.GuiOptionEditorKeybind;
 import io.github.notenoughupdates.moulconfig.gui.editors.GuiOptionEditorSlider;
 import io.github.notenoughupdates.moulconfig.gui.editors.GuiOptionEditorText;
-import lombok.val;
 import net.minecraft.network.chat.Component;
 import java.lang.reflect.Field;
 
@@ -84,7 +83,7 @@ public class BuiltinMoulConfigGuis {
             return new GuiOptionEditorButton(option, -1, Component.literal("Link"), option.getConfig()) {
                 @Override
                 public void onClick() {
-                    val linkedOption = activeConfigGUI.getOptionFromField(field);
+                    final var linkedOption = activeConfigGUI.getOptionFromField(field);
                     if (linkedOption == null) {
                         throw new NullPointerException("No ProcessedOption.Field present for " + field);
                     }

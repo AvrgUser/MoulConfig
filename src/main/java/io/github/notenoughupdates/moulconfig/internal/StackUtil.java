@@ -1,9 +1,7 @@
 package io.github.notenoughupdates.moulconfig.internal;
 
 import io.github.notenoughupdates.moulconfig.GuiTextures;
-import lombok.val;
 import org.jspecify.annotations.Nullable;
-
 import java.util.function.Predicate;
 
 public class StackUtil {
@@ -34,7 +32,7 @@ public class StackUtil {
     }
 
     public void warn(String warningText) {
-        val firstOffender = takeOne();
+        final var firstOffender = takeOne();
         assert firstOffender != null;
         Warnings.warnAt(warningText, firstOffender, skipWhile(moulConfigLibrary()).takeOne());
     }

@@ -72,6 +72,13 @@ public class SwitchComponent extends GuiComponent {
         }
 
         float animationPercentage = LerpUtils.sigmoidZeroOne(animation.getValue() / 100F);
+        Identifier buttonLocation = getButtonLocation(animationPercentage);
+        context.renderContext().drawTexturedRect(
+            buttonLocation,
+            animationPercentage * (context.width() - 12), 0, 12, context.height());
+    }
+
+    private static Identifier getButtonLocation(float animationPercentage) {
         Identifier buttonLocation;
         if (animationPercentage < 1 / 5F) {
             buttonLocation = GuiTextures.TOGGLE_OFF;
@@ -84,9 +91,7 @@ public class SwitchComponent extends GuiComponent {
         } else {
             buttonLocation = GuiTextures.TOGGLE_ON;
         }
-        context.renderContext().drawTexturedRect(
-            buttonLocation,
-            animationPercentage * (context.width() - 12), 0, 12, context.height());
+        return buttonLocation;
     }
 
     @Override

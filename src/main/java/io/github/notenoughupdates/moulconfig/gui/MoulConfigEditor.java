@@ -39,7 +39,6 @@ import io.github.notenoughupdates.moulconfig.processor.ProcessedCategory;
 import io.github.notenoughupdates.moulconfig.processor.ProcessedOption;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.val;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
@@ -160,7 +159,7 @@ public class MoulConfigEditor<T extends Config> extends GuiElement implements Cl
         Set<Integer> activeAccordions = new HashSet<>();
         int optionY = 0;
         for (ProcessedOption processedOption : getOptionsInCategory(processedCategory)) {
-            val editor = processedOption.getEditor();
+            final var editor = processedOption.getEditor();
             if (editor == null) {
                 continue;
             }
@@ -264,7 +263,7 @@ public class MoulConfigEditor<T extends Config> extends GuiElement implements Cl
                 .flatMap(it -> childCategoryLookup.getOrDefault(it.getIdentifier(), Collections.emptySet()).stream())
                 .map(getAllCategories()::get)
                 .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+                .toList();
             directlyMatchedCategories.addAll(childCategoriesOfDirectlyMatched);
 
             // No search propagation needed if category is matched.
@@ -748,7 +747,7 @@ public class MoulConfigEditor<T extends Config> extends GuiElement implements Cl
 
     public boolean mouseInput(int mouseX, int mouseY, MouseEvent mouseEvent) {
         lastMouseX = mouseX;
-        val iMinecraft = IMinecraft.INSTANCE;
+        final var iMinecraft = IMinecraft.INSTANCE;
         int width = iMinecraft.getScaledWidth();
         int height = iMinecraft.getScaledHeight();
         int scaleFactor = iMinecraft.getScaleFactor();
@@ -1112,7 +1111,7 @@ public class MoulConfigEditor<T extends Config> extends GuiElement implements Cl
     }
 
     public boolean keyboardInput(KeyboardEvent event) {
-        val iMinecraft = IMinecraft.INSTANCE;
+        final var iMinecraft = IMinecraft.INSTANCE;
         int width = iMinecraft.getScaledWidth();
         int height = iMinecraft.getScaledHeight();
         int scaleFactor = iMinecraft.getScaleFactor();

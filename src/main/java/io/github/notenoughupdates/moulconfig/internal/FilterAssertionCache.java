@@ -2,14 +2,12 @@ package io.github.notenoughupdates.moulconfig.internal;
 
 import io.github.notenoughupdates.moulconfig.common.IMinecraft;
 import io.github.notenoughupdates.moulconfig.common.TextureFilter;
-import lombok.val;
 import net.minecraft.resources.Identifier;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
-
 import static io.github.notenoughupdates.moulconfig.internal.StackUtil.MOULCONFIG_BASE_PACKAGE;
 
 /**
@@ -34,10 +32,10 @@ public class FilterAssertionCache {
      * Assert that a texture uses a certain global filter state. If this is the first time the texture is seen, the state is remembered in this class. On subsequent calls this function warns if a different filter is passed.
      */
     public static void assertTextureFilter(Identifier resourceLocation, TextureFilter filter) {
-        val set = IMinecraft.INSTANCE.isGeneratedSentinel(resourceLocation)
+        final var set = IMinecraft.INSTANCE.isGeneratedSentinel(resourceLocation)
             ? TEMPORARY
             : PERMANENT;
-        val existing = set.get(resourceLocation);
+        final var existing = set.get(resourceLocation);
         Supplier<StackUtil> stack = () -> StackUtil.getWalker().skipWhile(
             StackUtil.defaultSkips()
                 .or(it ->

@@ -15,7 +15,6 @@ import io.github.notenoughupdates.moulconfig.gui.component.CenterComponent;
 import io.github.notenoughupdates.moulconfig.gui.component.PanelComponent;
 import io.github.notenoughupdates.moulconfig.processor.ProcessedOption;
 import lombok.Getter;
-import lombok.val;
 import net.minecraft.network.chat.Component;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.NullMarked;
@@ -246,8 +245,8 @@ public abstract class ComponentEditor extends GuiOptionEditor {
 
     @Override
     public final boolean keyboardInput(KeyboardEvent keyboardEvent) {
-        val ctx = getImmContext(lastRenderX, lastRenderY, lastRenderWidth, lastRenderHeight, IMinecraft.INSTANCE.provideTopLevelRenderContext());
-        val overlay = getOverlayDelegate();
+        final var ctx = getImmContext(lastRenderX, lastRenderY, lastRenderWidth, lastRenderHeight, IMinecraft.INSTANCE.provideTopLevelRenderContext());
+        final var overlay = getOverlayDelegate();
         if (overlay != null) {
             overlay.foldRecursive((Void) null, (comp, _void) -> {
                 comp.setContext(getDelegate().getContext());
@@ -299,7 +298,7 @@ public abstract class ComponentEditor extends GuiOptionEditor {
             comp.setContext(getDelegate().getContext());
             return _void;
         });
-        val ctx = getImmContext(overlayX, overlayY, overlay.getWidth(), overlay.getHeight(), context);
+        final var ctx = getImmContext(overlayX, overlayY, overlay.getWidth(), overlay.getHeight(), context);
         ctx.renderContext().translate(overlayX, overlayY);
         overlay.render(ctx);
     }

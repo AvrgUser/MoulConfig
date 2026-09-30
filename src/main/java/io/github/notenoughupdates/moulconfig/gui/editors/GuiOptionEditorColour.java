@@ -29,10 +29,7 @@ import io.github.notenoughupdates.moulconfig.gui.MouseEvent;
 import io.github.notenoughupdates.moulconfig.gui.component.ColorSelectComponent;
 import io.github.notenoughupdates.moulconfig.internal.ColourUtil;
 import io.github.notenoughupdates.moulconfig.processor.ProcessedOption;
-
-import lombok.val;
 import org.jspecify.annotations.NonNull;
-
 import java.lang.reflect.Type;
 
 public class GuiOptionEditorColour extends ComponentEditor {
@@ -96,7 +93,7 @@ public class GuiOptionEditorColour extends ComponentEditor {
     }
 
     ChromaColour get() {
-        val value = option.get();
+        final var value = option.get();
         if (usesString)
             //noinspection deprecation
             return ChromaColour.forLegacyString((String) value);
