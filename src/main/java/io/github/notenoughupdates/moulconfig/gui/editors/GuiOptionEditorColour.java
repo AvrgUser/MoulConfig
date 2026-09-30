@@ -31,7 +31,7 @@ import io.github.notenoughupdates.moulconfig.internal.ColourUtil;
 import io.github.notenoughupdates.moulconfig.processor.ProcessedOption;
 
 import lombok.val;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.lang.reflect.Type;
 
@@ -61,7 +61,7 @@ public class GuiOptionEditorColour extends ComponentEditor {
             }
 
             @Override
-            public void render(@NotNull GuiImmediateContext context) {
+            public void render(@NonNull GuiImmediateContext context) {
                 int argb = get().getEffectiveColour().getRGB();
                 context.renderContext().drawComplexTexture(
                     GuiTextures.BUTTON_WHITE, 0f, 0f, context.width(), context.height(),
@@ -70,7 +70,7 @@ public class GuiOptionEditorColour extends ComponentEditor {
             }
 
             @Override
-            public boolean mouseEvent(@NotNull MouseEvent mouseEvent, @NotNull GuiImmediateContext context) {
+            public boolean mouseEvent(@NonNull MouseEvent mouseEvent, @NonNull GuiImmediateContext context) {
                 if (mouseEvent instanceof MouseEvent.Click(int mouseButton, boolean mouseState)) {
                     if (mouseState && mouseButton == InputConstants.MOUSE_BUTTON_LEFT && context.isHovered()) {
                         ColorSelectComponent colorSelectComponent = new ColorSelectComponent(0, 0, get().toLegacyString(), newString -> set(newString), () -> {
@@ -114,7 +114,7 @@ public class GuiOptionEditorColour extends ComponentEditor {
 
 
     @Override
-    public @NotNull GuiComponent getDelegate() {
+    public @NonNull GuiComponent getDelegate() {
         return component;
     }
 

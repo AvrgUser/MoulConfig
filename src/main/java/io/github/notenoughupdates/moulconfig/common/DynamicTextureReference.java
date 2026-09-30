@@ -2,7 +2,6 @@ package io.github.notenoughupdates.moulconfig.common;
 
 import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.ApiStatus;
-
 import java.awt.image.BufferedImage;
 import java.io.Closeable;
 

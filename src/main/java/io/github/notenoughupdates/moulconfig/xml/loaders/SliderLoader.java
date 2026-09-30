@@ -6,15 +6,15 @@ import io.github.notenoughupdates.moulconfig.xml.ChildCount;
 import io.github.notenoughupdates.moulconfig.xml.XMLContext;
 import io.github.notenoughupdates.moulconfig.xml.XMLGuiLoader;
 import io.github.notenoughupdates.moulconfig.xml.XMLUniverse;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
+import org.jspecify.annotations.NonNull;
 import org.w3c.dom.Element;
 import java.util.Map;
 import javax.xml.namespace.QName;
 
 public class SliderLoader implements XMLGuiLoader.Basic<SliderComponent> {
     @Override
-    public @NotNull SliderComponent createInstance(@NotNull XMLContext<?> context, @NotNull Element element) {
+    public @NonNull SliderComponent createInstance(@NonNull XMLContext<?> context, @NonNull Element element) {
         return new SliderComponent(
             context.getPropertyFromAttribute(element, new QName("value"), Float.class),
             context.getPropertyFromAttribute(element, new QName("minValue"), Float.class).get(),
@@ -25,17 +25,17 @@ public class SliderLoader implements XMLGuiLoader.Basic<SliderComponent> {
     }
 
     @Override
-    public @NotNull QName getName() {
+    public @NonNull QName getName() {
         return XMLUniverse.qName("Slider");
     }
 
     @Override
-    public @NotNull ChildCount getChildCount() {
+    public @NonNull ChildCount getChildCount() {
         return ChildCount.NONE;
     }
 
     @Override
-    public @NotNull @Unmodifiable Map<String, Boolean> getAttributeNames() {
+    public @NonNull @Unmodifiable Map<String, Boolean> getAttributeNames() {
         return MapOfs.of("value", true, "minValue", true, "maxValue", true, "minStep", false, "width", false);
     }
 }

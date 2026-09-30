@@ -25,8 +25,7 @@ import io.github.notenoughupdates.moulconfig.gui.GuiComponent;
 import io.github.notenoughupdates.moulconfig.gui.GuiImmediateContext;
 import io.github.notenoughupdates.moulconfig.gui.MouseEvent;
 import io.github.notenoughupdates.moulconfig.processor.ProcessedOption;
-
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public class GuiOptionEditorAccordion extends ComponentEditor {
     private final int accordionId;
@@ -49,14 +48,14 @@ public class GuiOptionEditorAccordion extends ComponentEditor {
         }
 
         @Override
-        public void render(@NotNull GuiImmediateContext context) {
+        public void render(@NonNull GuiImmediateContext context) {
             context.renderContext().drawDarkRect(0, 0, context.width(), context.height(), true);
             context.renderContext().drawOpenCloseTriangle(accordionToggled, 6, 6, 13.5F - 6F, 13.5F - 6F, -1);
             context.renderContext().drawStringScaledMaxWidth(option.getName(), context.renderContext().getMinecraft().getDefaultFontRenderer(), 18, 6, false, context.width() - 18, 0xc0c0c0);
         }
 
         @Override
-        public boolean mouseEvent(@NotNull MouseEvent mouseEvent, @NotNull GuiImmediateContext context) {
+        public boolean mouseEvent(@NonNull MouseEvent mouseEvent, @NonNull GuiImmediateContext context) {
             if (mouseEvent instanceof MouseEvent.Click(int mouseButton, boolean mouseState)) {
                 if (mouseState && context.isHovered() && mouseButton == InputConstants.MOUSE_BUTTON_LEFT) {
                     accordionToggled = !accordionToggled;
@@ -73,7 +72,7 @@ public class GuiOptionEditorAccordion extends ComponentEditor {
     }
 
     @Override
-    public @NotNull GuiComponent getDelegate() {
+    public @NonNull GuiComponent getDelegate() {
         return delegate;
     }
 

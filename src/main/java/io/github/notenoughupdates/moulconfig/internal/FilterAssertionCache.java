@@ -4,9 +4,8 @@ import io.github.notenoughupdates.moulconfig.common.IMinecraft;
 import io.github.notenoughupdates.moulconfig.common.TextureFilter;
 import lombok.val;
 import net.minecraft.resources.Identifier;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -17,7 +16,7 @@ import static io.github.notenoughupdates.moulconfig.internal.StackUtil.MOULCONFI
  * This class is used to assert that the filter used for a texture (which is stored in global state) is never changed.
  */
 public class FilterAssertionCache {
-    public record TextureFilterAssertion(@Nullable StackTraceElement assertedBy, @NotNull TextureFilter filter) {
+    public record TextureFilterAssertion(@Nullable StackTraceElement assertedBy, @NonNull TextureFilter filter) {
     }
 
     private static final Map<Identifier, TextureFilterAssertion> PERMANENT = new HashMap<>();

@@ -29,8 +29,8 @@ import io.github.notenoughupdates.moulconfig.internal.Warnings;
 import lombok.Getter;
 import lombok.val;
 import net.minecraft.network.chat.Component;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -184,7 +184,7 @@ public class MoulConfigProcessor<T extends Config> implements ConfigStructureRea
         return this.categories;
     }
 
-    public @Nullable ProcessedOption getOptionFromField(@NotNull Field field) {
+    public @Nullable ProcessedOption getOptionFromField(@NonNull Field field) {
         requireFinalized();
         return optionLookup.get(field);
     }

@@ -1,7 +1,7 @@
 package io.github.notenoughupdates.moulconfig.observer;
 
 import lombok.Data;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -39,21 +39,21 @@ public class ObservableList<T> implements List<T> {
         return delegate.contains(o);
     }
 
-    @NotNull
+    @NonNull
     @Override
     public Iterator<T> iterator() {
         return delegate.iterator();
     }
 
-    @NotNull
+    @NonNull
     @Override
     public Object[] toArray() {
         return delegate.toArray();
     }
 
-    @NotNull
+    @NonNull
     @Override
-    public <T1> T1[] toArray(@NotNull T1[] a) {
+    public <T1> T1[] toArray(@NonNull T1[] a) {
         return delegate.toArray(a);
     }
 
@@ -82,33 +82,33 @@ public class ObservableList<T> implements List<T> {
     }
 
     @Override
-    public boolean containsAll(@NotNull Collection<?> c) {
+    public boolean containsAll(@NonNull Collection<?> c) {
         return delegate.containsAll(c);
     }
 
     @Override
-    public boolean addAll(@NotNull Collection<? extends T> c) {
+    public boolean addAll(@NonNull Collection<? extends T> c) {
         boolean a = delegate.addAll(c);
         if (a) update();
         return a;
     }
 
     @Override
-    public boolean addAll(int index, @NotNull Collection<? extends T> c) {
+    public boolean addAll(int index, @NonNull Collection<? extends T> c) {
         boolean b = delegate.addAll(index, c);
         if (b) update();
         return b;
     }
 
     @Override
-    public boolean removeAll(@NotNull Collection<?> c) {
+    public boolean removeAll(@NonNull Collection<?> c) {
         boolean b = delegate.removeAll(c);
         if (b) update();
         return b;
     }
 
     @Override
-    public boolean retainAll(@NotNull Collection<?> c) {
+    public boolean retainAll(@NonNull Collection<?> c) {
         boolean b = delegate.retainAll(c);
         if (b) update();
         return b;
@@ -155,19 +155,19 @@ public class ObservableList<T> implements List<T> {
         return delegate.lastIndexOf(o);
     }
 
-    @NotNull
+    @NonNull
     @Override
     public ListIterator<T> listIterator() {
         return listIterator(0);
     }
 
-    @NotNull
+    @NonNull
     @Override
     public ListIterator<T> listIterator(int index) {
         throw new UnsupportedOperationException();
     }
 
-    @NotNull
+    @NonNull
     @Override
     public List<T> subList(int fromIndex, int toIndex) {
         return delegate.subList(fromIndex, toIndex);

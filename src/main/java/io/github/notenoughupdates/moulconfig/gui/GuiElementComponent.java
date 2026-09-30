@@ -3,7 +3,7 @@ package io.github.notenoughupdates.moulconfig.gui;
 import io.github.notenoughupdates.moulconfig.internal.Warnings;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 /**
  * Adapts a {@link GuiElement} as a {@link GuiComponent} that renders on the entire screen. Not applicable to be used in transformed situations.
@@ -31,7 +31,7 @@ public class GuiElementComponent extends GuiComponent {
     }
 
     @Override
-    public void render(@NotNull GuiImmediateContext context) {
+    public void render(@NonNull GuiImmediateContext context) {
         if (context.renderOffsetX() != 0 || context.renderOffsetY() != 0) {
             Warnings.warn("Cannot render GuiElement with a pretransformed matrix stack");
         }
@@ -39,12 +39,12 @@ public class GuiElementComponent extends GuiComponent {
     }
 
     @Override
-    public boolean mouseEvent(@NotNull MouseEvent mouseEvent, @NotNull GuiImmediateContext context) {
+    public boolean mouseEvent(@NonNull MouseEvent mouseEvent, @NonNull GuiImmediateContext context) {
         return element.mouseInput(context.mouseX(), context.mouseY(), mouseEvent);
     }
 
     @Override
-    public boolean keyboardEvent(@NotNull KeyboardEvent event, @NotNull GuiImmediateContext context) {
+    public boolean keyboardEvent(@NonNull KeyboardEvent event, @NonNull GuiImmediateContext context) {
         return element.keyboardInput(event);
     }
 }

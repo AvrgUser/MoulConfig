@@ -22,8 +22,8 @@ package io.github.notenoughupdates.moulconfig.observer;
 
 import io.github.notenoughupdates.moulconfig.internal.Warnings;
 import lombok.SneakyThrows;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Field;
@@ -106,7 +106,7 @@ public interface GetSetter<T> extends Supplier<T>, Consumer<T> {
      * @return a field backed {@link GetSetter}
      */
     @SneakyThrows
-    static GetSetter<?> ofField(@Nullable Object owner, @NotNull Field field) {
+    static GetSetter<?> ofField(@Nullable Object owner, @NonNull Field field) {
         field.setAccessible(true);
         if ((owner == null) != (Modifier.isStatic(field.getModifiers()))) {
             Warnings.warn("Field instance (" + owner + ") is mismatched with field " + field);

@@ -1,9 +1,8 @@
 package io.github.notenoughupdates.moulconfig.processor;
 
 import net.minecraft.network.chat.Component;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
-
+import org.jspecify.annotations.Nullable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;

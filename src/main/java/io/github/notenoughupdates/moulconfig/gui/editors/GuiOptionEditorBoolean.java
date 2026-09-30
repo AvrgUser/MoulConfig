@@ -27,8 +27,7 @@ import io.github.notenoughupdates.moulconfig.gui.component.SwitchComponent;
 import io.github.notenoughupdates.moulconfig.observer.GetSetter;
 import io.github.notenoughupdates.moulconfig.observer.Property;
 import io.github.notenoughupdates.moulconfig.processor.ProcessedOption;
-
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public class GuiOptionEditorBoolean extends ComponentEditor {
 
@@ -46,7 +45,7 @@ public class GuiOptionEditorBoolean extends ComponentEditor {
     }
 
     @Override
-    public @NotNull GuiComponent getDelegate() {
+    public @NonNull GuiComponent getDelegate() {
         return bool;
     }
 

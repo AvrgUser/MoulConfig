@@ -2,15 +2,15 @@ package io.github.notenoughupdates.moulconfig.common;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class ComponentHelper {
-    @NotNull
-    public static List<@NotNull Component> splitText(@NotNull Component text, int width) {
+    @NonNull
+    public static List<@NonNull Component> splitText(@NonNull Component text, int width) {
         var font = IMinecraft.INSTANCE.getDefaultFontRenderer();
         var list = new ArrayList<Component>();
         font.getSplitter().splitLines(text, width, Style.EMPTY, (stringVisitable, isWrapped) -> {
@@ -24,7 +24,7 @@ public class ComponentHelper {
         return list;
     }
 
-    public static List<@NotNull Component> splitLines(@NotNull Component text) {
+    public static List<@NonNull Component> splitLines(@NonNull Component text) {
         return splitText(text, Integer.MAX_VALUE);
     }
 

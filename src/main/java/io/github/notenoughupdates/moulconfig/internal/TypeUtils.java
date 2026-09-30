@@ -2,7 +2,7 @@ package io.github.notenoughupdates.moulconfig.internal;
 
 
 import lombok.val;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.lang.reflect.Array;
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.ParameterizedType;
@@ -129,12 +129,12 @@ public class TypeUtils {
             }
 
             @Override
-            public @NotNull Type @NotNull [] getActualTypeArguments() {
+            public @NonNull Type @NonNull [] getActualTypeArguments() {
                 return typeArguments;
             }
 
             @Override
-            public @NotNull Type getRawType() {
+            public @NonNull Type getRawType() {
                 return rawType;
             }
 

@@ -6,7 +6,7 @@ import io.github.notenoughupdates.moulconfig.gui.component.TextFieldComponent;
 import io.github.notenoughupdates.moulconfig.internal.Warnings;
 import io.github.notenoughupdates.moulconfig.observer.GetSetter;
 import io.github.notenoughupdates.moulconfig.processor.ProcessedOption;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -29,7 +29,7 @@ public class GuiOptionEditorText extends ComponentEditor {
     }
 
     @Override
-    public @NotNull GuiComponent getDelegate() {
+    public @NonNull GuiComponent getDelegate() {
         if (component == null) {
             component = wrapComponent(new TextFieldComponent(
                 (GetSetter<String>) option.intoProperty(),

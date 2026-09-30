@@ -17,9 +17,9 @@ import io.github.notenoughupdates.moulconfig.processor.ProcessedOption;
 import lombok.Getter;
 import lombok.val;
 import net.minecraft.network.chat.Component;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 import java.util.List;
 
 public abstract class ComponentEditor extends GuiOptionEditor {
@@ -29,7 +29,7 @@ public abstract class ComponentEditor extends GuiOptionEditor {
         super(option);
     }
 
-    public abstract @NotNull GuiComponent getDelegate();
+    public abstract @NonNull GuiComponent getDelegate();
 
     private @Nullable GuiComponent overlay;
     @Getter
@@ -193,7 +193,7 @@ public abstract class ComponentEditor extends GuiOptionEditor {
             return bottomComponent != null && bottomComponent.keyboardEvent(event, getBottomContext(context));
         }
 
-        protected void renderDescription(@NotNull GuiImmediateContext context) {
+        protected void renderDescription(GuiImmediateContext context) {
             int width = context.width();
             var minecraft = context.renderContext().getMinecraft();
             var fr = minecraft.getDefaultFontRenderer();

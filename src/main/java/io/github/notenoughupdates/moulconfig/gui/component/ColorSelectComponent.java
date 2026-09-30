@@ -36,7 +36,7 @@ import io.github.notenoughupdates.moulconfig.observer.GetSetter;
 import lombok.val;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.Collections;
@@ -208,7 +208,7 @@ public class ColorSelectComponent extends GuiComponent {
     }
 
     @Override
-    public void render(@NotNull GuiImmediateContext context) {
+    public void render(@NonNull GuiImmediateContext context) {
         int currentColour = ChromaColour.specialToSimpleRGB(colour);
         Color c = new Color(currentColour, true);
         float[] hsv = Color.RGBtoHSB(c.getRed(), c.getGreen(), c.getBlue(), null);
@@ -390,7 +390,7 @@ public class ColorSelectComponent extends GuiComponent {
     private ClickedComponent focusedSubComponent = null;
 
     @Override
-    public boolean mouseEvent(@NotNull MouseEvent mouseEvent, @NotNull GuiImmediateContext context) {
+    public boolean mouseEvent(@NonNull MouseEvent mouseEvent, @NonNull GuiImmediateContext context) {
         if (mouseEvent instanceof MouseEvent.Click(int mouseButton, boolean mouseState)) {
             if (!context.isHovered() && mouseState) {
                 closeCallback.run(); // TODO: lift this out of the overlay, into the overlay handler
@@ -456,7 +456,7 @@ public class ColorSelectComponent extends GuiComponent {
     }
 
     @Override
-    public boolean keyboardEvent(@NotNull KeyboardEvent event, @NotNull GuiImmediateContext context) {
+    public boolean keyboardEvent(@NonNull KeyboardEvent event, @NonNull GuiImmediateContext context) {
         if (event instanceof KeyboardEvent.KeyPressed) {
             if (((KeyboardEvent.KeyPressed) event).getKeycode() == 1) {
                 this.closeCallback.run();
@@ -472,7 +472,7 @@ public class ColorSelectComponent extends GuiComponent {
     }
 
     @Override
-    public <T> T foldChildren(T initial, @NotNull BiFunction<@NotNull GuiComponent, T, T> visitor) {
+    public <T> T foldChildren(T initial, @NonNull BiFunction<@NonNull GuiComponent, T, T> visitor) {
         return visitor.apply(componentHexField, initial);
     }
 

@@ -43,9 +43,9 @@ import lombok.val;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -1213,7 +1213,7 @@ public class MoulConfigEditor<T extends Config> extends GuiElement implements Cl
         getConfigObject().saveNow();
     }
 
-    public boolean goToOption(@NotNull ProcessedOption option) {
+    public boolean goToOption(@NonNull ProcessedOption option) {
         if (!setSelectedCategory(option.getCategory())) {
             search("");
             if (!setSelectedCategory(option.getCategory())) {

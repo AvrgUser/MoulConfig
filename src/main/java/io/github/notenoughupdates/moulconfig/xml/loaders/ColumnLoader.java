@@ -6,30 +6,30 @@ import io.github.notenoughupdates.moulconfig.xml.ChildCount;
 import io.github.notenoughupdates.moulconfig.xml.XMLContext;
 import io.github.notenoughupdates.moulconfig.xml.XMLGuiLoader;
 import io.github.notenoughupdates.moulconfig.xml.XMLUniverse;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
+import org.jspecify.annotations.NonNull;
 import org.w3c.dom.Element;
 import java.util.Map;
 import javax.xml.namespace.QName;
 
 public class ColumnLoader implements XMLGuiLoader.Basic<ColumnComponent> {
     @Override
-    public @NotNull ColumnComponent createInstance(@NotNull XMLContext<?> context, @NotNull Element element) {
+    public @NonNull ColumnComponent createInstance(@NonNull XMLContext<?> context, @NonNull Element element) {
         return new ColumnComponent(context.getChildFragments(element));
     }
 
     @Override
-    public @NotNull QName getName() {
+    public @NonNull QName getName() {
         return XMLUniverse.qName("Column");
     }
 
     @Override
-    public @NotNull ChildCount getChildCount() {
+    public @NonNull ChildCount getChildCount() {
         return ChildCount.ANY;
     }
 
     @Override
-    public @NotNull @Unmodifiable Map<String, Boolean> getAttributeNames() {
+    public @NonNull @Unmodifiable Map<String, Boolean> getAttributeNames() {
         return MapOfs.of();
     }
 }

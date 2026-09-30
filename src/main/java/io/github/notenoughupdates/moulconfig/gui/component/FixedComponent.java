@@ -6,7 +6,7 @@ import io.github.notenoughupdates.moulconfig.gui.KeyboardEvent;
 import io.github.notenoughupdates.moulconfig.gui.MouseEvent;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.function.BiFunction;
 
@@ -17,22 +17,22 @@ public class FixedComponent extends GuiComponent {
     int width, height;
 
     @Override
-    public <T> T foldChildren(T initial, @NotNull BiFunction<@NotNull GuiComponent, T, T> visitor) {
+    public <T> T foldChildren(T initial, @NonNull BiFunction<@NonNull GuiComponent, T, T> visitor) {
         return visitor.apply(inner, initial);
     }
 
     @Override
-    public boolean mouseEvent(@NotNull MouseEvent mouseEvent, @NotNull GuiImmediateContext context) {
+    public boolean mouseEvent(@NonNull MouseEvent mouseEvent, @NonNull GuiImmediateContext context) {
         return inner.mouseEvent(mouseEvent, context);
     }
 
     @Override
-    public boolean keyboardEvent(@NotNull KeyboardEvent event, @NotNull GuiImmediateContext context) {
+    public boolean keyboardEvent(@NonNull KeyboardEvent event, @NonNull GuiImmediateContext context) {
         return inner.keyboardEvent(event, context);
     }
 
     @Override
-    public void render(@NotNull GuiImmediateContext context) {
+    public void render(@NonNull GuiImmediateContext context) {
         inner.render(context);
     }
 }

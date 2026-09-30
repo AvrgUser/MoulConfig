@@ -14,7 +14,7 @@ import io.github.notenoughupdates.moulconfig.internal.Warnings;
 import io.github.notenoughupdates.moulconfig.processor.ProcessedOption;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.util.Collections;
 
 public class GuiOptionEditorKeybind extends ComponentEditor {
@@ -38,7 +38,7 @@ public class GuiOptionEditorKeybind extends ComponentEditor {
             }
 
             @Override
-            public void render(@NotNull GuiImmediateContext context) {
+            public void render(@NonNull GuiImmediateContext context) {
                 int height = getHeight();
                 RenderContext renderContext = context.renderContext();
                 int width = getWidth();
@@ -72,7 +72,7 @@ public class GuiOptionEditorKeybind extends ComponentEditor {
             }
 
             @Override
-            public boolean mouseEvent(@NotNull MouseEvent mouseEvent, @NotNull GuiImmediateContext context) {
+            public boolean mouseEvent(@NonNull MouseEvent mouseEvent, @NonNull GuiImmediateContext context) {
                 if (!(mouseEvent instanceof MouseEvent.Click(int mouseButton, boolean mouseState))) return false;
                 if (mouseState && mouseButton != InputConstants.UNKNOWN.getValue() && editingKeycode) {
                     editingKeycode = false;
@@ -102,7 +102,7 @@ public class GuiOptionEditorKeybind extends ComponentEditor {
             }
 
             @Override
-            public boolean keyboardEvent(@NotNull KeyboardEvent keyboardEvent, @NotNull GuiImmediateContext context) {
+            public boolean keyboardEvent(@NonNull KeyboardEvent keyboardEvent, @NonNull GuiImmediateContext context) {
                 if (keyboardEvent instanceof KeyboardEvent.KeyPressed keyPressed) {
                     if (editingKeycode) {
                         if (keyPressed.getPressed()) return true;
@@ -125,7 +125,7 @@ public class GuiOptionEditorKeybind extends ComponentEditor {
     }
 
     @Override
-    public @NotNull GuiComponent getDelegate() {
+    public @NonNull GuiComponent getDelegate() {
         return component;
     }
 }

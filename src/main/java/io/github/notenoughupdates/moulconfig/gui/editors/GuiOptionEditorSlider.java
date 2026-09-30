@@ -4,7 +4,7 @@ import io.github.notenoughupdates.moulconfig.gui.GuiComponent;
 import io.github.notenoughupdates.moulconfig.gui.component.SliderWithTextComponent;
 import io.github.notenoughupdates.moulconfig.observer.GetSetter;
 import io.github.notenoughupdates.moulconfig.processor.ProcessedOption;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public class GuiOptionEditorSlider extends ComponentEditor {
     GuiComponent component;
@@ -22,7 +22,7 @@ public class GuiOptionEditorSlider extends ComponentEditor {
 
 
     @Override
-    public @NotNull GuiComponent getDelegate() {
+    public @NonNull GuiComponent getDelegate() {
         return component;
     }
 }

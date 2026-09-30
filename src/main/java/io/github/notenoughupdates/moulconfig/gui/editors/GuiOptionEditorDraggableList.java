@@ -40,7 +40,7 @@ import io.github.notenoughupdates.moulconfig.internal.Warnings;
 import io.github.notenoughupdates.moulconfig.observer.GetSetter;
 import io.github.notenoughupdates.moulconfig.processor.ProcessedOption;
 import net.minecraft.network.chat.Component;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -123,7 +123,7 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
     Rect trashCanBoundingBox;
 
     @Override
-    public @NotNull GuiComponent getDelegate() {
+    public @NonNull GuiComponent getDelegate() {
         if (delegate == null)
             delegate = wrapComponent(
                 new FixedComponent(
@@ -147,7 +147,7 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
                             }
 
                             @Override
-                            public void render(@NotNull GuiImmediateContext context) {
+                            public void render(@NonNull GuiImmediateContext context) {
                                 if (context.isHovered() && dragStartIndex >= 0 && canDeleteRightNow()) {
                                     trashAnimation.setTarget(0);
                                 } else {
@@ -181,7 +181,7 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
                     }
 
                     @Override
-                    public boolean mouseEvent(@NotNull MouseEvent mouseEvent, @NotNull GuiImmediateContext context) {
+                    public boolean mouseEvent(@NonNull MouseEvent mouseEvent, @NonNull GuiImmediateContext context) {
                         if (mouseEvent instanceof MouseEvent.Click click) {
                             var fr = IMinecraft.INSTANCE.getDefaultFontRenderer();
                             if (click.mouseState()) {
@@ -209,7 +209,7 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
                     }
 
                     @Override
-                    public void render(@NotNull GuiImmediateContext context) {
+                    public void render(@NonNull GuiImmediateContext context) {
                         lastListRenderPos = new MoulConfigPair<>(context.renderOffsetX(), context.renderOffsetY());
                         var renderContext = context.renderContext();
                         var width = context.width();
@@ -265,7 +265,7 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
             }
 
             @Override
-            public boolean mouseEvent(@NotNull MouseEvent mouseEvent, @NotNull GuiImmediateContext context) {
+            public boolean mouseEvent(@NonNull MouseEvent mouseEvent, @NonNull GuiImmediateContext context) {
                 if (mouseEvent instanceof MouseEvent.Click click) {
                     if (!click.mouseState()) {
                         closeOverlay();
@@ -287,7 +287,7 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
             }
 
             @Override
-            public void render(@NotNull GuiImmediateContext context) {
+            public void render(@NonNull GuiImmediateContext context) {
                 var renderContext = context.renderContext();
                 var fr = IMinecraft.INSTANCE.getDefaultFontRenderer();
                 var text = getExampleText(indexObject);
@@ -384,7 +384,7 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
             }
 
             @Override
-            public boolean mouseEvent(@NotNull MouseEvent mouseEvent, @NotNull GuiImmediateContext context) {
+            public boolean mouseEvent(@NonNull MouseEvent mouseEvent, @NonNull GuiImmediateContext context) {
                 int maxScrollOffset = Math.max(0, getDropDownContentHeight() - context.height());
                 if (scrollOffset > maxScrollOffset) {
                     scrollOffset = maxScrollOffset;
@@ -415,7 +415,7 @@ public class GuiOptionEditorDraggableList extends ComponentEditor {
             }
 
             @Override
-            public void render(@NotNull GuiImmediateContext context) {
+            public void render(@NonNull GuiImmediateContext context) {
                 List<Object> remaining = getRemainingDropDownEntries();
                 if (remaining.isEmpty()) {
                     closeOverlay();

@@ -24,7 +24,7 @@ import io.github.notenoughupdates.moulconfig.gui.GuiComponent;
 import io.github.notenoughupdates.moulconfig.gui.component.TextComponent;
 import io.github.notenoughupdates.moulconfig.processor.ProcessedOption;
 import net.minecraft.network.chat.Component;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.Locale;
 
@@ -39,7 +39,7 @@ public class GuiOptionEditorInfoText extends ComponentEditor {
     }
 
     @Override
-    public @NotNull GuiComponent getDelegate() {
+    public @NonNull GuiComponent getDelegate() {
         if (component == null)
             component = wrapComponent(new TextComponent(infoTitle, 100, TextComponent.TextAlignment.CENTER));
         return component;

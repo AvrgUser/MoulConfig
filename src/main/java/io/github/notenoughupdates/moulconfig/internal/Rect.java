@@ -4,7 +4,7 @@ import io.github.notenoughupdates.moulconfig.gui.GuiImmediateContext;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Value;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 @Value
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -23,7 +23,7 @@ public class Rect {
         return new Rect(x, y, x + w, y + h);
     }
 
-    public static Rect ofGuiImmediateContext(@NotNull GuiImmediateContext context) {
+    public static Rect ofGuiImmediateContext(@NonNull GuiImmediateContext context) {
         return ofXYWH(context.renderOffsetX(), context.renderOffsetY(), context.width(), context.height());
     }
 

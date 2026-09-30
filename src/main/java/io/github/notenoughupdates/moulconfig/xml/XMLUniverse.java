@@ -38,7 +38,7 @@ import lombok.SneakyThrows;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.w3c.dom.Element;
 import java.awt.Color;
 import java.io.InputStream;
@@ -248,8 +248,8 @@ public class XMLUniverse {
         return elementLoader.createInstance(context, element);
     }
 
-    @NotNull
-    public GuiComponent load(@NotNull Object bind, @NotNull Identifier location) {
+    @NonNull
+    public GuiComponent load(@NonNull Object bind, @NonNull Identifier location) {
         return load(bind, IMinecraft.INSTANCE.loadResourceLocation(location));
     }
 

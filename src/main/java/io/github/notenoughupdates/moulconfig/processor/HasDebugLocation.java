@@ -1,6 +1,6 @@
 package io.github.notenoughupdates.moulconfig.processor;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 @FunctionalInterface
 public interface HasDebugLocation {

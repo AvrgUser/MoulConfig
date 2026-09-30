@@ -31,7 +31,7 @@ import io.github.notenoughupdates.moulconfig.internal.Warnings;
 import io.github.notenoughupdates.moulconfig.processor.ProcessedOption;
 import lombok.Getter;
 import net.minecraft.network.chat.Component;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
@@ -112,7 +112,7 @@ public class GuiOptionEditorButton extends ComponentEditor {
         }
 
         @Override
-        public void render(@NotNull GuiImmediateContext context) {
+        public void render(@NonNull GuiImmediateContext context) {
 
             context.renderContext().drawTexturedRect(GuiTextures.BUTTON, 0, 0, context.width(), context.height());
             context.renderContext().drawStringCenteredScaledMaxWidth(
@@ -124,7 +124,7 @@ public class GuiOptionEditorButton extends ComponentEditor {
         }
 
         @Override
-        public boolean mouseEvent(@NotNull MouseEvent mouseEvent, @NotNull GuiImmediateContext context) {
+        public boolean mouseEvent(@NonNull MouseEvent mouseEvent, @NonNull GuiImmediateContext context) {
             if (mouseEvent instanceof MouseEvent.Click(int mouseButton, boolean mouseState)) {
                 if (mouseState && context.isHovered() && mouseButton == InputConstants.MOUSE_BUTTON_LEFT) {
                     onClick();
