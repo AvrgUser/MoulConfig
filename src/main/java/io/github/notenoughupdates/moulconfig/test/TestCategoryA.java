@@ -143,6 +143,7 @@ public class TestCategoryA {
 
     @Expose
     @ConfigOption(name = "Test Runnable", desc = "Test a (ignored) runnable using runnableId to emit a test warning")
+    @SuppressWarnings("deprecation")
     @ConfigEditorButton(runnableId = 10, buttonText = "Click me")
     public final Object runnableId = new Object();
 
