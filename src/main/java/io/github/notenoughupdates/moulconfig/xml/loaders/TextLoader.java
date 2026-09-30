@@ -11,9 +11,8 @@ import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 import org.w3c.dom.Element;
-
-import javax.xml.namespace.QName;
 import java.util.Map;
+import javax.xml.namespace.QName;
 
 public class TextLoader implements XMLGuiLoader.Basic<TextComponent> {
     @Override

@@ -17,10 +17,12 @@ class TabsLoader : XMLGuiLoader<TabComponent> {
             val tabElement = tabElements.item(i) as Element
             val body = tabElement.getElementsByTagName("Tab.Body").item(0) as Element
             val header = tabElement.getElementsByTagName("Tab.Header").item(0) as Element
-            tabs.add(TabComponent.Tab(
-                context.getChildFragment(header),
-                context.getChildFragment(body),
-            ))
+            tabs.add(
+                TabComponent.Tab(
+                    context.getChildFragment(header),
+                    context.getChildFragment(body),
+                )
+            )
         }
         return TabComponent(
             tabs,

@@ -6,8 +6,10 @@ import juuxel.libninepatch.NinePatch;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -57,7 +59,7 @@ public interface RenderContext {
      * @return if the command (on 🍎) or super (on 🐧) or windows (on 🪟) key is down.
      */
     default boolean isCmdDown() {
-        //~ if >= 26.3 'SUPER' -> 'GUI'
+        //~ if >=26.3 'SUPER' -> 'GUI'
         return isKeyboardKeyDown(InputConstants.KEY_LGUI) || isKeyboardKeyDown(InputConstants.KEY_RGUI);
     }
 
@@ -256,6 +258,8 @@ public interface RenderContext {
      */
     @Deprecated
     void clearScissor();  // TODO: this sort of escapes out of the current context.
+
+    void renderItemStack(ItemStack itemStack, int x, int y, @Nullable Component overlayText);
 
     void drawTooltipNow(int x, int y, List<Component> tooltipLines);
 

@@ -35,6 +35,6 @@ public class ComponentHelper {
         if (object instanceof Component) {
             return (Component) object;
         }
-        throw new IllegalArgumentException("Expected string or structured text, found " + object);
+        throw new IllegalArgumentException("Expected string or component, found " + object);
     }
 }

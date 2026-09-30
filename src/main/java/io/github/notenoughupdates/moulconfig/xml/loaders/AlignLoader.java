@@ -9,10 +9,9 @@ import io.github.notenoughupdates.moulconfig.xml.XMLContext;
 import io.github.notenoughupdates.moulconfig.xml.XMLGuiLoader;
 import io.github.notenoughupdates.moulconfig.xml.XMLUniverse;
 import org.w3c.dom.Element;
-
-import javax.xml.namespace.QName;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.xml.namespace.QName;
 
 public class AlignLoader implements XMLGuiLoader.Basic<AlignComponent> {
     @Override
@@ -28,9 +27,18 @@ public class AlignLoader implements XMLGuiLoader.Basic<AlignComponent> {
         return value != null ? value : GetSetter.constant(def);
     }
 
-    @Override public QName getName() { return XMLUniverse.qName("Align"); }
-    @Override public ChildCount getChildCount() { return ChildCount.ONE; }
-    @Override public Map<String, Boolean> getAttributeNames() {
+    @Override
+    public QName getName() {
+        return XMLUniverse.qName("Align");
+    }
+
+    @Override
+    public ChildCount getChildCount() {
+        return ChildCount.ONE;
+    }
+
+    @Override
+    public Map<String, Boolean> getAttributeNames() {
         Map<String, Boolean> map = new LinkedHashMap<>();
         map.put("horizontal", false);
         map.put("vertical", false);

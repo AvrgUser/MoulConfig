@@ -1,9 +1,7 @@
 package io.github.notenoughupdates.moulconfig.xml
 
-import io.github.notenoughupdates.moulconfig.gui.component.PanelComponent
 import org.w3c.dom.Element
 import java.io.File
-import javax.xml.namespace.QName
 import javax.xml.parsers.DocumentBuilderFactory
 import javax.xml.transform.TransformerFactory
 import javax.xml.transform.dom.DOMSource

@@ -107,7 +107,8 @@ public interface IMinecraft {
 
     String copyFromClipboard();
 
-    default void startTextInput(Object owner, boolean focused) {}
+    default void startTextInput(Object owner, boolean focused) {
+    }
 
     IMinecraft INSTANCE = InitUtil.makeUnchecked(() -> {
         var serviceLoader = ServiceLoader.load(IMinecraft.class);

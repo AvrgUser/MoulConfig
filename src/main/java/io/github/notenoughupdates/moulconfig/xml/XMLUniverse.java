@@ -8,7 +8,30 @@ import io.github.notenoughupdates.moulconfig.gui.component.PanelComponent;
 import io.github.notenoughupdates.moulconfig.gui.component.TextComponent;
 import io.github.notenoughupdates.moulconfig.internal.TypeUtils;
 import io.github.notenoughupdates.moulconfig.observer.GetSetter;
-import io.github.notenoughupdates.moulconfig.xml.loaders.*;
+import io.github.notenoughupdates.moulconfig.xml.loaders.AlignLoader;
+import io.github.notenoughupdates.moulconfig.xml.loaders.ArrayLoader;
+import io.github.notenoughupdates.moulconfig.xml.loaders.BasicCollapsibleLoader;
+import io.github.notenoughupdates.moulconfig.xml.loaders.ButtonLoader;
+import io.github.notenoughupdates.moulconfig.xml.loaders.CenterLoader;
+import io.github.notenoughupdates.moulconfig.xml.loaders.ColumnLoader;
+import io.github.notenoughupdates.moulconfig.xml.loaders.FragmentLoader;
+import io.github.notenoughupdates.moulconfig.xml.loaders.GuiLoader;
+import io.github.notenoughupdates.moulconfig.xml.loaders.HoverLoader;
+import io.github.notenoughupdates.moulconfig.xml.loaders.IndirectLoader;
+import io.github.notenoughupdates.moulconfig.xml.loaders.ItemStackLoader;
+import io.github.notenoughupdates.moulconfig.xml.loaders.MetaLoader;
+import io.github.notenoughupdates.moulconfig.xml.loaders.PanelLoader;
+import io.github.notenoughupdates.moulconfig.xml.loaders.RootLoader;
+import io.github.notenoughupdates.moulconfig.xml.loaders.RowLoader;
+import io.github.notenoughupdates.moulconfig.xml.loaders.ScaleLoader;
+import io.github.notenoughupdates.moulconfig.xml.loaders.ScrollPanelLoader;
+import io.github.notenoughupdates.moulconfig.xml.loaders.SliderLoader;
+import io.github.notenoughupdates.moulconfig.xml.loaders.SpacerLoader;
+import io.github.notenoughupdates.moulconfig.xml.loaders.SwitchLoader;
+import io.github.notenoughupdates.moulconfig.xml.loaders.TabsLoader;
+import io.github.notenoughupdates.moulconfig.xml.loaders.TextFieldLoader;
+import io.github.notenoughupdates.moulconfig.xml.loaders.TextLoader;
+import io.github.notenoughupdates.moulconfig.xml.loaders.WhenLoader;
 import io.github.notenoughupdates.moulconfig.xml.trans.UnboxGetSetter;
 import io.github.notenoughupdates.moulconfig.xml.trans.UnboxPrimitives;
 import lombok.SneakyThrows;
@@ -17,17 +40,25 @@ import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.w3c.dom.Element;
-
-import javax.xml.XMLConstants;
-import javax.xml.namespace.QName;
-import javax.xml.parsers.DocumentBuilderFactory;
 import java.awt.Color;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Queue;
+import java.util.Set;
 import java.util.function.Function;
+import javax.xml.XMLConstants;
+import javax.xml.namespace.QName;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 public class XMLUniverse {
     public static String MOULCONFIG_XML_NS = "http://notenoughupdates.org/moulconfig";
@@ -58,6 +89,7 @@ public class XMLUniverse {
         xmlUniverse.registerLoader(new CenterLoader());
         xmlUniverse.registerLoader(new ScaleLoader());
         xmlUniverse.registerLoader(new SpacerLoader());
+        xmlUniverse.registerLoader(new ItemStackLoader());
         xmlUniverse.registerLoader(new FragmentLoader());
         xmlUniverse.registerLoader(new IndirectLoader());
         xmlUniverse.registerLoader(new WhenLoader());
@@ -229,7 +261,7 @@ public class XMLUniverse {
     @ApiStatus.Experimental
     public <T, R> GetSetter<R> mapObject(GetSetter<T> getSetter, Class<T> source, Class<R> dest) {
         //noinspection unchecked
-        return (GetSetter<R>) mapObject(getSetter, (Type) source, (Type) dest);
+        return (GetSetter<R>) mapObject(getSetter, source, (Type) dest);
     }
 
     public <E> E mapXMLObject(String attributeValue, Class<E> type) {

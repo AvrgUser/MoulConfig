@@ -8,10 +8,9 @@ import io.github.notenoughupdates.moulconfig.xml.XMLUniverse;
 import io.github.notenoughupdates.moulconfig.xml.XSDGenerator;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-
-import javax.xml.namespace.QName;
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.namespace.QName;
 
 public class TabsLoader implements XMLGuiLoader<TabComponent> {
     @Override

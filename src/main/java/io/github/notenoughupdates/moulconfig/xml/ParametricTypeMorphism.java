@@ -18,6 +18,7 @@ public interface ParametricTypeMorphism {
 
     /**
      * Transform an object from one type to another, wrapped into a {@link GetSetter}
+     *
      * @param domain the type contained in the {@link GetSetter}
      */
     GetSetter<?> apply(Type domain, GetSetter<?> value);

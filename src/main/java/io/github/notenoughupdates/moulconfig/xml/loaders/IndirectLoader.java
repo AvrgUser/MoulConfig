@@ -7,16 +7,28 @@ import io.github.notenoughupdates.moulconfig.xml.XMLContext;
 import io.github.notenoughupdates.moulconfig.xml.XMLGuiLoader;
 import io.github.notenoughupdates.moulconfig.xml.XMLUniverse;
 import org.w3c.dom.Element;
-
-import javax.xml.namespace.QName;
 import java.util.Collections;
 import java.util.Map;
+import javax.xml.namespace.QName;
 
 public class IndirectLoader implements XMLGuiLoader.Basic<IndirectComponent> {
-    @Override public IndirectComponent createInstance(XMLContext<?> context, Element element) {
+    @Override
+    public IndirectComponent createInstance(XMLContext<?> context, Element element) {
         return new IndirectComponent(context.getPropertyFromAttribute(element, new QName("value"), GuiComponent.class));
     }
-    @Override public QName getName() { return XMLUniverse.qName("Indirect"); }
-    @Override public ChildCount getChildCount() { return ChildCount.NONE; }
-    @Override public Map<String, Boolean> getAttributeNames() { return Collections.singletonMap("value", true); }
+
+    @Override
+    public QName getName() {
+        return XMLUniverse.qName("Indirect");
+    }
+
+    @Override
+    public ChildCount getChildCount() {
+        return ChildCount.NONE;
+    }
+
+    @Override
+    public Map<String, Boolean> getAttributeNames() {
+        return Collections.singletonMap("value", true);
+    }
 }

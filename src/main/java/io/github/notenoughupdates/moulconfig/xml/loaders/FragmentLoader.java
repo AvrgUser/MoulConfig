@@ -9,21 +9,30 @@ import io.github.notenoughupdates.moulconfig.xml.XMLUniverse;
 import net.minecraft.resources.Identifier;
 import org.jspecify.annotations.NonNull;
 import org.w3c.dom.Element;
-
-import javax.xml.namespace.QName;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.xml.namespace.QName;
 
 public class FragmentLoader implements XMLGuiLoader.Basic<GuiComponent> {
     @Override
     public @NonNull GuiComponent createInstance(XMLContext<?> context, Element element) {
         Identifier location = context.getPropertyFromAttribute(element, new QName("value"), Identifier.class).get();
         GetSetter<Object> bind = context.getPropertyFromAttribute(element, new QName("bind"), Object.class);
-        return context.getUniverse().load(bind != null ? bind.get() : element, location);
+        return context.universe().load(bind != null ? bind.get() : element, location);
     }
-    @Override public QName getName() { return XMLUniverse.qName("Fragment"); }
-    @Override public ChildCount getChildCount() { return ChildCount.NONE; }
-    @Override public Map<String, Boolean> getAttributeNames() {
+
+    @Override
+    public QName getName() {
+        return XMLUniverse.qName("Fragment");
+    }
+
+    @Override
+    public ChildCount getChildCount() {
+        return ChildCount.NONE;
+    }
+
+    @Override
+    public Map<String, Boolean> getAttributeNames() {
         Map<String, Boolean> map = new LinkedHashMap<>();
         map.put("value", true);
         map.put("bind", false);

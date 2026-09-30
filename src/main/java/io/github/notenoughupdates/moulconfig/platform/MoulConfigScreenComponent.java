@@ -83,7 +83,7 @@ public class MoulConfigScreenComponent extends Screen {
     @Override
     public boolean keyPressed(KeyEvent input) {
         int keyCode = input.key();
-        //~ if >= 26.3 'scancode' -> 'keycode'
+        //~ if >=26.3 'scancode' -> 'keycode'
         int scanCode = input.keycode();
         if (guiContext.root.keyboardEvent(new KeyboardEvent.KeyPressed(keyCode, scanCode, true), createContext()))
             return true;
@@ -100,7 +100,7 @@ public class MoulConfigScreenComponent extends Screen {
 
     public boolean keyReleased(KeyEvent input) {
         int keyCode = input.key();
-        //~ if >= 26.3 'scancode' -> 'keycode'
+        //~ if >=26.3 'scancode' -> 'keycode'
         int scanCode = input.keycode();
         return guiContext.root.keyboardEvent(
             new KeyboardEvent.KeyPressed(keyCode, scanCode, false),

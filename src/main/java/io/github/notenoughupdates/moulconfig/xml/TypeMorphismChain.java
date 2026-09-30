@@ -18,6 +18,7 @@ public class TypeMorphismChain {
         this.domains = domains;
         assert domains.size() == transformations.size() + 1;
     }
+
     public static TypeMorphismChain id(Type type) {
         return new TypeMorphismChain(Collections.emptyList(), Collections.singletonList(type));
     }

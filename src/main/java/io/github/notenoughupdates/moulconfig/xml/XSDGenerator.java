@@ -1,14 +1,13 @@
 package io.github.notenoughupdates.moulconfig.xml;
 
 import org.w3c.dom.Element;
-
+import java.io.File;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.File;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class XSDGenerator {
     private final XMLUniverse universe;
@@ -45,7 +44,7 @@ public class XSDGenerator {
         document.appendChild(root);
     }
 
-    public static void main(String[] args) {
+    static void main(String[] args) {
         XMLUniverse universe = XMLUniverse.getDefaultUniverse();
         XSDGenerator generator = new XSDGenerator(universe, XMLUniverse.MOULCONFIG_XML_NS);
         generator.writeAll();
@@ -127,11 +126,20 @@ public class XSDGenerator {
         Element extension = createChild(complexContent, XMLNS_XML_SCHEMA, "extension");
         String base;
         switch (type.getChildCount()) {
-            case NONE: base = "moulconfig:Widgetless"; break;
-            case ONE: base = "moulconfig:SingleWidget"; break;
-            case ANY: base = "moulconfig:MultiWidget"; break;
-            case TWO: base = "moulconfig:TwoWidget"; break;
-            default: throw new IllegalStateException("Unknown child count");
+            case NONE:
+                base = "moulconfig:Widgetless";
+                break;
+            case ONE:
+                base = "moulconfig:SingleWidget";
+                break;
+            case ANY:
+                base = "moulconfig:MultiWidget";
+                break;
+            case TWO:
+                base = "moulconfig:TwoWidget";
+                break;
+            default:
+                throw new IllegalStateException("Unknown child count");
         }
         extension.setAttribute("base", base);
         for (Map.Entry<String, Boolean> entry : type.getAttributeNames().entrySet()) {

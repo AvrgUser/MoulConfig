@@ -10,7 +10,7 @@ import java.lang.reflect.TypeVariable;
 import java.util.Optional;
 
 public class UnboxGetSetter implements ParametricTypeMorphism {
-    private TypeVariable<?> typeVariable = GetSetter.class.getTypeParameters()[0];
+    private final TypeVariable<?> typeVariable = GetSetter.class.getTypeParameters()[0];
 
     @Override
     public Optional<Type> codomain(Type domain) {

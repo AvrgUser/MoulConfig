@@ -9,7 +9,7 @@ public class KeyBindHelper {
     }
 
     public static InputConstants.Key keyboard(int key) {
-        //~ if >= 26.3 'KEYSYM' -> 'KEYBOARD'
+        //~ if >=26.3 'KEYSYM' -> 'KEYBOARD'
         return InputConstants.Type.KEYBOARD.getOrCreate(key);
     }
 
@@ -33,9 +33,9 @@ public class KeyBindHelper {
     public static String getKeyIdentifier(InputConstants.Key key) {
         if (key == null) return null;
         String rawName = key.getName();
-        //? if >= 26.3 {
+        //? if >=26.3 {
         return rawName;
-         //? } else {
+        //?} else {
         /*return switch (rawName) {
             case "key.keyboard.keypad.decimal" -> "key.keyboard.keypad.period";
             case "key.keyboard.menu" -> "key.keyboard.application";
@@ -46,15 +46,15 @@ public class KeyBindHelper {
 
     public static InputConstants.Key getKeyByIdentifier(String rawName) {
         if (rawName == null) return null;
-        //? if >= 26.3 {
+        //? if >=26.3 {
         String name = rawName;
-        //? } else {
+        //?} else {
         /*String name = switch (rawName) {
             case "key.keyboard.keypad.period" -> "key.keyboard.keypad.decimal";
             case "key.keyboard.application" -> "key.keyboard.menu";
             default -> rawName;
         };
-        *///? }
+        *///?}
         return InputConstants.getKey(name);
     }
 }

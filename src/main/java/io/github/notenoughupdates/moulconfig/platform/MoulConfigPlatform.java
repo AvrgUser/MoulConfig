@@ -32,11 +32,11 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.Objects;
 
-//? if >= 26.3 {
+//? if >=26.3 {
 import org.lwjgl.sdl.SDLMouse;
 //?} else {
 /*import org.lwjgl.glfw.GLFW;
-*///?}
+ *///?}
 
 @Slf4j
 @NullMarked
@@ -174,7 +174,7 @@ public class MoulConfigPlatform implements IMinecraft {
 
     @Override
     public boolean isMouseButtonDown(int mouseButton) {
-        //?if >= 26.3 {
+        //? if >=26.3 {
         int mask = switch (mouseButton) {
             case InputConstants.MOUSE_BUTTON_LEFT -> SDLMouse.SDL_BUTTON_LMASK;
             case InputConstants.MOUSE_BUTTON_MIDDLE -> SDLMouse.SDL_BUTTON_MMASK;
@@ -186,16 +186,16 @@ public class MoulConfigPlatform implements IMinecraft {
         return (SDLMouse.SDL_GetMouseState(null, null) & mask) != 0;
         //?} else {
         /*return GLFW.glfwGetMouseButton(mc.getWindow().handle(), mouseButton) == GLFW.GLFW_PRESS;
-        *///?}
+         *///?}
     }
 
     @Override
     public boolean isKeyboardKeyDown(int keyboardKey) {
-        //? if >= 26.3 {
+        //? if >=26.3 {
         return InputConstants.isKeyDown(keyboardKey);
         //?} else {
         /*return InputConstants.isKeyDown(mc.getWindow(), keyboardKey);
-        *///?}
+         *///?}
     }
 
     @Override
@@ -270,7 +270,7 @@ public class MoulConfigPlatform implements IMinecraft {
 
     @Override
     public void startTextInput(Object owner, boolean focused) {
-        //? if >= 26.3
+        //? if >=26.3
         mc.textInputManager().onTextInputFocusChange(owner, focused);
     }
 }

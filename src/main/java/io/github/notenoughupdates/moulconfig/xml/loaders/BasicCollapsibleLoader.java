@@ -10,10 +10,9 @@ import io.github.notenoughupdates.moulconfig.xml.XMLGuiLoader;
 import io.github.notenoughupdates.moulconfig.xml.XMLUniverse;
 import net.minecraft.network.chat.Component;
 import org.w3c.dom.Element;
-
-import javax.xml.namespace.QName;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.xml.namespace.QName;
 
 public class BasicCollapsibleLoader implements XMLGuiLoader.Basic<CollapsibleComponent> {
     @Override
@@ -32,9 +31,19 @@ public class BasicCollapsibleLoader implements XMLGuiLoader.Basic<CollapsibleCom
         );
         return new CollapsibleComponent(() -> textComponent, () -> body, state);
     }
-    @Override public QName getName() { return XMLUniverse.qName("Collapsible"); }
-    @Override public ChildCount getChildCount() { return ChildCount.ONE; }
-    @Override public Map<String, Boolean> getAttributeNames() {
+
+    @Override
+    public QName getName() {
+        return XMLUniverse.qName("Collapsible");
+    }
+
+    @Override
+    public ChildCount getChildCount() {
+        return ChildCount.ONE;
+    }
+
+    @Override
+    public Map<String, Boolean> getAttributeNames() {
         Map<String, Boolean> map = new LinkedHashMap<>();
         map.put("title", true);
         map.put("value", false);

@@ -9,9 +9,8 @@ import io.github.notenoughupdates.moulconfig.xml.XMLUniverse;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 import org.w3c.dom.Element;
-
-import javax.xml.namespace.QName;
 import java.util.Map;
+import javax.xml.namespace.QName;
 
 public class SliderLoader implements XMLGuiLoader.Basic<SliderComponent> {
     @Override

@@ -20,6 +20,7 @@ import net.minecraft.client.renderer.state.gui.GuiElementRenderState;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.ItemStack;
 import org.joml.Matrix3x2f;
 import org.joml.Matrix3x2fStack;
 import org.jspecify.annotations.NullMarked;
@@ -30,7 +31,7 @@ import java.util.NavigableMap;
 import java.util.TreeMap;
 import java.util.function.Consumer;
 
-//? if >= 26.3 {
+//? if >=26.3 {
 import com.mojang.renderpearl.api.textures.FilterMode;
 import com.mojang.renderpearl.api.pipeline.RenderPipeline;
 //?} else {
@@ -371,6 +372,18 @@ public class MoulConfigRenderContext implements RenderContext {
     }
 
     @Override
+    public void renderItemStack(ItemStack item, int x, int y, @Nullable Component overlayText) {
+        drawContext.item(item, x, y);
+        if (overlayText != null)
+            drawContext.itemDecorations(
+                mc.font,
+                item,
+                x, y,
+                overlayText.getString()
+            );
+    }
+
+    @Override
     public void drawTooltipNow(
         int x,
         int y,
@@ -387,12 +400,12 @@ public class MoulConfigRenderContext implements RenderContext {
             x,
             y,
             DefaultTooltipPositioner.INSTANCE,
-            //? if >= 26.3 {
+            //? if >=26.3 {
             null,
             false
             //? else {
             /*null
-            *///?}
+             *///?}
         );
     }
 

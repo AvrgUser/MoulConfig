@@ -33,9 +33,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface ConfigEditorKeybind {
-    //~ if >= 26.3 '-1' -> '0'
+    //~ if >=26.3 '-1' -> '0'
     int defaultKey() default 0;
 
-    //~ if >= 26.3 'KEYSYM' -> 'KEYBOARD'
+    //~ if >=26.3 'KEYSYM' -> 'KEYBOARD'
     InputConstants.Type defaultCategory() default InputConstants.Type.KEYBOARD;
 }
